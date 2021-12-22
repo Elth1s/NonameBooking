@@ -11,22 +11,21 @@ using System.Threading.Tasks;
 
 namespace DAL
 {
-    public class BookingDbContext : IdentityDbContext
+    public class BookingDbContext : IdentityDbContext<AppUser>
     {
         public BookingDbContext(DbContextOptions<BookingDbContext> options) : base(options)
         {
 
         }
 
-        internal DbSet<Apartment> Apartments { get; set; }
-        internal DbSet<AppUser> AppUsers { get; set; }
-        internal DbSet<City> Cities { get; set; }
-        internal DbSet<Country> Countries { get; set; }
-        internal DbSet<Filter> Filters { get; set; }
-        internal DbSet<FilterGroup> FilterGroups { get; set; }
-        internal DbSet<Order> Orders { get; set; }
-        internal DbSet<OrderStatus> OrderStatuses { get; set; }
-        internal DbSet<TypeOfApartment> TypeOfApartments { get; set; }
+        public DbSet<Apartment> Apartments { get; set; }
+        public DbSet<City> Cities { get; set; }
+        public DbSet<Country> Countries { get; set; }
+        public DbSet<Filter> Filters { get; set; }
+        public DbSet<FilterGroup> FilterGroups { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderStatus> OrderStatuses { get; set; }
+        public DbSet<TypeOfApartment> TypeOfApartments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

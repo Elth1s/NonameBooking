@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Models
 {
-    internal class Order
+    public class Order
     {
         public string Id { get; set; }
         public DateTime Start { get; set; }

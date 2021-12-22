@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Models
 {
-    internal class Apartment
+    public class Apartment
     {
         public int Id { get; set; }
         public string Name { get; set; }

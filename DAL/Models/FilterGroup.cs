@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Models
 {
-    internal class FilterGroup
+    public class FilterGroup
     {
         public int Id { get; set; }
         public string Name { get; set; }

@@ -12,6 +12,10 @@ builder.Services.AddSpaStaticFiles(configuration =>
 builder.Services.AddDbContext<BookingDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+
+builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+builder.Services.AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
+
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();

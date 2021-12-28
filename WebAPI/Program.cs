@@ -5,10 +5,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddMvc().AddJsonOptions(option => option.JsonSerializerOptions.PropertyNamingPolicy = null);
-builder.Services.AddSpaStaticFiles(configuration =>
-{
-    configuration.RootPath = "../ClientApp/bulid";
-});
+
 builder.Services.AddDbContext<BookingDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -17,6 +14,11 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 builder.Services.AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
 
 builder.Services.AddControllers();
+
+builder.Services.AddSpaStaticFiles(configuration =>
+{
+    configuration.RootPath = "ClientApp/build";
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -30,22 +32,29 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseStaticFiles();
 app.UseSpaStaticFiles();
+
+app.UseRouting();
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-app.MapControllers();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller}/{action=Index}/{id?}");
+});
 
 app.UseSpa(spa =>
 {
-    spa.Options.SourcePath = "../ClientApp";
+    spa.Options.SourcePath = "ClientApp";
     if (app.Environment.IsDevelopment())
     {
         spa.UseReactDevelopmentServer(npmScript: "start");
     }
 });
-
 
 app.Run();

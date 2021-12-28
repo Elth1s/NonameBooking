@@ -1,0 +1,62 @@
+﻿using DAL.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using WebAPI.Interfaces;
+using WebAPI.Models;
+
+namespace WebAPI.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AccountController : ControllerBase
+    {
+        private readonly IUserService _userService;
+        private readonly UserManager<AppUser> _userManager;
+        private readonly IJwtTokenService _tokenService;
+
+        public AccountController(IUserService userService, UserManager<AppUser> userManager, IJwtTokenService tokenService)
+        {
+            _userManager = userManager;
+            _userService = userService;
+            _tokenService = tokenService;
+        }
+
+        [HttpPost]
+        [Route("SignUp")]
+        public async Task<IActionResult> SignUp([FromBody] RegisterVM model)
+        {
+            try
+            {
+                string token = await _userService.CreateUserAsync(model);
+                return Ok(token);
+            }        
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+        [HttpPost]
+        [Route("SignIn")]
+        public async Task<IActionResult> SignIn([FromBody] LoginVM model)
+        {
+            try
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (await _userManager.CheckPasswordAsync(user, model.Password))
+                {
+                    string token = await _tokenService.CreateTokenAsync(user);
+                    return Ok(token);
+                }
+                else
+                {
+                    throw new Exception("Invalid email or password!");
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+    }
+}

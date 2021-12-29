@@ -7,11 +7,13 @@
 	  <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
 	  <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
 	  <IsPackable>false</IsPackable>
-	  <SpaRoot>..\ClientApp\</SpaRoot>
+	  <SpaRoot>ClientApp\</SpaRoot>
 	  <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
     <PackageReference Include="FluentValidation" Version="10.3.6" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="10.3.6" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.1" />

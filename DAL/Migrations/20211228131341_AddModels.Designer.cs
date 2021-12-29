@@ -4,6 +4,7 @@ using DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(BookingDbContext))]
-    partial class BookingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211228131341_AddModels")]
+    partial class AddModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,7 +61,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("TypeOfApartmentId");
 
-                    b.ToTable("Apartments", (string)null);
+                    b.ToTable("Apartments");
                 });
 
             modelBuilder.Entity("DAL.Models.AppUser", b =>
@@ -154,7 +156,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Cities", (string)null);
+                    b.ToTable("Cities");
                 });
 
             modelBuilder.Entity("DAL.Models.Country", b =>
@@ -171,7 +173,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries", (string)null);
+                    b.ToTable("Countries");
                 });
 
             modelBuilder.Entity("DAL.Models.Filter", b =>
@@ -198,7 +200,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("FilterGroupId");
 
-                    b.ToTable("Filters", (string)null);
+                    b.ToTable("Filters");
                 });
 
             modelBuilder.Entity("DAL.Models.FilterGroup", b =>
@@ -215,7 +217,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FilterGroups", (string)null);
+                    b.ToTable("FilterGroups");
                 });
 
             modelBuilder.Entity("DAL.Models.Order", b =>
@@ -247,7 +249,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("DAL.Models.OrderStatus", b =>
@@ -264,7 +266,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OrderStatuses", (string)null);
+                    b.ToTable("OrderStatuses");
                 });
 
             modelBuilder.Entity("DAL.Models.TypeOfApartment", b =>
@@ -281,7 +283,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TypeOfApartments", (string)null);
+                    b.ToTable("TypeOfApartments");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

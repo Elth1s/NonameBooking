@@ -11,6 +11,7 @@ using WebAPI.Interfaces;
 using WebAPI.Services;
 using FluentValidation.AspNetCore;
 using System.Reflection;
+using WebAPI.Mapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,6 +58,8 @@ builder.Services.AddSpaStaticFiles(configuration =>
 {
     configuration.RootPath = "ClientApp/build";
 });
+
+builder.Services.AddAutoMapper(typeof(AppMappingProfile));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>

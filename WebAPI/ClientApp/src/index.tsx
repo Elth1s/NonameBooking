@@ -1,14 +1,25 @@
-import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom'
+import { Provider } from 'react-redux';
+import { store } from './store'
+// import { AuthUser } from './components/auth/actions';
+
+import './index.css';
+
+const token = localStorage.token as string;
+
+if (token) {
+  // AuthUser(token, store.dispatch);
+}
 
 ReactDOM.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>,
+  <Provider store={store}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </Provider>,
   document.getElementById('root')
 );
 

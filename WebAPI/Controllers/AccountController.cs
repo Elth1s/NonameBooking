@@ -23,13 +23,13 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("SignUp")]
+        [Route("signUp")]
         public async Task<IActionResult> SignUp([FromBody] RegisterVM model)
         {
             try
             {
                 string token = await _userService.CreateUserAsync(model);
-                return Ok(token);
+                return Ok(new { token });
             }        
             catch(Exception ex)
             {
@@ -37,8 +37,8 @@ namespace WebAPI.Controllers
             }
         }
         [HttpPost]
-        [Route("SignIn")]
-        public async Task<IActionResult> SignIn([FromBody] LoginVM model)
+        [Route("logIn")]
+        public async Task<IActionResult> LogIn([FromBody] LoginVM model)
         {
             try
             {
@@ -46,7 +46,7 @@ namespace WebAPI.Controllers
                 if (await _userManager.CheckPasswordAsync(user, model.Password))
                 {
                     string token = await _tokenService.CreateTokenAsync(user);
-                    return Ok(token);
+                    return Ok(new { token });
                 }
                 else
                 {

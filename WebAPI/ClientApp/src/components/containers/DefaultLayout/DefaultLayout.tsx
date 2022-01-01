@@ -1,3 +1,4 @@
+import { Container } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
 
@@ -5,9 +6,9 @@ const DefaultLayout = () => {
     return (
         <>
             <Header />
-            <div className="container">
+            <Container maxWidth="xl">
                 <Outlet />
-            </div>
+            </Container>
         </>
     );
 }

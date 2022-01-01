@@ -31,6 +31,10 @@ namespace DAL
         {
             base.OnModelCreating(builder);
 
+            builder.Entity<Apartment>()
+                .HasMany<Order>(a => a.Orders)
+                .WithOne(o=>o.Apartment)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

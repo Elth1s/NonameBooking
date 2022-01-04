@@ -12,6 +12,7 @@ using WebAPI.Services;
 using FluentValidation.AspNetCore;
 using System.Reflection;
 using WebAPI.Mapper;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,15 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 builder.Services.AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ICountryService, CountryService>();
+builder.Services.AddScoped<ICityService, CityService>();
+builder.Services.AddScoped<ITypeOfApartmentService, TypeOfApartmentService>();
+builder.Services.AddScoped<IApartmentService, ApartmentService>();
+builder.Services.AddScoped<IFilterGroupService, FilterGroupService>();
+builder.Services.AddScoped<IFilterService, FilterService>();
+builder.Services.AddScoped<IOrderStatusService, OrderStatusService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IProfileService, ProfileService>();
 
 var signinKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetValue<String>("JwtKey")));
 
@@ -102,6 +112,17 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+var dir = Path.Combine(Directory.GetCurrentDirectory(), "images");
+if (!Directory.Exists(dir))
+{
+    Directory.CreateDirectory(dir);
+}
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(dir),
+    RequestPath = "/images"
+});
 
 app.UseEndpoints(endpoints =>
 {

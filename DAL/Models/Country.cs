@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Models
 {
-    public class Country
+    public class Country : IAggregateRoot
     {
         public int Id { get; set; }
         public string Name { get; set; }

@@ -22,6 +22,21 @@ namespace DAL.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("ApartmentFilter", b =>
+                {
+                    b.Property<int>("ApartmentsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FiltersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ApartmentsId", "FiltersId");
+
+                    b.HasIndex("FiltersId");
+
+                    b.ToTable("ApartmentFilter");
+                });
+
             modelBuilder.Entity("DAL.Models.Apartment", b =>
                 {
                     b.Property<int>("Id")
@@ -59,7 +74,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("TypeOfApartmentId");
 
-                    b.ToTable("Apartments", (string)null);
+                    b.ToTable("Apartments");
                 });
 
             modelBuilder.Entity("DAL.Models.AppUser", b =>
@@ -108,6 +123,9 @@ namespace DAL.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Photo")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -154,7 +172,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Cities", (string)null);
+                    b.ToTable("Cities");
                 });
 
             modelBuilder.Entity("DAL.Models.Country", b =>
@@ -171,10 +189,10 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries", (string)null);
+                    b.ToTable("Countries");
                 });
 
-            modelBuilder.Entity("DAL.Models.Filter", b =>
+            modelBuilder.Entity("DAL.Models.File", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -182,10 +200,7 @@ namespace DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("ApartmentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FilterGroupId")
+                    b.Property<int>("ApartmentId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -196,9 +211,29 @@ namespace DAL.Migrations
 
                     b.HasIndex("ApartmentId");
 
+                    b.ToTable("File");
+                });
+
+            modelBuilder.Entity("DAL.Models.Filter", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("FilterGroupId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
                     b.HasIndex("FilterGroupId");
 
-                    b.ToTable("Filters", (string)null);
+                    b.ToTable("Filters");
                 });
 
             modelBuilder.Entity("DAL.Models.FilterGroup", b =>
@@ -215,12 +250,13 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FilterGroups", (string)null);
+                    b.ToTable("FilterGroups");
                 });
 
             modelBuilder.Entity("DAL.Models.Order", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("ApartmentId")
@@ -247,7 +283,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("DAL.Models.OrderStatus", b =>
@@ -264,7 +300,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OrderStatuses", (string)null);
+                    b.ToTable("OrderStatuses");
                 });
 
             modelBuilder.Entity("DAL.Models.TypeOfApartment", b =>
@@ -281,7 +317,7 @@ namespace DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TypeOfApartments", (string)null);
+                    b.ToTable("TypeOfApartments");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -417,10 +453,25 @@ namespace DAL.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("ApartmentFilter", b =>
+                {
+                    b.HasOne("DAL.Models.Apartment", null)
+                        .WithMany()
+                        .HasForeignKey("ApartmentsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Models.Filter", null)
+                        .WithMany()
+                        .HasForeignKey("FiltersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("DAL.Models.Apartment", b =>
                 {
                     b.HasOne("DAL.Models.City", "City")
-                        .WithMany()
+                        .WithMany("Apartments")
                         .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -432,7 +483,7 @@ namespace DAL.Migrations
                         .IsRequired();
 
                     b.HasOne("DAL.Models.TypeOfApartment", "TypeOfApartment")
-                        .WithMany()
+                        .WithMany("Apartments")
                         .HasForeignKey("TypeOfApartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -455,12 +506,19 @@ namespace DAL.Migrations
                     b.Navigation("Country");
                 });
 
+            modelBuilder.Entity("DAL.Models.File", b =>
+                {
+                    b.HasOne("DAL.Models.Apartment", "Apartment")
+                        .WithMany("Files")
+                        .HasForeignKey("ApartmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Apartment");
+                });
+
             modelBuilder.Entity("DAL.Models.Filter", b =>
                 {
-                    b.HasOne("DAL.Models.Apartment", null)
-                        .WithMany("Filters")
-                        .HasForeignKey("ApartmentId");
-
                     b.HasOne("DAL.Models.FilterGroup", "FilterGroup")
                         .WithMany("Filters")
                         .HasForeignKey("FilterGroupId")
@@ -550,7 +608,7 @@ namespace DAL.Migrations
 
             modelBuilder.Entity("DAL.Models.Apartment", b =>
                 {
-                    b.Navigation("Filters");
+                    b.Navigation("Files");
 
                     b.Navigation("Orders");
                 });
@@ -560,6 +618,11 @@ namespace DAL.Migrations
                     b.Navigation("Apartments");
 
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("DAL.Models.City", b =>
+                {
+                    b.Navigation("Apartments");
                 });
 
             modelBuilder.Entity("DAL.Models.Country", b =>
@@ -575,6 +638,11 @@ namespace DAL.Migrations
             modelBuilder.Entity("DAL.Models.OrderStatus", b =>
                 {
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("DAL.Models.TypeOfApartment", b =>
+                {
+                    b.Navigation("Apartments");
                 });
 #pragma warning restore 612, 618
         }

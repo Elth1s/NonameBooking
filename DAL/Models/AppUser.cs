@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace DAL.Models
         public string Name { get; set; }
         public string Surname { get; set; }
 
+        public string Photo { get; set; }
 
         public virtual ICollection<Apartment> Apartments { get; set; }
         public virtual ICollection<Order> Orders { get; set; }

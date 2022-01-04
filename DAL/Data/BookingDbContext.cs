@@ -35,6 +35,9 @@ namespace DAL
                 .HasMany<Order>(a => a.Orders)
                 .WithOne(o=>o.Apartment)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<AppUser>().Property(u => u.Photo).IsRequired(false);
+                
         }
     }
 }

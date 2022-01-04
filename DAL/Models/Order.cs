@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace DAL.Models
 {
-    public class Order
+    public class Order : IAggregateRoot
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string Id { get; set; }
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
@@ -19,8 +20,10 @@ namespace DAL.Models
 
         [ForeignKey(nameof(UserId))]
         public virtual AppUser User { get; set; }
+
         [ForeignKey(nameof(ApartmentId))]
         public virtual Apartment Apartment { get; set; }
+
         [ForeignKey(nameof(OrderStatusId))]
         public virtual OrderStatus OrderStatus { get; set; }
         

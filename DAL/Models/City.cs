@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Models
 {
-    public class City
+    public class City : IAggregateRoot
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -16,5 +16,7 @@ namespace DAL.Models
 
         [ForeignKey(nameof(CountryId))]
         public virtual Country Country { get; set; }
+
+        public virtual ICollection<Apartment> Apartments { get; set; }
     }
 }

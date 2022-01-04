@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Models
 {
-    public class Apartment
+    public class Apartment: IAggregateRoot
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -21,12 +21,15 @@ namespace DAL.Models
 
         [ForeignKey(nameof(TypeOfApartmentId))]
         public virtual TypeOfApartment TypeOfApartment { get; set; }
+
         [ForeignKey(nameof(CityId))]
         public virtual City City { get; set; }
+
         [ForeignKey(nameof(OwnerId))]
         public virtual AppUser Owner { get; set; }
 
         public virtual ICollection<Order> Orders { get; set; }
+        public virtual ICollection<File> Files { get; set; }
         public virtual ICollection<Filter> Filters { get; set; }
 
     }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Models
 {
-    public class FilterGroup
+    public class FilterGroup : IAggregateRoot
     {
         public int Id { get; set; }
         public string Name { get; set; }

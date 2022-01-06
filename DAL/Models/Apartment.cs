@@ -29,7 +29,7 @@ namespace DAL.Models
         public virtual AppUser Owner { get; set; }
 
         public virtual ICollection<Order> Orders { get; set; }
-        public virtual ICollection<File> Files { get; set; }
+        public virtual ICollection<ApartmentImage> Images { get; set; }
         public virtual ICollection<Filter> Filters { get; set; }
 
     }

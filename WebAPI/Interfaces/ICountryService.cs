@@ -9,7 +9,7 @@ namespace WebAPI.Interfaces
         Task CreateCountryAsync(CountryVM model);
         Task EditCountryAsync(int id,CountryVM model);
         Task DeleteCountryAsync(int id);
-      //  Task<CountryResponse> GetCountryById(int id);
+        Task<CountryResponse> GetCountryByIdAsync(int id);
         Task<IEnumerable<CountryResponse>> GetAllCountiesAsync();
 
     }

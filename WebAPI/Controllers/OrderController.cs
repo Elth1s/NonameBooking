@@ -26,7 +26,7 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, new { Status = "Error", Message = ex.Message });
+                return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
             }
         }
 
@@ -42,7 +42,7 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, new { Status = "Error", Message = ex.Message });
+                return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
             }
         }
         [HttpDelete]
@@ -56,7 +56,7 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, new { Status = "Error", Message = ex.Message });
+                return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
             }
         }
 
@@ -71,7 +71,7 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, new { Status = "Error", Message = ex.Message });
+                return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
             }
         }
     }

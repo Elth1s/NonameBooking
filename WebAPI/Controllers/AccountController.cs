@@ -33,7 +33,7 @@ namespace WebAPI.Controllers
             }        
             catch(Exception ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, new { Status = "Error", Message = ex.Message });
+                return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
             }
         }
         [HttpPost]
@@ -55,7 +55,7 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status401Unauthorized, new { Status = "Error", Message = ex.Message });
+                return StatusCode(StatusCodes.Status401Unauthorized, new { Title = ex.Message });
             }
         }
     }

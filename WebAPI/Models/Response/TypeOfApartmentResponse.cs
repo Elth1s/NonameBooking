@@ -1,14 +1,6 @@
 ﻿namespace WebAPI.Models.Response
 {
-    public class TypeOfApartmentResponse
+    public class TypeOfApartmentResponse : LookupData
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-
-        public TypeOfApartmentResponse(int id, string name)
-        {
-            Id = id;
-            Name = name;
-        }
     }
 }

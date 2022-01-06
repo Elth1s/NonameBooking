@@ -43,6 +43,15 @@ namespace WebAPI.Services
             await _repository.DeleteAsync(status);
             await _repository.SaveChangesAsync();
         }
+        public async Task<OrderStatusResponse> GetOrderStatusByIdAsync(int id)
+        {
+            var status = await _repository.GetByIdAsync(id);
+            if (status == null)
+                throw new Exception($"Order status with id {id} doesn't exist.");
+
+            var result = _mapper.Map<OrderStatusResponse>(status);
+            return result;
+        }
 
 
         public async Task<IEnumerable<OrderStatusResponse>> GetAllOrderStatusesAsync()
@@ -51,5 +60,6 @@ namespace WebAPI.Services
             var result = statuses.Select(o => _mapper.Map<OrderStatusResponse>(o));
             return result;
         }
+
     }
 }

@@ -1,8 +1,6 @@
 ﻿namespace WebAPI.Models.Response
 {
-    public class FilterGroupResponse
+    public class FilterGroupResponse : LookupData
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
     }
 }

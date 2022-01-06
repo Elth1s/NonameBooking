@@ -26,7 +26,7 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, new { Status = "Error", Message = ex.Message });
+                return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
             }
         }
 
@@ -41,7 +41,7 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, new { Status = "Error", Message = ex.Message });
+                return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
             }
         }
 
@@ -56,9 +56,24 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, new { Status = "Error", Message = ex.Message });
+                return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
             }
         }
+        [HttpGet]
+        [Route("get-by-id/{id}")]
+        public async Task<IActionResult> GetCountryById(int id)
+        {
+            try
+            {
+                var _result = await _service.GetCountryByIdAsync(id);
+                return Ok(_result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
+            }
+        }
+
         [HttpGet]
         [Route("get-all")]
         public async Task<IActionResult> GetAllCountries()
@@ -70,7 +85,7 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, new { Status = "Error", Message = ex.Message });
+                return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
             }
         }
     }

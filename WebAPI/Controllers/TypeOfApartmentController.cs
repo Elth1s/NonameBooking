@@ -26,7 +26,7 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, new { Status = "Error", Message = ex.Message });
+                return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
             }
         }
 
@@ -41,7 +41,7 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, new { Status = "Error", Message = ex.Message });
+                return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
             }
         }
 
@@ -56,7 +56,21 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, new { Status = "Error", Message = ex.Message });
+                return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
+            }
+        }
+        [HttpGet]
+        [Route("get-by-id/{id}")]
+        public async Task<IActionResult> GetTypeOfApartmentById(int id)
+        {
+            try
+            {
+                var _result = await _service.GetTypeOfApartmentByIdAsync(id);
+                return Ok(_result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
             }
         }
         [HttpGet]
@@ -70,7 +84,7 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, new { Status = "Error", Message = ex.Message });
+                return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
             }
         }
     }

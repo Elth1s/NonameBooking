@@ -2,6 +2,7 @@
 using DAL;
 using DAL.Models;
 using Microsoft.AspNetCore.Identity;
+using WebAPI.Constants;
 using WebAPI.Interfaces;
 using WebAPI.Models;
 using WebAPI.Models.Response;
@@ -14,20 +15,25 @@ namespace WebAPI.Services
         private readonly IRepository<Apartment> _apartmentRepository;
         private readonly IRepository<TypeOfApartment> _typeOfApartmentRepository;
         private readonly IRepository<City> _cityRepository;
+        private readonly IRepository<ApartmentImage> _apartmentImageRepository;
+        private readonly IRepository<Filter> _filterRepository;
         private readonly UserManager<AppUser> _userManager;
 
         private readonly IMapper _mapper;
 
-        public ApartmentService(
+        public ApartmentService(IRepository<Filter> filterRepository,
             IRepository<Apartment> apartmentRepository,
             IRepository<TypeOfApartment> typeOfApartmentRepository,
-            IRepository<City> cityRepository,
+            IRepository<City> cityRepository, 
+            IRepository<ApartmentImage> apartmentImageRepository,
             UserManager<AppUser> userManager, 
             IMapper mapper)
         {
             _apartmentRepository = apartmentRepository;
             _typeOfApartmentRepository = typeOfApartmentRepository;
+            _apartmentImageRepository = apartmentImageRepository;
             _cityRepository = cityRepository;
+            _filterRepository = filterRepository;
             _userManager = userManager;
             _mapper = mapper;
         }
@@ -46,10 +52,44 @@ namespace WebAPI.Services
                 throw new Exception($"Failed to create apartment! User with id {model.OwnerId} doesn't exist.");
 
             var apartment=_mapper.Map<Apartment>(model);
+
+            if (model.FiltersId != null)
+            {
+                foreach (var item in model.FiltersId)
+                {
+                    var filter = await _filterRepository.GetByIdAsync(item);
+                    if (filter != null)
+                    {
+                        apartment.Filters.Add(filter);
+                    }
+                }
+            }
+
             await _apartmentRepository.AddAsync(apartment);
-            await _cityRepository.SaveChangesAsync();
+            await _apartmentRepository.SaveChangesAsync();
+
+            if (model.Images!=null)
+            {
+                foreach (var item in model.Images)
+                {
+
+                    string randomFilename = Path.GetRandomFileName() +
+                        Path.GetExtension(item.FileName);
+
+                    string dirPath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.ApartmentsImagePath);
+                    string fileName = Path.Combine(dirPath, randomFilename);
+                    using (var file = System.IO.File.Create(fileName))
+                    {
+                        item.CopyTo(file);
+                    }
+                    await _apartmentImageRepository.AddAsync(new ApartmentImage() { Name = randomFilename, ApartmentId = apartment.Id });
+                }
+                await _apartmentImageRepository.SaveChangesAsync();
+            }
+
+
         }
-        public async Task EditApartmentAsync(int id, ApartmentVM model)
+        public async Task EditApartmentAsync(int id, EditApartmentVM model)
         {
             var type = await _typeOfApartmentRepository.GetByIdAsync(model.TypeOfApartmentId);
             if (type == null)
@@ -63,7 +103,8 @@ namespace WebAPI.Services
             if (user == null)
                 throw new Exception($"Failed to edit apartment! User with id {model.OwnerId} doesn't exist.");
 
-            var apartment = await _apartmentRepository.GetByIdAsync(id);
+            var spec = new ApartmentGetByIdSpecification(id);
+            var apartment = await _apartmentRepository.GetBySpecAsync(spec);
             if (apartment == null)
                 throw new Exception($"Apartment with id {id} doesn't exist.");
 
@@ -74,17 +115,71 @@ namespace WebAPI.Services
             apartment.Price = model.Price;
             apartment.TypeOfApartmentId = model.TypeOfApartmentId;
 
+            apartment.Filters.Clear();
+            if (model.FiltersId != null)
+            {
+                foreach (var item in model.FiltersId)
+                {
+                    var filter = await _filterRepository.GetByIdAsync(item);
+                    if (filter != null)
+                    {
+                        apartment.Filters.Add(filter);
+                    }
+                }
+            }
+
+            if (model.RemovedImages != null) {
+
+                foreach (var item in model.RemovedImages)
+                {
+                    string fileName = Path.GetFileName(item);
+                    var image = apartment.Images.FirstOrDefault(i => i.Name == fileName);
+
+                    if (image != null)
+                    {
+                        string filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.ApartmentsImagePath, fileName);
+                        if (File.Exists(filePath))
+                            File.Delete(filePath);
+
+                        await _apartmentImageRepository.DeleteAsync(image);
+                    }
+                }
+            }
+
+            if (model.Images!=null)
+            {  
+                foreach (var item in model.Images)
+                {
+                    string randomFilename = Path.GetRandomFileName() +
+                        Path.GetExtension(item.FileName);
+
+                    string dirPath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.ApartmentsImagePath);
+                    string fileName = Path.Combine(dirPath, randomFilename);
+                    using (var file = File.Create(fileName))
+                    {
+                        item.CopyTo(file);
+                    }
+                    await _apartmentImageRepository.AddAsync(new ApartmentImage() { ApartmentId = id, Name = randomFilename });
+                }
+            }
+
             await _apartmentRepository.UpdateAsync(apartment);
             await _apartmentRepository.SaveChangesAsync();
         }
 
         public async Task DeleteApartmentAsync(int id)
         {
-            var apartment = await _apartmentRepository.GetByIdAsync(id);
+            var spec = new ApartmentGetByIdSpecification(id);
+            var apartment = await _apartmentRepository.GetBySpecAsync(spec);
             if (apartment == null)
                 throw new Exception($"Apartment with id {id} doesn't exist.");
 
-
+            foreach (var item in apartment.Images)
+            {
+                string filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.ApartmentsImagePath, item.Name);
+                if (File.Exists(filePath))
+                    File.Delete(filePath);
+            }
             await _apartmentRepository.DeleteAsync(apartment);
             await _apartmentRepository.SaveChangesAsync();
         }

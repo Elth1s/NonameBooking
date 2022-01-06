@@ -26,7 +26,7 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, new { Status = "Error", Message = ex.Message });
+                return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
             }
         }
 
@@ -41,7 +41,7 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, new { Status = "Error", Message = ex.Message });
+                return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
             }
         }
 
@@ -56,9 +56,25 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, new { Status = "Error", Message = ex.Message });
+                return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
             }
         }
+
+        [HttpGet]
+        [Route("get-by-id")]
+        public async Task<IActionResult> GetFilterGroupById(int id)
+        {
+            try
+            {
+                var _result = await _service.GetFilterGroupByIdAsync(id);
+                return Ok(_result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
+            }
+        }
+
         [HttpGet]
         [Route("get-all")]
         public async Task<IActionResult> GetAllFilterGroups()
@@ -70,8 +86,23 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, new { Status = "Error", Message = ex.Message });
+                return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
             }
         }
+        [HttpGet]
+        [Route("get-all-with-filters")]
+        public async Task<IActionResult> GetAllFilterGroupsWithFilters()
+        {
+            try
+            {
+                var _result = await _service.GetAllFilterGroupsWithFiltersAsync();
+                return Ok(_result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
+            }
+        }
+       
     }
 }

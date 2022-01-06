@@ -13,10 +13,11 @@ using FluentValidation.AspNetCore;
 using System.Reflection;
 using WebAPI.Mapper;
 using Microsoft.Extensions.FileProviders;
+using WebAPI.Constants;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddMvc().AddJsonOptions(option => option.JsonSerializerOptions.PropertyNamingPolicy = null);
+//builder.Services.AddMvc().AddJsonOptions(option => option.JsonSerializerOptions.PropertyNamingPolicy = null);
 
 builder.Services.AddDbContext<BookingDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -113,16 +114,39 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-var dir = Path.Combine(Directory.GetCurrentDirectory(), "images");
-if (!Directory.Exists(dir))
+var root = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.RootImagePath);
+if (!Directory.Exists(root))
 {
-    Directory.CreateDirectory(dir);
+    Directory.CreateDirectory(root);
 }
 app.UseStaticFiles(new StaticFileOptions
 {
-    FileProvider = new PhysicalFileProvider(dir),
-    RequestPath = "/images"
+    FileProvider = new PhysicalFileProvider(root),
+    RequestPath = "/"+ImagePath.RootImagePath
 });
+
+var usersImages = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.UsersImagePath);
+if (!Directory.Exists(usersImages))
+{
+    Directory.CreateDirectory(usersImages);
+}
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(usersImages),
+    RequestPath = "/" + ImagePath.UsersImagePath
+});
+
+var apartmentsImages = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.ApartmentsImagePath);
+if (!Directory.Exists(apartmentsImages))
+{
+    Directory.CreateDirectory(apartmentsImages);
+}
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(apartmentsImages),
+    RequestPath = "/" + ImagePath.ApartmentsImagePath
+});
+
 
 app.UseEndpoints(endpoints =>
 {

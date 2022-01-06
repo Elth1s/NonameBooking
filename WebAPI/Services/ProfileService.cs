@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DAL.Models;
 using Microsoft.AspNetCore.Identity;
+using WebAPI.Constants;
 using WebAPI.Interfaces;
 using WebAPI.Models;
 using WebAPI.Models.Response;
@@ -39,16 +40,24 @@ namespace WebAPI.Services
 
             if (model.Photo != null)
             {
+                if (user.Photo != null)
+                {
+                    string filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.UsersImagePath, user.Photo);
+                    if (System.IO.File.Exists(filePath))
+                        System.IO.File.Delete(filePath);
+                }
+
                 string randomFilename = Path.GetRandomFileName() +
                     Path.GetExtension(model.Photo.FileName);
 
-                string dirPath = Path.Combine(Directory.GetCurrentDirectory(), "images");
+                string dirPath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.UsersImagePath);
                 string fileName = Path.Combine(dirPath, randomFilename);
                 using (var file = System.IO.File.Create(fileName))
                 {
                     model.Photo.CopyTo(file);
                 }
                 user.Photo = randomFilename;
+
             }
             user.Name = model.Name;
             user.Surname = model.Surname;

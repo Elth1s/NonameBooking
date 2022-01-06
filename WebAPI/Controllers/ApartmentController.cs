@@ -17,7 +17,7 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [Route("create")]
-        public async Task<IActionResult> CreateApartment([FromBody] ApartmentVM model)
+        public async Task<IActionResult> CreateApartment([FromForm] ApartmentVM model)
         {
             try
             {
@@ -26,13 +26,13 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, new { Status = "Error", Message = ex.Message });
+                return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
             }
         }
 
         [HttpPut]
         [Route("edit/{id}")]
-        public async Task<IActionResult> EditApartment(int id, [FromBody] ApartmentVM model)
+        public async Task<IActionResult> EditApartment(int id, [FromForm] EditApartmentVM model)
         {
             try
             {
@@ -41,7 +41,7 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, new { Status = "Error", Message = ex.Message });
+                return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
             }
         }
 
@@ -56,7 +56,7 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, new { Status = "Error", Message = ex.Message });
+                return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
             }
         }
         [HttpGet]
@@ -70,7 +70,7 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, new { Status = "Error", Message = ex.Message });
+                return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
             }
         }
         [HttpGet]
@@ -84,7 +84,7 @@ namespace WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, new { Status = "Error", Message = ex.Message });
+                return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
             }
         }
     }

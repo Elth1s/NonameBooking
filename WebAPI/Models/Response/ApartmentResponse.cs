@@ -1,14 +1,8 @@
 ﻿namespace WebAPI.Models.Response
 {
-    public class DateRange
+
+    public class ApartmentResponse: LookupData
     {
-        public DateTime Start { get; set; }
-        public DateTime End { get; set; }
-    }
-    public class ApartmentResponse
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
         public string Description { get; set; }
         public float Price { get; set; }
         public int TypeOfApartmentId{ get; set; }
@@ -20,6 +14,7 @@
         public string OwnerId { get; set; }
         public string OwnerFullName { get; set; }
         public IEnumerable<DateRange> Dates { get; set; }
-
+        public IEnumerable<string> Images { get; set; }
+        public IEnumerable<FilterGroupWithFiltersResponse> FilterGroupWithFilters { get; set; }
     }
 }

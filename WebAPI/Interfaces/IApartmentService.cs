@@ -6,7 +6,7 @@ namespace WebAPI.Interfaces
     public interface IApartmentService
     {
         Task CreateApartmentAsync(ApartmentVM model);
-        Task EditApartmentAsync(int id, ApartmentVM model);
+        Task EditApartmentAsync(int id, EditApartmentVM model);
         Task DeleteApartmentAsync(int id);
         Task<ApartmentResponse> GetApartmentByIdAsync(int id);
         Task<IEnumerable<ApartmentShortInfoResponse>> GetAllApartmentsAsync();

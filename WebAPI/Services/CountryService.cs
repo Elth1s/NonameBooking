@@ -46,6 +46,16 @@ namespace WebAPI.Services
             await _repository.SaveChangesAsync();
         }
 
+        public async Task<CountryResponse> GetCountryByIdAsync(int id)
+        {
+            var country = await _repository.GetByIdAsync(id);
+            if (country == null)
+                throw new Exception($"Country with id {id} doesn't exist.");
+
+            var result = _mapper.Map<CountryResponse>(country);
+            return result;
+
+        }
 
         public async Task<IEnumerable<CountryResponse>> GetAllCountiesAsync()
         {
@@ -54,5 +64,6 @@ namespace WebAPI.Services
             return result;
            
         }
+
     }
 }

@@ -56,12 +56,23 @@ namespace WebAPI.Services
             await _filterRepository.DeleteAsync(filter);
             await _filterRepository.SaveChangesAsync();
         }
+        public async Task<FilterWithFilterGroupResponse> GetFilterByIdAsync(int id)
+        {
+            var filter = await _filterRepository.GetByIdAsync(id);
+            if (filter == null)
+                throw new Exception($"Filter with id {id} doesn't exist.");
 
-        public async Task<IEnumerable<FilterResponse>> GetAllFiltersAsync()
+            var result = _mapper.Map<FilterWithFilterGroupResponse>(filter);
+            return result;
+
+        }
+
+        public async Task<IEnumerable<FilterWithFilterGroupResponse>> GetAllFiltersAsync()
         {
             var filters = await _filterRepository.ListAsync();
-            var result = filters.Select(f => _mapper.Map<FilterResponse>(f));
+            var result = filters.Select(f => _mapper.Map<FilterWithFilterGroupResponse>(f));
             return result;
         }
+
     }
 }

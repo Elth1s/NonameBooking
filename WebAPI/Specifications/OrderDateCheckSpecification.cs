@@ -7,7 +7,7 @@ namespace WebAPI.Specifications
     {
         public OrderDateCheckSpecification(int apartmentId,DateTime start, DateTime end)
         {
-            Query.Where(o => o.ApartmentId == apartmentId && !(start >= o.End || end <= start));
+            Query.Where(o => o.ApartmentId == apartmentId && !(start.Date >= o.End.Date || end.Date <= o.Start.Date));
         }
     }
 }

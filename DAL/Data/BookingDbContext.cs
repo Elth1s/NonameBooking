@@ -26,6 +26,7 @@ namespace DAL
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderStatus> OrderStatuses { get; set; }
         public DbSet<TypeOfApartment> TypeOfApartments { get; set; }
+        public DbSet<ApartmentImage> ApartmentImages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

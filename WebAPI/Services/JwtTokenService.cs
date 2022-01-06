@@ -25,9 +25,11 @@ namespace WebAPI.Services
             
             List<Claim> claims = new ()
             {
-                new Claim("Id", user.Id),
-                new Claim("Name", user.Name),
-                new Claim("Surname", user.Surname)
+                new Claim("id", user.Id),
+                new Claim("name", user.Name),
+                new Claim("surname", user.Surname),
+                new Claim("email", user.Email),
+                new Claim("image", user.Photo??"")
             };
 
             foreach (var role in roles)

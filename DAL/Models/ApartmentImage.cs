@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Models
 {
-    public class File
+    public class ApartmentImage : IAggregateRoot
     {
         public int Id { get; set; }
         public string Name { get; set; }

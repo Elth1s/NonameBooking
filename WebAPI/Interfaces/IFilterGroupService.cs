@@ -8,7 +8,8 @@ namespace WebAPI.Interfaces
         Task CreateFilterGroupAsync(FilterGroupVM model);
         Task EditFilterGroupAsync(int id, FilterGroupVM model);
         Task DeleteFilterGroupAsync(int id);
-    //    Task<FilterGroupResponse> GetFilterGroupById(int id);
+        Task<FilterGroupResponse> GetFilterGroupByIdAsync(int id);
+        Task<IEnumerable<FilterGroupWithFiltersResponse>> GetAllFilterGroupsWithFiltersAsync();
         Task<IEnumerable<FilterGroupResponse>> GetAllFilterGroupsAsync();
     }
 }

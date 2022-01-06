@@ -4,6 +4,7 @@ using DAL.Models;
 using WebAPI.Interfaces;
 using WebAPI.Models;
 using WebAPI.Models.Response;
+using WebAPI.Specifications;
 
 namespace WebAPI.Services
 {
@@ -55,19 +56,33 @@ namespace WebAPI.Services
             await _cityRepository.SaveChangesAsync();
         }
 
-        public async Task<CityResponse> GetCityByIdAsync(int id)
+        public async Task<CityFullInfoResponse> GetCityByIdAsync(int id)
         {
             var city = await _cityRepository.GetByIdAsync(id);
             if (city == null)
                 throw new Exception($"City with id {id} doesn't exist.");
-            var result = _mapper.Map<CityResponse>(city);
+
+            var result = _mapper.Map<CityFullInfoResponse>(city);
             return result;
         }
 
-        public async Task<IEnumerable<CityResponse>> GetAllCitiesAsync()
+        public async Task<IEnumerable<CityResponse>> GetCitiesByCountryIdAsync(int id)
+        {
+            var country = await _countryRepository.GetByIdAsync(id);
+            if (country == null)
+                throw new Exception($"Country with id {id} doesn't exist.");
+
+            var spec = new CitiesByCountryIdSpecification(id);
+            var cities = await _cityRepository.ListAsync(spec);
+            var result = cities.Select(c => _mapper.Map<CityResponse>(c));
+            return result;
+        }
+        
+
+        public async Task<IEnumerable<CityFullInfoResponse>> GetAllCitiesAsync()
         {
             var cities = await _cityRepository.ListAsync();
-            var result = cities.Select(c => _mapper.Map<CityResponse>(c));
+            var result = cities.Select(c => _mapper.Map<CityFullInfoResponse>(c));
             return result;
         }
 

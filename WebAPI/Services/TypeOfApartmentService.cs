@@ -50,5 +50,15 @@ namespace WebAPI.Services
             var result = types.Select(t => _mapper.Map<TypeOfApartmentResponse>(t));
             return result;
         }
+
+        public async Task<TypeOfApartmentResponse> GetTypeOfApartmentByIdAsync(int id)
+        {
+            var type = await _repository.GetByIdAsync(id);
+            if (type == null)
+                throw new Exception($"Type of apartment with id {id} doesn't exist.");
+
+            var result = _mapper.Map<TypeOfApartmentResponse>(type);
+            return result;
+        }
     }
 }

@@ -9,7 +9,8 @@ const initialState: AuthState = {
     user: {
         name: "",
         surname: "",
-        image: ""
+        image: "",
+        email: ""
     },
     isAuth: false,
 }

@@ -6,7 +6,8 @@ export enum AuthActionTypes {
 export interface IUser {
     name: string,
     surname: string,
-    image: string
+    image: string,
+    email: string
 }
 
 export interface IAuthResponse {
@@ -24,10 +25,9 @@ export interface ILoginModel {
 }
 
 export interface LoginServerError {
+    title: string,
     status: number,
-    email: Array<string>,
-    password: Array<string>,
-    error: string
+    errors: Array<any>
 }
 
 export interface IRegisterModel {
@@ -36,7 +36,7 @@ export interface IRegisterModel {
     email: string,
     phone: string,
     password: string,
-    confirmPassword: string
+    confirmpassword: string
 };
 
 export interface RegisterServerError {

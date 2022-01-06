@@ -1,6 +1,10 @@
 import { Routes, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 import './App.css';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 import LogIn from './components/auth/LogIn';
 import SignUp from './components/auth/SignUp';
 import AdminLayout from './components/containers/AdminLayout';
@@ -12,6 +16,17 @@ import NotFound from './components/NotFound';
 function App() {
   return (
     <>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark" />
       <Routes>
         <Route path="/" element={<DefaultLayout />}>
           <Route index element={<HomePage />} />
@@ -23,7 +38,6 @@ function App() {
 
         </Route>
         <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<HomePage />} />
 
 
         </Route>

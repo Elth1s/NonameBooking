@@ -10,6 +10,8 @@ import { LoadingButton } from "@mui/lab";
 import { Form, FormikProvider, useFormik } from "formik";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+
 
 import { CssTextField } from "../../comon/CssTextField";
 import { SignUpSchema } from "./validation";
@@ -22,35 +24,34 @@ const SignUp = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const navigate = useNavigate();
-    const registerModel: IRegisterModel = { name: '', surname: '', email: '', phone: '', password: '', confirmPassword: '' };
+    const registerModel: IRegisterModel = { name: '', surname: '', email: '', phone: '', password: '', confirmpassword: '' };
 
     const formik = useFormik({
         initialValues: registerModel,
-        validationSchema: SignUpSchema,
+        // validationSchema: SignUpSchema,
         onSubmit: async (values, { setFieldError }) => {
             try {
                 await RegisterUser(values);
                 navigate("/");
-                // toast.success('Login Success!');
+                toast.success('Sign up Success!');
             }
             catch (exeption) {
                 const serverErrors = exeption as RegisterServerError;
                 console.log(serverErrors)
-                Object.entries(serverErrors).forEach(([key, value]) => {
-                    if (Array.isArray(value)) {
-                        let message = "";
-                        value.forEach((item) => {
-                            message += `${item} `;
-                        });
-                        setFieldError(key, message);
-                    }
-                });
-                // let message = "Login Failed! ";
-                // if (serverErrors.status === 401)
-                //     message += "The user with the entered data does not exist.";
-                // if (serverErrors.status === 422)
-                //     message += "Validation failed.";
-                // toast.error(message);
+                if (serverErrors.errors)
+                    Object.entries(serverErrors.errors).forEach(([key, value]) => {
+                        if (Array.isArray(value)) {
+                            let message = "";
+                            value.forEach((item) => {
+                                message += `${item} `;
+                            });
+                            setFieldError(key.toLowerCase(), message);
+                        }
+                    });
+                let message = "Sign up failed! \n";
+                if (serverErrors.status === 400)
+                    message += "Validation failed.";
+                toast.error(message, { position: "top-right" });
             }
 
         }
@@ -169,10 +170,10 @@ const SignUp = () => {
                                     <Grid item xs={12} md={6}>
                                         <CssTextField
                                             fullWidth
-                                            autoComplete="confirmPassword"
+                                            autoComplete="confirmpassword"
                                             type={showConfirmPassword ? 'text' : 'password'}
                                             label="Confirm password"
-                                            {...getFieldProps('confirmPassword')}
+                                            {...getFieldProps('confirmpassword')}
                                             InputProps={{
                                                 endAdornment: (
                                                     <InputAdornment position="end">
@@ -182,8 +183,8 @@ const SignUp = () => {
                                                     </InputAdornment>
                                                 )
                                             }}
-                                            error={Boolean(touched.confirmPassword && errors.confirmPassword)}
-                                            helperText={touched.confirmPassword && errors.confirmPassword}
+                                            error={Boolean(touched.confirmpassword && errors.confirmpassword)}
+                                            helperText={touched.confirmpassword && errors.confirmpassword}
                                         />
                                     </Grid>
                                     <Grid item xs={12} mt={3} display="flex" justifyContent="center" >

@@ -8,7 +8,7 @@ import {
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import { Form, FormikProvider, useFormik } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 
@@ -25,6 +25,10 @@ const LogIn = () => {
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
     const loginModel: ILoginModel = { email: '', password: '' };
+
+    useEffect(() => {
+        document.title = "Login";
+    }, []);
 
     const formik = useFormik({
         initialValues: loginModel,

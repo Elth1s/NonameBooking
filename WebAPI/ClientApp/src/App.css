@@ -7,3 +7,36 @@
     margin-left: auto;
     margin-right: auto;
 }
+
+/* Table */
+
+.MuiTable-root{
+    background-color: #18181b;
+}
+
+.MuiTableHead-root .MuiTableRow-root{
+    border-color: rgb(85, 252, 241) !important;
+}
+
+.MuiTableHead-root .MuiTableRow-root .MuiTableCell-root{
+    color:rgb(85, 252, 241)
+}
+.MuiTableBody-root .MuiTableRow-root .MuiTableCell-root{
+    color:rgb(241, 241, 241)
+}
+
+.MuiTablePagination-menuItem{
+    background-color: #18181b !important;
+}
+
+.MuiTablePagination-selectIcon{
+    color:rgb(85, 252, 241) !important;
+}
+
+th{
+    font-weight: 1000 !important;
+}
+td, th{
+    border-color: rgb(85, 252, 241) !important;
+}
+

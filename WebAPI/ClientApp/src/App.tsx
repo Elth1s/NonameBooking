@@ -1,8 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
-import './App.css';
-import 'react-toastify/dist/ReactToastify.css';
 
 
 import LogIn from './components/auth/LogIn';
@@ -12,6 +10,12 @@ import AuthLayout from './components/containers/AuthLayout';
 import DefaultLayout from './components/containers/DefaultLayout';
 import HomePage from './components/Home';
 import NotFound from './components/NotFound';
+import CountriesList from './components/admin/Countries/List';
+import UpdateCountry from './components/admin/Countries/Update';
+import CreateCountry from './components/admin/Countries/Create';
+import UserLayout from './components/containers/UserLayout';
+import Profile from './components/user/Profile';
+import WishList from './components/user/WishList';
 
 function App() {
   return (
@@ -38,7 +42,14 @@ function App() {
 
         </Route>
         <Route path="/admin" element={<AdminLayout />}>
+          <Route path="/admin/countries/list" element={<CountriesList />} />
+          <Route path="/admin/countries/create" element={<CreateCountry />} />
+          <Route path="/admin/countries/update/:id" element={<UpdateCountry />} />
 
+        </Route>
+        <Route path="/user" element={<UserLayout />}>
+          <Route path="/user/profile" element={<Profile />} />
+          <Route path="/user/wishlist" element={<WishList />} />
 
         </Route>
         <Route path="*" element={<NotFound />} />

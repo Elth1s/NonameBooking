@@ -2,20 +2,20 @@ import {
     AuthAction,
     AuthActionTypes,
     AuthState,
-    ProfileAction
 } from "./types"
 
 const initialState: AuthState = {
     user: {
+        id: "",
         name: "",
         surname: "",
-        image: "",
+        photo: "",
         email: ""
     },
     isAuth: false,
 }
 
-export const authReducer = (state = initialState, action: AuthAction | ProfileAction): AuthState => {
+export const authReducer = (state = initialState, action: AuthAction): AuthState => {
     switch (action.type) {
         case AuthActionTypes.AUTH_SUCCESS:
             return {
@@ -23,10 +23,17 @@ export const authReducer = (state = initialState, action: AuthAction | ProfileAc
                 user: action.payload,
                 isAuth: true
             }
-        case AuthActionTypes.GET_PROFILE:
+        case AuthActionTypes.AUTH_LOGOUT:
             return {
                 ...state,
-                user: action.payload,
+                user: {
+                    id: "",
+                    name: "",
+                    surname: "",
+                    photo: "",
+                    email: ""
+                },
+                isAuth: false
             }
         default:
             return state;

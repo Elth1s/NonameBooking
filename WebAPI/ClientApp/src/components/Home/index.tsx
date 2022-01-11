@@ -35,6 +35,7 @@ const HomePage = () => {
         }
     }
     useEffect(() => {
+        document.title = "Noname Booking";
         getCountries();
     }, []);
 

@@ -6,7 +6,7 @@ const DefaultLayout = () => {
     return (
         <>
             <Header />
-            <Container maxWidth="xl">
+            <Container sx={{ maxWidth: { xl: "xl", lg: "lg", md: "md" } }} >
                 <Outlet />
             </Container>
         </>

@@ -8,7 +8,7 @@ import {
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { LoadingButton } from "@mui/lab";
 import { Form, FormikProvider, useFormik } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
 
@@ -26,6 +26,10 @@ const SignUp = () => {
     const navigate = useNavigate();
     const registerModel: IRegisterModel = { name: '', surname: '', email: '', phone: '', password: '', confirmpassword: '' };
 
+    useEffect(() => {
+        document.title = "Sign up";
+    }, []);
+
     const formik = useFormik({
         initialValues: registerModel,
         // validationSchema: SignUpSchema,
@@ -33,7 +37,7 @@ const SignUp = () => {
             try {
                 await RegisterUser(values);
                 navigate("/");
-                toast.success('Sign up Success!');
+                toast.success('Sign up success!');
             }
             catch (exeption) {
                 const serverErrors = exeption as RegisterServerError;

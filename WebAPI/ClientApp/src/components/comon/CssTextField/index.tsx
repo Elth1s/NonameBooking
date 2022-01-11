@@ -22,6 +22,9 @@ export const CssTextField = styled(TextField)({
         "&.Mui-focused fieldset": {
             borderColor: "#45a29e"
         },
+        "&.Mui-disabled fieldset": {
+            borderColor: "#45a29e"
+        },
         "&.Mui-error fieldset": {
             borderColor: "#d32f2f"
         },
@@ -31,5 +34,5 @@ export const CssTextField = styled(TextField)({
     },
     "& .MuiIconButton-root": {
         color: "#c5c6c7",
-    }
+    },
 });

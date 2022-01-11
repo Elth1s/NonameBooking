@@ -21,6 +21,10 @@ namespace WebAPI.Services
 
         private readonly IMapper _mapper;
 
+        const int TakeApartment = 3;
+        const int TakeCityGroupWithApartment = 3;
+        const int TakeCityGroup = 5;
+
         public ApartmentService(IRepository<Filter> filterRepository,
             IRepository<Apartment> apartmentRepository,
             IRepository<TypeOfApartment> typeOfApartmentRepository,
@@ -52,6 +56,7 @@ namespace WebAPI.Services
                 throw new Exception($"Failed to create apartment! User with id {model.OwnerId} doesn't exist.");
 
             var apartment=_mapper.Map<Apartment>(model);
+            apartment.Filters = new List<Filter>();
 
             if (model.FiltersId != null)
             {
@@ -114,6 +119,9 @@ namespace WebAPI.Services
             apartment.CityId = model.CityId;
             apartment.Price = model.Price;
             apartment.TypeOfApartmentId = model.TypeOfApartmentId;
+            apartment.Beds = model.Beds;
+            apartment.Bedrooms = model.Bedrooms;
+            apartment.Bathrooms = model.Bathrooms;
 
             apartment.Filters.Clear();
             if (model.FiltersId != null)
@@ -183,22 +191,102 @@ namespace WebAPI.Services
             await _apartmentRepository.DeleteAsync(apartment);
             await _apartmentRepository.SaveChangesAsync();
         }
-        public async Task<ApartmentResponse> GetApartmentByIdAsync(int id)
+        public async Task<ApartmentFullInfoResponse> GetApartmentByIdAsync(int id)
         {
             var spec = new ApartmentIncludeInfoSpecification(id);
             var apartment = await _apartmentRepository.GetBySpecAsync(spec);
             if (apartment == null)
                 throw new Exception($"Apartment with id {id} doesn't exist.");
 
-            var result = _mapper.Map<ApartmentResponse>(apartment);
+            var result = _mapper.Map<ApartmentFullInfoResponse>(apartment);
             return result;
         }
 
-        public async Task<IEnumerable<ApartmentShortInfoResponse>> GetAllApartmentsAsync()
+        public async Task<IEnumerable<ApartmentResponse>> GetAllApartmentsAsync()
         {
             var spec = new ApartmentIncludeInfoSpecification();
             var apartments = await _apartmentRepository.ListAsync(spec);
-            var result = apartments.Select(a => _mapper.Map<ApartmentShortInfoResponse>(a));
+            var result = apartments.Select(a => _mapper.Map<ApartmentResponse>(a));
+            return result;
+        }
+
+        public async Task<IEnumerable<CityWithApartmentResponse>> SearchApartmentsGroupByCityAsync(ApartmentGroupByCityRequest request)
+        {
+            if (request.PriceRange == null)
+                request.PriceRange = new PriceRange() { Start = 0, End = float.MaxValue };
+
+            var spec = new ApartmentSearchSpecification(request.CountryId,request.PriceRange,request.TypesOfApartment,request.Filters,request.Beds,request.Bedrooms,request.Bathrooms);
+            var apartments = await _apartmentRepository.ListAsync(spec);
+
+            var groupByCity = apartments.GroupBy(a => a.City).OrderByDescending(g=> g.Key.Apartments.Count);
+           
+            var groups = request.TakeCityGroup ?? TakeCityGroup;
+            var groupsWithApartments = request.TakeCityGroupWithApartment ?? TakeCityGroupWithApartment;
+            if (groups < groupsWithApartments)
+                groupsWithApartments = groups;
+
+            var result =
+                groupByCity.Take(groupsWithApartments)
+                .Select(g =>
+                new CityWithApartmentResponse  {
+                  Id=g.Key.Id,
+                  Name=g.Key.Name,
+                  Apartments=g.Select(ga=> _mapper.Map<CityApartment>(ga)).Take(request.TakeApartments?? TakeApartment)})
+                .ToList();
+
+
+            result.AddRange(
+                groupByCity
+                .Skip(groupsWithApartments)
+                .Take(groups-groupsWithApartments)
+                .Select(g =>
+                new CityWithApartmentResponse
+                {
+                    Id = g.Key.Id,
+                    Name = g.Key.Name
+                }));
+
+            return result;
+            
+        }
+        public async Task<IEnumerable<ApartmentResponse>> SearchApartmentsByCityAsync(ApartmentRequest request)
+        {
+            if (request.PriceRange == null)
+                request.PriceRange = new PriceRange() { Start = 0, End = float.MaxValue };
+            if (request.Take == null)
+                request.Take = 3;
+            if (request.Page == null)
+                request.Page = 1;
+
+            int skip = request.Page.Value > 1 ? (request.Take.Value * (request.Page.Value - 1 )) : 0;
+
+            var spec = new ApartmentSearchSpecification(
+                request.CityId,
+                request.PriceRange,
+                request.TypesOfApartment,
+                request.Filters,
+                request.Beds,
+                request.Bedrooms,
+                request.Bathrooms,
+                request.Take.Value,
+                skip);
+
+            var apartments = await _apartmentRepository.ListAsync(spec);
+            var result = apartments.Select(a => _mapper.Map<ApartmentResponse>(a));
+            return result;
+        }
+
+        public async Task<IEnumerable<ApartmentResponse>> GetApartmentsByOwnerIdAsync(string ownerId)
+        {
+            var user = await _userManager.FindByIdAsync(ownerId);
+            if (user == null)
+                throw new Exception($"User with id {ownerId} doesn't exist.");
+
+            var spec = new ApartmentGetByOwnerIdSpecification(ownerId);
+            var aparments =await  _apartmentRepository.ListAsync(spec);
+
+            var result = aparments.Select(a => _mapper.Map<ApartmentResponse>(a));
+
             return result;
         }
 

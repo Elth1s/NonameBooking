@@ -30,6 +30,7 @@ namespace WebAPI.Services
                 throw new Exception($"Country with id {id} doesn't exist.");
 
             country.Name = model.Name;
+            country.Code = model.Code;
 
             await _repository.UpdateAsync(country);
             await _repository.SaveChangesAsync();

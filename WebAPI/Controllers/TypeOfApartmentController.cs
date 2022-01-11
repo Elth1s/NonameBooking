@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Interfaces;
 using WebAPI.Models;
@@ -15,6 +16,7 @@ namespace WebAPI.Controllers
             _service = service;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [Route("create")]
         public async Task<IActionResult> CreateTypeOfApartment([FromBody] TypeOfApartmentVM model)
@@ -30,6 +32,7 @@ namespace WebAPI.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         [Route("edit/{id}")]
         public async Task<IActionResult> EditTypeOfApartment(int id, [FromBody] TypeOfApartmentVM model)
@@ -45,6 +48,7 @@ namespace WebAPI.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete]
         [Route("delete/{id}")]
         public async Task<IActionResult> DeleteTypeOfApartment(int id)
@@ -59,6 +63,8 @@ namespace WebAPI.Controllers
                 return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
             }
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         [Route("get-by-id/{id}")]
         public async Task<IActionResult> GetTypeOfApartmentById(int id)
@@ -73,6 +79,7 @@ namespace WebAPI.Controllers
                 return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
             }
         }
+
         [HttpGet]
         [Route("get-all")]
         public async Task<IActionResult> GetAllTypes()

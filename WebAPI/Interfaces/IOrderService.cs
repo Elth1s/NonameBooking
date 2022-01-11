@@ -8,6 +8,8 @@ namespace WebAPI.Interfaces
         Task CreateOrderAsync(OrderVM model);
         Task EditOrderAsync(string id, OrderVM model);
         Task DeleteOrderAsync(string id);
-        Task<IEnumerable<OrderResponse>> GetAllOrdersAsync();
+        Task<OrderFullInfoResponse> GetOrderByIdAsync(string id);
+        Task<IEnumerable<OrderResponse>> GetOrdersByUserIdAsync(string userId);
+        Task<IEnumerable<OrderFullInfoResponse>> GetAllOrdersAsync();
     }
 }

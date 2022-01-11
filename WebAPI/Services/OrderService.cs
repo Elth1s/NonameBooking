@@ -87,12 +87,36 @@ namespace WebAPI.Services
         }
 
 
-        public async Task<IEnumerable<OrderResponse>> GetAllOrdersAsync()
+        public async Task<IEnumerable<OrderFullInfoResponse>> GetAllOrdersAsync()
         {
             var spec = new OrderIncludeFullInfoSpecification();
             var orders = await _orderRepository.ListAsync(spec);
-            var result = orders.Select(o => _mapper.Map<OrderResponse>(o));
+            var result = orders.Select(o => _mapper.Map<OrderFullInfoResponse>(o));
             return result;
+        }
+
+        public async Task<OrderFullInfoResponse> GetOrderByIdAsync(string id)
+        {
+            var spec = new OrderIncludeFullInfoSpecification(id);
+            var order = await _orderRepository.GetBySpecAsync(spec);
+            if (order == null)
+                throw new Exception($"Order with id {id} doesn't exist.");
+
+            var result = _mapper.Map<OrderFullInfoResponse>(order);
+            return result;
+        }
+
+        public async Task<IEnumerable<OrderResponse>> GetOrdersByUserIdAsync(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+                throw new Exception($"User with id {userId} doesn't exist.");
+
+            var spec = new OrderGetByUserIdIncludeFullInfoSpecification(userId);
+            var orders = await _orderRepository.ListAsync(spec);
+            var result =orders.Select(o=>_mapper.Map<OrderFullInfoResponse>(o));
+            return result;
+
         }
     }
 }

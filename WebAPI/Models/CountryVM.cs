@@ -3,9 +3,7 @@
     public class CountryVM
     {
         public string Name { get; set; }
-        public CountryVM(string name)
-        {
-            Name = name;
-        }
+        public string Code { get; set; }
+
     }
 }

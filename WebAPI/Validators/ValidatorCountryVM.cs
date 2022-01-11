@@ -12,7 +12,7 @@ namespace WebAPI.Validators
     {
         private readonly IRepository<Country> _repository;
         public ValidatorCountryVM(IRepository<Country> repository)
-        {       
+        {
             _repository = repository;
 
             //Name
@@ -20,11 +20,23 @@ namespace WebAPI.Validators
                    .NotEmpty().WithMessage("{PropertyName} is required!")
                    .Length(2, 60).WithMessage("{PropertyName} should be between 2 and 60 characters!")
                    .Must(IsUniqueName).WithMessage("{PropertyName} should be unique.");
+
+            //Code
+            RuleFor(c => c.Code).Cascade(CascadeMode.Stop)
+                   .NotEmpty().WithMessage("{PropertyName} is required!")
+                   .Length(2).WithMessage("{PropertyName} must be 2 characters long.")
+                   .Must(IsUniqueCode).WithMessage("{PropertyName} should be unique.");
         }
         private bool IsUniqueName(string name)
         {
             var countryNameSpecification = new CountryNameSpecification(name);
             var existingCountry = _repository.CountAsync(countryNameSpecification).Result;
+            return existingCountry == 0;
+        }
+        private bool IsUniqueCode(string code)
+        {
+            var countryCodeSpecification = new CountryCodeSpecification(code);
+            var existingCountry = _repository.CountAsync(countryCodeSpecification).Result;
             return existingCountry == 0;
         }
     }

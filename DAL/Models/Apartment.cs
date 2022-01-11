@@ -14,6 +14,10 @@ namespace DAL.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public float Price { get; set; }
+        
+        public int Beds { get; set; }
+        public int Bedrooms { get; set; }
+        public int Bathrooms { get; set; }
 
         public int TypeOfApartmentId { get; set; }
         public int CityId { get; set; }

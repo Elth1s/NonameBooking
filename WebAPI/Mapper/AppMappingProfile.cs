@@ -26,9 +26,11 @@ namespace WebAPI.Mapper
             CreateMap<Country, CountryResponse>();
 
             //City
-            CreateMap<CityVM, City>();
+            CreateMap<CityVM, City>()
+                .ForMember(cvm => cvm.Image, opt => opt.Ignore()); ;
 
-            CreateMap<City, CityFullInfoResponse>();
+            CreateMap<City, CityFullInfoResponse>()
+            .ForMember(c => c.Image, opt => opt.MapFrom(u => Path.Combine(ImagePath.CitiesImagePath, u.Image)));
 
             CreateMap<City, CityResponse>();
 
@@ -42,7 +44,7 @@ namespace WebAPI.Mapper
                 .ForMember(avm=>avm.Images,opt=>opt.Ignore());
 
 
-            CreateMap<Apartment, ApartmentResponse>()
+            CreateMap<Apartment, ApartmentFullInfoResponse>()
               .ForMember(ar => ar.OwnerFullName, opt => opt.MapFrom(a => a.Owner.Name + " " + a.Owner.Surname))
               .ForMember(ar => ar.TypeOfApartmentName, opt => opt.MapFrom(a => a.TypeOfApartment.Name))
               .ForMember(ar => ar.CityName, opt => opt.MapFrom(a => a.City.Name))
@@ -52,10 +54,14 @@ namespace WebAPI.Mapper
               .ForMember(ar => ar.Images, opt => opt.MapFrom(a => a.Images.Select(i => Path.Combine(ImagePath.ApartmentsImagePath, i.Name))))
               .ForMember(ar=>ar.FilterGroupWithFilters,opt=>opt.MapFrom(a=>a.Filters.GroupBy(f=>new { f.FilterGroup }).Select(f=>new FilterGroupWithFiltersResponse() { Id=f.Key.FilterGroup.Id, Name = f.Key.FilterGroup.Name, Filters= f.Select(f => new FilterResponse { Id=f.Id,Name= f.Name}) })));
 
-            CreateMap<Apartment, ApartmentShortInfoResponse>()
+            CreateMap<Apartment, ApartmentResponse>()
              .ForMember(ar => ar.TypeOfApartmentName, opt => opt.MapFrom(a => a.TypeOfApartment.Name))
              .ForMember(ar => ar.CityName, opt => opt.MapFrom(a => a.City.Name))
+             .ForMember(ar => ar.Images, opt => opt.MapFrom(a => a.Images.Select(i => Path.Combine(ImagePath.ApartmentsImagePath, i.Name))))
              .ForMember(ar=>ar.FilterName,opt=>opt.MapFrom(a=>a.Filters.Select(f=>f.Name)));
+
+            CreateMap<Apartment, CityApartment>()
+              .ForMember(ca => ca.Images, opt => opt.MapFrom(a=> a.Images.Select(i => Path.Combine(ImagePath.ApartmentsImagePath, i.Name))));
 
             //FilterGroup
             CreateMap<FilterGroupVM, FilterGroup>();
@@ -80,6 +86,10 @@ namespace WebAPI.Mapper
             CreateMap<OrderVM, Order>();
 
             CreateMap<Order, OrderResponse>()
+               .ForMember(or => or.ApartmentName, opt => opt.MapFrom(o => o.Apartment.Name))
+               .ForMember(or => or.OrderStatusName, opt => opt.MapFrom(o => o.OrderStatus.Status));
+
+            CreateMap<Order, OrderFullInfoResponse>()
                 .ForMember(or => or.UserFullName, opt => opt.MapFrom(o => o.User.Name + " " + o.User.Surname))
                 .ForMember(or => or.ApartmentName, opt => opt.MapFrom(o => o.Apartment.Name))
                 .ForMember(or => or.OrderStatusName, opt => opt.MapFrom(o => o.OrderStatus.Status));

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DAL;
 using DAL.Models;
+using WebAPI.Constants;
 using WebAPI.Interfaces;
 using WebAPI.Models;
 using WebAPI.Models.Response;
@@ -25,7 +26,22 @@ namespace WebAPI.Services
             if (country == null)
                 throw new Exception($"Failed to create city! Country with id {model.CountryId} doesn't exist.");
 
+            if (model.Image == null)
+                throw new Exception($"Failed to create city! Image is required.");
+
             var city = _mapper.Map<City>(model);
+
+                string randomFilename = Path.GetRandomFileName() +
+                    Path.GetExtension(model.Image.FileName);
+
+                string dirPath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.CitiesImagePath);
+                string fileName = Path.Combine(dirPath, randomFilename);
+                using (var file = System.IO.File.Create(fileName))
+                {
+                    model.Image.CopyTo(file);
+                }
+                city.Image = randomFilename;
+          
             await _cityRepository.AddAsync(city);
             await _cityRepository.SaveChangesAsync();
         }
@@ -42,6 +58,28 @@ namespace WebAPI.Services
             city.Name = model.Name;
             city.CountryId = model.CountryId;
 
+            if (model.Image != null)
+            {
+                if (city.Image != null)
+                {
+                    string filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.CitiesImagePath, city.Image);
+                    if (System.IO.File.Exists(filePath))
+                        System.IO.File.Delete(filePath);
+                }
+
+                string randomFilename = Path.GetRandomFileName() +
+                    Path.GetExtension(model.Image.FileName);
+
+                string dirPath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.CitiesImagePath);
+                string fileName = Path.Combine(dirPath, randomFilename);
+                using (var file = System.IO.File.Create(fileName))
+                {
+                    model.Image.CopyTo(file);
+                }
+                city.Image = randomFilename;
+
+            }
+
             await _cityRepository.UpdateAsync(city);
             await _cityRepository.SaveChangesAsync();
         }
@@ -51,6 +89,13 @@ namespace WebAPI.Services
             var city = await _cityRepository.GetByIdAsync(id);
             if (city == null)
                 throw new Exception($"City with id {id} doesn't exist.");
+
+            if (city.Image != null)
+            {
+                string filePath = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.CitiesImagePath, city.Image);
+                if (System.IO.File.Exists(filePath))
+                    System.IO.File.Delete(filePath);
+            }
 
             await _cityRepository.DeleteAsync(city);
             await _cityRepository.SaveChangesAsync();
@@ -85,6 +130,7 @@ namespace WebAPI.Services
             var result = cities.Select(c => _mapper.Map<CityFullInfoResponse>(c));
             return result;
         }
+
 
     }
 }

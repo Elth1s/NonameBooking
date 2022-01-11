@@ -147,6 +147,16 @@ app.UseStaticFiles(new StaticFileOptions
     RequestPath = "/" + ImagePath.ApartmentsImagePath
 });
 
+var citiesImages = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.CitiesImagePath);
+if (!Directory.Exists(citiesImages))
+{
+    Directory.CreateDirectory(citiesImages);
+}
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(citiesImages),
+    RequestPath = "/" + ImagePath.CitiesImagePath
+});
 
 app.UseEndpoints(endpoints =>
 {
@@ -163,5 +173,6 @@ app.UseSpa(spa =>
         spa.UseReactDevelopmentServer(npmScript: "start");
     }
 });
+app.SeedData();
 
 app.Run();

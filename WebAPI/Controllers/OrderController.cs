@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Interfaces;
 using WebAPI.Models;
@@ -7,6 +8,7 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class OrderController : ControllerBase
     {
         private readonly IOrderService _service;
@@ -30,7 +32,7 @@ namespace WebAPI.Controllers
             }
         }
 
-
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         [Route("edit/{id}")]
         public async Task<IActionResult> EditOrder(string id, [FromBody] OrderVM model)
@@ -45,6 +47,8 @@ namespace WebAPI.Controllers
                 return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
             }
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpDelete]
         [Route("delete/{id}")]
         public async Task<IActionResult> DeleteOrder(string id)
@@ -60,6 +64,37 @@ namespace WebAPI.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("get-by-id/{id}")]
+        public async Task<IActionResult> GetOrderByIdAsync(string id)
+        {
+            try
+            {
+                var _result = await _service.GetOrderByIdAsync(id);
+                return Ok(_result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        [Route("get-by-user-id/{userId}")]
+        public async Task<IActionResult> GetOrdersByUserIdAsync(string userId)
+        {
+            try
+            {
+                var _result = await _service.GetOrdersByUserIdAsync(userId);
+                return Ok(_result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
+            }
+        }
+
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         [Route("get-all")]
         public async Task<IActionResult> GetAllOrders()

@@ -1,16 +1,13 @@
 ﻿namespace WebAPI.Models.Response
 {
-   public class CityApartment
+   public class CityApartment:LookupData
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
         public float Price { get; set; }
         public IEnumerable<string> Images { get; set; }
     }
-    public class CityWithApartmentResponse
+    public class CityWithApartmentResponse:LookupData
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public IEnumerable<CityApartment> Apartments { get; set; }
+        public string Image { get; set; }
+        public IEnumerable<CityApartment>? Apartments { get; set; }
     }
 }

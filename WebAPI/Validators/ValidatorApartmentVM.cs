@@ -23,6 +23,21 @@ namespace WebAPI.Validators
             RuleFor(c => c.Price).Cascade(CascadeMode.Stop)
                .InclusiveBetween(0.1f, 10_000_000f).WithMessage("{PropertyName} should be beetween 0.1 and 10 000 000");
 
+            //Beds
+            RuleFor(a => a.Beds).Cascade(CascadeMode.Stop)
+                .NotEmpty().WithName("Beds").WithMessage("{PropertyName} is required!")
+                .InclusiveBetween(1, 16).WithMessage("{PropertyName} must be between 1 and 16!");
+
+            //Bedrooms
+            RuleFor(a => a.Bedrooms).Cascade(CascadeMode.Stop)
+                .NotEmpty().WithName("Beds").WithMessage("{PropertyName} is required!")
+                .InclusiveBetween(1, 16).WithMessage("{PropertyName} must be between 1 and 16!");
+
+            //Bathrooms
+            RuleFor(a => a.Bathrooms).Cascade(CascadeMode.Stop)
+                .NotEmpty().WithName("Beds").WithMessage("{PropertyName} is required!")
+                .InclusiveBetween(1, 16).WithMessage("{PropertyName} must be between 1 and 16!");
+
         }
     }
 }

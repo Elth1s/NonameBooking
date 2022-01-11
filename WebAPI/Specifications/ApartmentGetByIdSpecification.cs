@@ -3,7 +3,7 @@ using DAL.Models;
 
 namespace WebAPI.Specifications
 {
-    public class ApartmentGetByIdSpecification: Specification<Apartment>,ISingleResultSpecification
+    public class ApartmentGetByIdSpecification: Specification<Apartment>,ISingleResultSpecification<Apartment>
     {
         public ApartmentGetByIdSpecification(int id)
         {

@@ -9,7 +9,7 @@ namespace WebAPI.Interfaces
         Task EditCityAsync(int id, CityVM model);
         Task DeleteCityAsync(int id);
         Task<CityFullInfoResponse> GetCityByIdAsync(int id);
-      //  Task<IEnumerable<CityWithApartmentResponse>> GetCitiesWithApartmentsAsync(ApartmentsRequest request);
+
         Task<IEnumerable<CityResponse>> GetCitiesByCountryIdAsync(int id);
 
         Task<IEnumerable<CityFullInfoResponse>> GetAllCitiesAsync();

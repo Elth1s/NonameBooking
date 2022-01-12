@@ -1,5 +1,6 @@
 ﻿using Ardalis.Specification;
 using DAL.Models;
+using WebAPI.Constants;
 
 namespace WebAPI.Specifications
 {
@@ -7,7 +8,11 @@ namespace WebAPI.Specifications
     {
         public OrderDateCheckSpecification(int apartmentId,DateTime start, DateTime end)
         {
-            Query.Where(o => o.ApartmentId == apartmentId && !(start.Date >= o.End.Date || end.Date <= o.Start.Date));
+            Query.Include(o=>o.OrderStatus)
+                .Where(o => 
+                o.ApartmentId == apartmentId &&
+                o.OrderStatus.Status!=OrderStatuses.Canceled &&
+                !(start.Date >= o.End.Date || end.Date <= o.Start.Date));
         }
     }
 }

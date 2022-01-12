@@ -21,9 +21,11 @@ namespace WebAPI.Services
 
         private readonly IMapper _mapper;
 
-        const int TakeApartment = 3;
-        const int TakeCityGroupWithApartment = 3;
-        const int TakeCityGroup = 5;
+       private const int TakeApartment = 3;
+       private const int TakeCityGroupWithApartment = 3;
+       private const int TakeCityGroup = 5;
+       private const int Page = 1;
+       private const int Take = 3;
 
         public ApartmentService(IRepository<Filter> filterRepository,
             IRepository<Apartment> apartmentRepository,
@@ -215,7 +217,10 @@ namespace WebAPI.Services
             if (request.PriceRange == null)
                 request.PriceRange = new PriceRange() { Start = 0, End = float.MaxValue };
 
-            var spec = new ApartmentSearchSpecification(request.CountryId,request.PriceRange,request.TypesOfApartment,request.Filters,request.Beds,request.Bedrooms,request.Bathrooms);
+            if (request.DateRange == null)
+                request.DateRange = new DateRange() { Start=DateTime.Now, End=DateTime.Now.AddYears(1) };
+
+            var spec = new ApartmentSearchSpecification(request.CountryId,request.PriceRange, request.DateRange,request.TypesOfApartment,request.Filters,request.Beds,request.Bedrooms,request.Bathrooms);
             var apartments = await _apartmentRepository.ListAsync(spec);
 
             var groupByCity = apartments.GroupBy(a => a.City).OrderByDescending(g=> g.Key.Apartments.Count);
@@ -253,16 +258,21 @@ namespace WebAPI.Services
         {
             if (request.PriceRange == null)
                 request.PriceRange = new PriceRange() { Start = 0, End = float.MaxValue };
+            if (request.DateRange == null)
+                request.DateRange = new DateRange() { Start = DateTime.Now, End = DateTime.Now.AddMonths(3) };
             if (request.Take == null)
-                request.Take = 3;
+                request.Take = Take;
             if (request.Page == null)
-                request.Page = 1;
+                request.Page = Page;
+
+
 
             int skip = request.Page.Value > 1 ? (request.Take.Value * (request.Page.Value - 1 )) : 0;
 
             var spec = new ApartmentSearchSpecification(
                 request.CityId,
                 request.PriceRange,
+                request.DateRange,
                 request.TypesOfApartment,
                 request.Filters,
                 request.Beds,

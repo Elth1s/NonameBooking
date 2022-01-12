@@ -12,10 +12,12 @@ namespace WebAPI.Services
     {
         private readonly IMapper _mapper;
         private readonly UserManager<AppUser> _userManager;
-        public ProfileService(IMapper mapper, UserManager<AppUser> userManager)
+        private readonly IJwtTokenService _jwtTokenService;
+        public ProfileService(IMapper mapper, UserManager<AppUser> userManager, IJwtTokenService jwtTokenService)
         {
             _mapper = mapper;
             _userManager = userManager;
+            _jwtTokenService = jwtTokenService;
         }
 
         public async Task ChangePasswordAsync(string id, ChangePasswordVM model)
@@ -32,7 +34,7 @@ namespace WebAPI.Services
                 throw new Exception("Updating password failed.");
         }
 
-        public async Task EditProfileAsync(string id, UserVM model)
+        public async Task<string> EditProfileAsync(string id, UserVM model)
         {
             var user=await _userManager.FindByIdAsync(id);
             if (user == null)
@@ -66,6 +68,8 @@ namespace WebAPI.Services
             var resultUserUpdate = await _userManager.UpdateAsync(user);
             if (!resultUserUpdate.Succeeded)
                 throw new Exception("Updating user failed.");
+
+            return await _jwtTokenService.CreateTokenAsync(user);
         }
 
         public async Task<UserResponse> GetProfileAsync(string id)

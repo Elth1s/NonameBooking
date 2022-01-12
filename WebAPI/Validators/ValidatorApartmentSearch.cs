@@ -10,9 +10,9 @@ namespace WebAPI.Validators
             //DateRange.Start
             RuleFor(a => a.DateRange.Start).Cascade(CascadeMode.Stop)
                 .NotEmpty().When(a => a.DateRange != null).WithName("Start date").WithMessage("{PropertyName} is required!")
-                .GreaterThanOrEqualTo(a => DateTime.Now.Date).WithMessage("{PropertyName} must after or equal current date!"); ;
+                .GreaterThanOrEqualTo(a => DateTime.Now.Date).When(a => a.DateRange != null).WithMessage("{PropertyName} must after or equal current date!"); ;
 
-            //DateRangeEnd
+            //DateRange.End
             RuleFor(a => a.DateRange.End).Cascade(CascadeMode.Stop)
                 .NotEmpty().When(a => a.DateRange != null).WithName("End date").WithMessage("{PropertyName} is required!")
                 .GreaterThan(a => a.DateRange.Start).When(a => a.DateRange != null).WithMessage("{PropertyName} must after start date!");

@@ -4,7 +4,7 @@
     {
         public PriceRange? PriceRange { get; set; }
         public DateRange? DateRange { get; set; }
-        public IEnumerable<int> TypesOfApartment { get; set; }
+        public IEnumerable<int>? TypesOfApartment { get; set; }
         public IEnumerable<int>? Filters { get; set; }
         public int Beds { get; set; }
         public int Bedrooms { get; set; }

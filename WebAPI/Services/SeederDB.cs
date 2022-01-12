@@ -2,6 +2,7 @@
 using DAL.Models;
 using Microsoft.AspNetCore.Identity;
 using WebAPI.Constants;
+using WebAPI.Interfaces;
 
 namespace WebAPI.Services
 {
@@ -16,7 +17,16 @@ namespace WebAPI.Services
                 var managerRole = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
                 var countryRepos = scope.ServiceProvider.GetRequiredService<IRepository<Country>>();
+                var cityRepos = scope.ServiceProvider.GetRequiredService<IRepository<City>>();
+                var typeOfApartmentRepos = scope.ServiceProvider.GetRequiredService<IRepository<TypeOfApartment>>();
+                var apartmentRepos = scope.ServiceProvider.GetRequiredService<IRepository<Apartment>>();
+                var filterGroupRepos = scope.ServiceProvider.GetRequiredService<IRepository<FilterGroup>>();
+                var filterRepos = scope.ServiceProvider.GetRequiredService<IRepository<Filter>>();
+                var orderStatusRepos = scope.ServiceProvider.GetRequiredService<IRepository<OrderStatus>>();
+                var orderRepos = scope.ServiceProvider.GetRequiredService<IRepository<Order>>();
 
+
+                //Roles
                 if (managerRole.FindByNameAsync(Roles.Admin).Result == null)
                 {
                     var result = managerRole.CreateAsync(new IdentityRole
@@ -34,9 +44,9 @@ namespace WebAPI.Services
                     }).Result;
                 }
 
+                //Users
                 string firstEmail = "admin@gmail.com";
                 string secondEmail = "dg646726@gmail.com";
-
                 if (manager.FindByEmailAsync(firstEmail).Result == null)
                 {
 
@@ -51,8 +61,6 @@ namespace WebAPI.Services
                     var result = manager.CreateAsync(firstUser, "zxc_VBN123").Result;
                     result = manager.AddToRoleAsync(firstUser, Roles.Admin).Result;
                 }
-
-
                 if (manager.FindByEmailAsync(secondEmail).Result == null)
                 {
 
@@ -64,10 +72,11 @@ namespace WebAPI.Services
                         Name = "Dima",
                         Surname = "Hladunov"
                     };
-                var result = manager.CreateAsync(user, "QWEqwe123_").Result;
-                result = manager.AddToRoleAsync(user, Roles.Admin).Result;
+                    var result = manager.CreateAsync(user, "QWEqwe123_").Result;
+                    result = manager.AddToRoleAsync(user, Roles.Admin).Result;
                 }
 
+                //Country
                 if (countryRepos.ListAsync().Result.Count == 0)
                 {
                     var countries = new List<Country>()
@@ -324,9 +333,585 @@ namespace WebAPI.Services
                     Country country;
                     foreach (var item in countries)
                     {
-                      country= countryRepos.AddAsync(item).Result;
+                        country = countryRepos.AddAsync(item).Result;
                     }
                 }
+
+                //City
+                if (cityRepos.ListAsync().Result.Count == 0)
+                {
+                    var cities = new List<City>()
+                    {
+                        new (){ Name="Copenhagen", CountryId=61, Image="city.png" },
+                        new (){ Name="Aarhus",CountryId=61,Image="city.png"},
+                        new (){ Name="Esbjerg",CountryId=61,Image="city.png"},
+                        new (){ Name="Randers",CountryId=61,Image="city.png"},
+                        new (){ Name="Herning",CountryId=61,Image="city.png"},
+                        new (){ Name="Hørsholm",CountryId=61,Image="city.png"},
+
+                        new (){ Name="Paris", CountryId=76, Image="city.png" },
+                        new (){ Name="Strasbourg",CountryId=76,Image="city.png"},
+                        new (){ Name="Lyon",CountryId=76,Image="city.png"},
+                        new (){ Name="Bordeaux",CountryId=76,Image="city.png"},
+                        new (){ Name="Rennes",CountryId=76,Image="city.png"},
+                        new (){ Name="Saint-Étienne",CountryId=76,Image="city.png"},
+
+                        new (){ Name="Berlin", CountryId=83, Image="city.png" },
+                        new (){ Name="Hamburg",CountryId=83,Image="city.png"},
+                        new (){ Name="Stuttgart",CountryId=83,Image="city.png"},
+                        new (){ Name="Dortmund",CountryId=83,Image="city.png"},
+                        new (){ Name="Bremen",CountryId=83,Image="city.png"},
+                        new (){ Name="Dresden",CountryId=83,Image="city.png"},
+
+                        new (){ Name="Kyiv", CountryId=233, Image="city.png" },
+                        new (){ Name="Kharkiv",CountryId=233,Image="city.png"},
+                        new (){ Name="Odesa",CountryId=233,Image="city.png"},
+                        new (){ Name="Dnipro",CountryId=233,Image="city.png"},
+                        new (){ Name="Lviv",CountryId=233,Image="city.png"},
+                        new (){ Name="Mariupol",CountryId=233,Image="city.png"},
+
+                    };
+                    City city;
+                    foreach (var item in cities)
+                    {
+                        city = cityRepos.AddAsync(item).Result;
+                    }
+                }
+
+                //TypeOfApartment
+                if (typeOfApartmentRepos.ListAsync().Result.Count == 0)
+                {
+                    var types = new List<TypeOfApartment>()
+                    {
+                    new TypeOfApartment() { Name = "House" },
+                    new TypeOfApartment() { Name = "Flat" },
+                    new TypeOfApartment() { Name = "Apartment" },
+                    new TypeOfApartment() { Name = "Hostel" },
+                    new TypeOfApartment() { Name = "Hotel" },
+                    new TypeOfApartment() { Name = "Loft" }
+                    };
+
+                    TypeOfApartment type;
+                    foreach (var item in types)
+                    {
+                        type = typeOfApartmentRepos.AddAsync(item).Result;
+                    }
+                }
+
+                //FilterGroup
+                if (filterGroupRepos.ListAsync().Result.Count == 0)
+                {
+                    var filterGroups = new List<FilterGroup>() {
+                    new FilterGroup { Name = "Bathroom" },
+                    new FilterGroup { Name = "Bedroom and laundry" },
+                    new FilterGroup { Name = "Entertainment" },
+                    new FilterGroup { Name = "Family" },
+                    new FilterGroup { Name = "Heating and cooling" },
+                    new FilterGroup { Name = "Internet and office" },
+                    new FilterGroup { Name = "Home safety" },
+                    new FilterGroup { Name = "Kitchen and dining" },
+                    new FilterGroup { Name = "Services" },
+                    new FilterGroup { Name = "Location features" },
+                    new FilterGroup { Name = "Parking and facilities" },
+                    new FilterGroup { Name = "Outdoor" },
+                    };
+                    FilterGroup filterGroup;
+                    foreach (var item in filterGroups)
+                    {
+                        filterGroup = filterGroupRepos.AddAsync(item).Result;
+                    }
+                }
+
+                //Filter
+                if (filterRepos.ListAsync().Result.Count == 0)
+                {
+
+                    var filters = new List<Filter>()
+                    {
+                        new Filter { Name = "Hair dryer", FilterGroupId = 1 },
+                        new Filter { Name = "Shampoo", FilterGroupId = 1 },
+                        new Filter { Name = "Conditioner", FilterGroupId = 1 },
+                        new Filter { Name = "Hot water", FilterGroupId = 1 },
+                        new Filter { Name = "Bath", FilterGroupId = 1 },
+                        new Filter { Name = "Body soap", FilterGroupId = 1 },
+                        new Filter { Name = "Shower gel", FilterGroupId = 1 },
+                        new Filter { Name = "Bidet", FilterGroupId = 1 },
+                        new Filter { Name = "Cleaning products", FilterGroupId = 1 },
+
+
+                        new Filter { Name = "Washer", FilterGroupId = 2 },
+                        new Filter { Name = "Dryer", FilterGroupId = 2 },
+                        new Filter { Name = "Clothing storage", FilterGroupId = 2 },
+                        new Filter { Name = "Safe", FilterGroupId = 2 },
+                        new Filter { Name = "Hangers", FilterGroupId = 2 },
+                        new Filter { Name = "Drying rack for clothing", FilterGroupId = 2 },
+                        new Filter { Name = "Bed linen", FilterGroupId = 2 },
+                        new Filter { Name = "Iron", FilterGroupId = 2 },
+                        new Filter { Name = "Room - darkening shades", FilterGroupId = 2 },
+                        new Filter { Name = "Extra pillows and blankets", FilterGroupId = 2 },
+
+
+                        new Filter { Name = "TV with standard cable/satellitee", FilterGroupId = 3 },
+                        new Filter { Name = "TV", FilterGroupId = 3 },
+                        new Filter { Name = "Suitable for events", FilterGroupId = 3 },
+                        new Filter { Name = "Ethernet connection", FilterGroupId = 3 },
+                        new Filter { Name = "Record player", FilterGroupId = 3 },
+                        new Filter { Name = "Sound system", FilterGroupId = 3 },
+                        new Filter { Name = "Books and reading material", FilterGroupId = 3 },
+
+
+                        new Filter { Name = "Crib", FilterGroupId = 4 },
+                        new Filter { Name = "Fireplace guards", FilterGroupId = 4 },
+                        new Filter { Name = "High chair", FilterGroupId = 4 },
+
+
+                        new Filter { Name = "Air conditioning", FilterGroupId = 5 },
+                        new Filter { Name = "Heating", FilterGroupId = 5 },
+                        new Filter { Name = "Indoor fireplace", FilterGroupId = 5 },
+                        new Filter { Name = "Ceiling fan", FilterGroupId = 5 },
+                        new Filter { Name = "Portable fans", FilterGroupId = 5 },
+
+
+                        new Filter { Name = "Wifi", FilterGroupId = 6 },
+                        new Filter { Name = "Dedicated workspace", FilterGroupId = 6 },
+
+
+                        new Filter { Name = "Smoke alarm", FilterGroupId = 7 },
+                        new Filter { Name = "Carbon monoxide alarm", FilterGroupId = 7 },
+                        new Filter { Name = "Fire extinguisher", FilterGroupId = 7 },
+                        new Filter { Name = "First aid kit", FilterGroupId = 7 },
+                        new Filter { Name = "Security cameras on property", FilterGroupId = 7 },
+
+
+                        new Filter { Name = "Kitchen", FilterGroupId = 8 },
+                        new Filter { Name = "Refrigerator", FilterGroupId = 8 },
+                        new Filter { Name = "Cooking basics", FilterGroupId = 8 },
+                        new Filter { Name = "Dishes and silverware", FilterGroupId = 8 },
+                        new Filter { Name = "Dishwasher", FilterGroupId = 8 },
+                        new Filter { Name = "Stove", FilterGroupId = 8 },
+                        new Filter { Name = "Electric stove", FilterGroupId = 8 },
+                        new Filter { Name = "Hot water kettle", FilterGroupId = 8 },
+                        new Filter { Name = "Wine glasses", FilterGroupId = 8 },
+                        new Filter { Name = "Dining table", FilterGroupId = 8 },
+                        new Filter { Name = "Microwave", FilterGroupId = 8 },
+                        new Filter { Name = "Mini fridge", FilterGroupId = 8 },
+                        new Filter { Name = "Oven", FilterGroupId = 8 },
+                        new Filter { Name = "Coffee maker", FilterGroupId = 8 },
+                        new Filter { Name = "Baking sheet", FilterGroupId = 8 },
+                        new Filter { Name = "Toaster", FilterGroupId = 8 },
+                        new Filter { Name = "Bread maker", FilterGroupId = 8 },
+                        new Filter { Name = "Trash compactor", FilterGroupId = 8 },
+                        new Filter { Name = "Rice maker", FilterGroupId = 8 },
+                        new Filter { Name = "Barbecue utensils", FilterGroupId = 8 },
+
+
+                        new Filter { Name = "Self check-in", FilterGroupId = 9 },
+                        new Filter { Name = "Long term stays allowed", FilterGroupId = 9 },
+                        new Filter { Name = "Pets allowed", FilterGroupId = 9 },
+                        new Filter { Name = "Luggage dropoff allowed", FilterGroupId = 9 },
+                        new Filter { Name = "Cleaning before checkout", FilterGroupId = 9 },
+                        new Filter { Name = "Breakfast", FilterGroupId = 9 },
+                        new Filter { Name = "Host greets you", FilterGroupId = 9 },
+
+
+                        new Filter { Name = "Private entrance", FilterGroupId = 10 },
+                        new Filter { Name = "Lake access", FilterGroupId = 10 },
+
+
+                        new Filter { Name = "Free street parking", FilterGroupId = 11 },
+                        new Filter { Name = "Free parking on premises", FilterGroupId = 11 },
+                        new Filter { Name = "Paid parking off premises", FilterGroupId = 11 },
+                        new Filter { Name = "Elevator", FilterGroupId = 11 },
+                        new Filter { Name = "Hot tub", FilterGroupId = 11 },
+                        new Filter { Name = "Private pool", FilterGroupId = 11 },
+                        new Filter { Name = "Private hot tub", FilterGroupId = 11 },
+                        new Filter { Name = "Single level home", FilterGroupId = 11 },
+                        new Filter { Name = "EV charger", FilterGroupId = 11 },
+                        new Filter { Name = "Gym", FilterGroupId = 11 },
+
+
+                        new Filter { Name = "Private patio or balcony", FilterGroupId = 12 },
+                        new Filter { Name = "Outdoor furniture", FilterGroupId = 12 },
+                        new Filter { Name = "Outdoor dining area", FilterGroupId = 12 },
+                        new Filter { Name = "BBQ grill", FilterGroupId = 12 },
+                        new Filter { Name = "Backyard", FilterGroupId = 12 },
+                        new Filter { Name = "Beach essentials", FilterGroupId = 12 },
+                        new Filter { Name = "Fire pit", FilterGroupId = 12 },
+                        new Filter { Name = "Outdoor kitchen", FilterGroupId = 12 },
+
+                };
+                    Filter filter;
+                    foreach (var item in filters)
+                    {
+                        filter = filterRepos.AddAsync(item).Result;
+                    }
+                }
+
+                //Apartment
+                if (apartmentRepos.ListAsync().Result.Count == 0)
+                {
+                    var ownerId = manager.FindByEmailAsync(firstEmail).Result.Id;
+                    var apartments = new List<Apartment>()
+                    {
+                         new Apartment()
+                        {
+                            Name = "Summer Holiday Villa",
+                            Description = "Summer Holiday Villa is a perfect choice " +
+                            "for your stay.It has its own garden enabling you to spend the evenings" +
+                            " enjoying nature and the fresh air.The house also has a private area for a " +
+                            "barbecue with all the required facilities, a sauna, and a patio.",
+                            Beds = 8,
+                            Bedrooms = 4,
+                            Bathrooms = 2,
+                            CityId = 1,
+                            TypeOfApartmentId = 1,
+                            OwnerId = ownerId,
+                            Price = 11286
+                        },
+
+                         new Apartment()
+                         {
+                             Name = "Little House at the lake",
+                             Description = "Our small, old and charming little house on the lake in a fantastic location, located on Lake Olching, guarantees a" +
+                             " great lake view. And YES, we are in nature and there are" +
+                             " squirrels, spiders, martens..." +
+                             "We have furnished everything very lovingly and equipped with special details, so that you can feel completely comfortable here." +
+                             "With the propeller as a fan, an oven, the rain shower and heated floor or the extraordinary sink made of granite," +
+                             "the stand alone cottage stands out from others.A special place in the immediate vicinity of Munich.Our motto is: \"Do not dream your life, " +
+                             "but live your dream\"!",
+                             Beds = 1,
+                             Bedrooms = 1,
+                             Bathrooms = 1,
+                             CityId = 1,
+                             TypeOfApartmentId = 1,
+                             OwnerId = ownerId,
+                             Price = 2900
+                         },
+
+                         new Apartment()
+                         {
+                             Name = "Tiny Loft House",
+                             Description = "Our Tiny Loft House offers enough space for 2 people on 25 " +
+                             "sqm over two levels and scores in addition to a cozy bed, a cute kitchen, a small terrace " +
+                             "and private entrance. A minimalistly furnished apartment in a typical Scandinavian style with " +
+                             "light woods and furniture in a simple but functional design, with a cozy living-dining area and" +
+                             " modern bathroom with rain shower. Ceiling-high glass windows let in light and air." +
+                             " Breakfast is served on your own terrace.",
+                             Beds = 1,
+                             Bedrooms = 1,
+                             Bathrooms = 1,
+                             CityId = 2,
+                             TypeOfApartmentId = 2,
+                             OwnerId = ownerId,
+                             Price = 2400
+                         },
+
+                         new Apartment()
+                        {
+                            Name = "Summer Holiday Villa",
+                            Description = "Summer Holiday Villa is a perfect choice " +
+                            "for your stay.It has its own garden enabling you to spend the evenings" +
+                            " enjoying nature and the fresh air.The house also has a private area for a " +
+                            "barbecue with all the required facilities, a sauna, and a patio.",
+                            Beds = 7,
+                            Bedrooms = 3,
+                            Bathrooms = 2,
+                            CityId = 2,
+                            TypeOfApartmentId = 2,
+                            OwnerId = ownerId,
+                            Price = 11300
+                        },
+
+                         new Apartment()
+                         {
+                             Name = "Little House at the lake",
+                             Description = "Our small, old and charming little house on the lake in a fantastic location, located on Lake Olching, guarantees a" +
+                             " great lake view. And YES, we are in nature and there are" +
+                             " squirrels, spiders, martens..." +
+                             "We have furnished everything very lovingly and equipped with special details, so that you can feel completely comfortable here." +
+                             "With the propeller as a fan, an oven, the rain shower and heated floor or the extraordinary sink made of granite," +
+                             "the stand alone cottage stands out from others.A special place in the immediate vicinity of Munich.Our motto is: \"Do not dream your life, " +
+                             "but live your dream\"!",
+                             Beds = 2,
+                             Bedrooms = 2,
+                             Bathrooms = 1,
+                             CityId = 2,
+                             TypeOfApartmentId = 2,
+                             OwnerId = ownerId,
+                             Price = 3900
+                         },
+
+                         new Apartment()
+                         {
+                             Name = "Tiny Loft House",
+                             Description = "Our Tiny Loft House offers enough space for 2 people on 25 " +
+                             "sqm over two levels and scores in addition to a cozy bed, a cute kitchen, a small terrace " +
+                             "and private entrance. A minimalistly furnished apartment in a typical Scandinavian style with " +
+                             "light woods and furniture in a simple but functional design, with a cozy living-dining area and" +
+                             " modern bathroom with rain shower. Ceiling-high glass windows let in light and air." +
+                             " Breakfast is served on your own terrace.",
+                             Beds = 3,
+                             Bedrooms = 3,
+                             Bathrooms = 2,
+                             CityId = 2,
+                             TypeOfApartmentId = 3,
+                             OwnerId = ownerId,
+                             Price = 12400
+                         },
+
+                         new Apartment()
+                         {
+                         Name = "Summer Holiday Villa",
+                         Description = "Summer Holiday Villa is a perfect choice " +
+                         "for your stay.It has its own garden enabling you to spend the evenings" +
+                         " enjoying nature and the fresh air.The house also has a private area for a " +
+                           "barbecue with all the required facilities, a sauna, and a patio.",
+                           Beds = 6,
+                           Bedrooms = 2,
+                           Bathrooms = 2,
+                           CityId = 3,
+                           TypeOfApartmentId = 3,
+                           OwnerId = ownerId,
+                           Price = 1300
+                         },
+
+                         new Apartment()
+                         {
+                             Name = "Little House at the lake",
+                             Description = "Our small, old and charming little house on the lake in a fantastic location, located on Lake Olching, guarantees a" +
+                             " great lake view. And YES, we are in nature and there are" +
+                             " squirrels, spiders, martens..." +
+                             "We have furnished everything very lovingly and equipped with special details, so that you can feel completely comfortable here." +
+                             "With the propeller as a fan, an oven, the rain shower and heated floor or the extraordinary sink made of granite," +
+                             "the stand alone cottage stands out from others.A special place in the immediate vicinity of Munich.Our motto is: \"Do not dream your life, " +
+                             "but live your dream\"!",
+                             Beds = 5,
+                             Bedrooms = 5,
+                             Bathrooms = 3,
+                             CityId = 4,
+                             TypeOfApartmentId = 5,
+                             OwnerId = ownerId,
+                             Price = 5900
+                         },
+
+                         new Apartment()
+                         {
+                             Name = "Tiny Loft House",
+                             Description = "Our Tiny Loft House offers enough space for 2 people on 25 " +
+                             "sqm over two levels and scores in addition to a cozy bed, a cute kitchen, a small terrace " +
+                             "and private entrance. A minimalistly furnished apartment in a typical Scandinavian style with " +
+                             "light woods and furniture in a simple but functional design, with a cozy living-dining area and" +
+                             " modern bathroom with rain shower. Ceiling-high glass windows let in light and air." +
+                             " Breakfast is served on your own terrace.",
+                             Beds = 5,
+                             Bedrooms = 5,
+                             Bathrooms = 3,
+                             CityId = 3,
+                             TypeOfApartmentId = 1,
+                             OwnerId = ownerId,
+                             Price = 12400
+                         },
+
+                         new Apartment()
+                         {
+                             Name = "Summer Holiday Villa",
+                             Description = "Summer Holiday Villa is a perfect choice " +
+                            "for your stay.It has its own garden enabling you to spend the evenings" +
+                            " enjoying nature and the fresh air.The house also has a private area for a " +
+                            "barbecue with all the required facilities, a sauna, and a patio.",
+                             Beds = 7,
+                             Bedrooms = 3,
+                             Bathrooms = 2,
+                             CityId = 2,
+                             TypeOfApartmentId = 2,
+                             OwnerId = ownerId,
+                             Price = 11300
+                         },
+
+                         new Apartment()
+                         {
+                             Name = "Little House at the lake",
+                             Description = "Our small, old and charming little house on the lake in a fantastic location, located on Lake Olching, guarantees a" +
+                             " great lake view. And YES, we are in nature and there are" +
+                             " squirrels, spiders, martens..." +
+                             "We have furnished everything very lovingly and equipped with special details, so that you can feel completely comfortable here." +
+                             "With the propeller as a fan, an oven, the rain shower and heated floor or the extraordinary sink made of granite," +
+                             "the stand alone cottage stands out from others.A special place in the immediate vicinity of Munich.Our motto is: \"Do not dream your life, " +
+                             "but live your dream\"!",
+                             Beds = 2,
+                             Bedrooms = 2,
+                             Bathrooms = 1,
+                             CityId = 2,
+                             TypeOfApartmentId = 2,
+                             OwnerId = ownerId,
+                             Price = 3900
+                         },
+
+                         new Apartment()
+                         {
+                             Name = "Tiny Loft House",
+                             Description = "Our Tiny Loft House offers enough space for 2 people on 25 " +
+                             "sqm over two levels and scores in addition to a cozy bed, a cute kitchen, a small terrace " +
+                             "and private entrance. A minimalistly furnished apartment in a typical Scandinavian style with " +
+                             "light woods and furniture in a simple but functional design, with a cozy living-dining area and" +
+                             " modern bathroom with rain shower. Ceiling-high glass windows let in light and air." +
+                             " Breakfast is served on your own terrace.",
+                             Beds = 3,
+                             Bedrooms = 3,
+                             Bathrooms = 2,
+                             CityId = 2,
+                             TypeOfApartmentId = 3,
+                             OwnerId = ownerId,
+                             Price = 12400
+                         },
+                        
+                         new Apartment()
+                          {
+                              Name = "Summer Holiday Villa",
+                              Description = "Summer Holiday Villa is a perfect choice " +
+                            "for your stay.It has its own garden enabling you to spend the evenings" +
+                            " enjoying nature and the fresh air.The house also has a private area for a " +
+                            "barbecue with all the required facilities, a sauna, and a patio.",
+                              Beds = 7,
+                              Bedrooms = 3,
+                              Bathrooms = 2,
+                              CityId = 2,
+                              TypeOfApartmentId = 2,
+                              OwnerId = ownerId,
+                              Price = 11300
+                          },
+                         
+                         new Apartment()
+                         {
+                             Name = "Little House at the lake",
+                             Description = "Our small, old and charming little house on the lake in a fantastic location, located on Lake Olching, guarantees a" +
+                             " great lake view. And YES, we are in nature and there are" +
+                             " squirrels, spiders, martens..." +
+                             "We have furnished everything very lovingly and equipped with special details, so that you can feel completely comfortable here." +
+                             "With the propeller as a fan, an oven, the rain shower and heated floor or the extraordinary sink made of granite," +
+                             "the stand alone cottage stands out from others.A special place in the immediate vicinity of Munich.Our motto is: \"Do not dream your life, " +
+                             "but live your dream\"!",
+                             Beds = 2,
+                             Bedrooms = 2,
+                             Bathrooms = 1,
+                             CityId = 2,
+                             TypeOfApartmentId = 2,
+                             OwnerId = ownerId,
+                             Price = 3900
+                         },
+                        
+                         new Apartment()
+                         {
+                             Name = "Tiny Loft House",
+                             Description = "Our Tiny Loft House offers enough space for 2 people on 25 " +
+                             "sqm over two levels and scores in addition to a cozy bed, a cute kitchen, a small terrace " +
+                             "and private entrance. A minimalistly furnished apartment in a typical Scandinavian style with " +
+                             "light woods and furniture in a simple but functional design, with a cozy living-dining area and" +
+                             " modern bathroom with rain shower. Ceiling-high glass windows let in light and air." +
+                             " Breakfast is served on your own terrace.",
+                             Beds = 3,
+                             Bedrooms = 3,
+                             Bathrooms = 2,
+                             CityId = 2,
+                             TypeOfApartmentId = 3,
+                             OwnerId = ownerId,
+                             Price = 12400
+                         }
+                         };
+                    Apartment apartment;
+                    foreach (var item in apartments)
+                    {
+                        apartment = apartmentRepos.AddAsync(item).Result;
+                    }
+                }
+
+                //OrderStatus
+                if (orderStatusRepos.ListAsync().Result.Count == 0)
+                {
+                    var order = orderStatusRepos.AddAsync(new OrderStatus() { Status = OrderStatuses.Booked }).Result;
+                    order = orderStatusRepos.AddAsync(new OrderStatus() { Status = OrderStatuses.Processing }).Result;
+                    order = orderStatusRepos.AddAsync(new OrderStatus() { Status = OrderStatuses.Canceled }).Result;
+                }
+
+                //Order
+                if (orderRepos.ListAsync().Result.Count == 0)
+                {
+                    var orders = new List<Order>()
+                    {
+                        new Order() { ApartmentId = 1, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(7) },
+                        new Order() { ApartmentId = 1, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now.AddDays(7), End = DateTime.Now.AddDays(25) },
+                        new Order() { ApartmentId = 1, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 2, Start = DateTime.Now.AddDays(25), End = DateTime.Now.AddDays(40) },
+                        new Order() { ApartmentId = 1, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60) },
+
+                        new Order() { ApartmentId = 2, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(6)},
+                        new Order() { ApartmentId = 2, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now.AddDays(6), End = DateTime.Now.AddDays(26) },
+                        new Order() { ApartmentId = 2, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 2, Start = DateTime.Now.AddDays(26), End = DateTime.Now.AddDays(42) },
+                        new Order() { ApartmentId = 2, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60) },
+
+                        new Order() { ApartmentId = 3, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(5) },
+                        new Order() { ApartmentId = 3, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now.AddDays(5), End = DateTime.Now.AddDays(28) },
+                        new Order() { ApartmentId = 3, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 2, Start = DateTime.Now.AddDays(29), End = DateTime.Now.AddDays(42) },
+                        new Order() { ApartmentId = 3, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60) },
+
+
+                        new Order() { ApartmentId = 4, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(5) },
+                        new Order() { ApartmentId = 4, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now.AddDays(5), End = DateTime.Now.AddDays(28) },
+                        new Order() { ApartmentId = 4, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 2, Start = DateTime.Now.AddDays(29), End = DateTime.Now.AddDays(42) },
+                        new Order() { ApartmentId = 4, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60) },
+                                               
+                        new Order() { ApartmentId = 5, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(5) },
+                        new Order() { ApartmentId = 5, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now.AddDays(5), End = DateTime.Now.AddDays(28) },
+                        new Order() { ApartmentId = 5, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 2, Start = DateTime.Now.AddDays(29), End = DateTime.Now.AddDays(42) },
+                        new Order() { ApartmentId = 5, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60) },
+                                                
+                        new Order() { ApartmentId = 6, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(5) },
+                        new Order() { ApartmentId = 6, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now.AddDays(5), End = DateTime.Now.AddDays(28) },
+                        new Order() { ApartmentId = 6, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 2, Start = DateTime.Now.AddDays(29), End = DateTime.Now.AddDays(42) },
+                        new Order() { ApartmentId = 6, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60) },
+                                                
+                        new Order() { ApartmentId = 7, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(5) },
+                        new Order() { ApartmentId = 7, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now.AddDays(5), End = DateTime.Now.AddDays(28) },
+                        new Order() { ApartmentId = 7, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 2, Start = DateTime.Now.AddDays(29), End = DateTime.Now.AddDays(42) },
+                        new Order() { ApartmentId = 7, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60) },
+
+                        new Order() { ApartmentId = 8, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(5) },
+                        new Order() { ApartmentId = 8, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now.AddDays(5), End = DateTime.Now.AddDays(28) },
+                        new Order() { ApartmentId = 8, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 2, Start = DateTime.Now.AddDays(29), End = DateTime.Now.AddDays(42) },
+                        new Order() { ApartmentId = 8, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60) },
+                                            
+                        new Order() { ApartmentId = 9, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(5) },
+                        new Order() { ApartmentId = 9, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now.AddDays(5), End = DateTime.Now.AddDays(28) },
+                        new Order() { ApartmentId = 9, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 2, Start = DateTime.Now.AddDays(29), End = DateTime.Now.AddDays(42) },
+                        new Order() { ApartmentId = 9, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60) },
+                                                
+                        new Order() { ApartmentId = 10, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(5) },
+                        new Order() { ApartmentId = 10, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now.AddDays(5), End = DateTime.Now.AddDays(28) },
+                        new Order() { ApartmentId = 10, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 2, Start = DateTime.Now.AddDays(29), End = DateTime.Now.AddDays(42) },
+                        new Order() { ApartmentId = 10, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60) },
+                                                
+                        new Order() { ApartmentId = 11, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(5) },
+                        new Order() { ApartmentId = 11, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now.AddDays(5), End = DateTime.Now.AddDays(28) },
+                        new Order() { ApartmentId = 11, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 2, Start = DateTime.Now.AddDays(29), End = DateTime.Now.AddDays(42) },
+                        new Order() { ApartmentId = 11, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60) },
+                                                
+                        new Order() { ApartmentId = 12, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(5) },
+                        new Order() { ApartmentId = 12, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now.AddDays(5), End = DateTime.Now.AddDays(28) },
+                        new Order() { ApartmentId = 12, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 2, Start = DateTime.Now.AddDays(29), End = DateTime.Now.AddDays(42) },
+                        new Order() { ApartmentId = 12, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60) },
+                                                
+                        new Order() { ApartmentId = 13, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(5) },
+                        new Order() { ApartmentId = 13, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now.AddDays(5), End = DateTime.Now.AddDays(28) },
+                        new Order() { ApartmentId = 13, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 2, Start = DateTime.Now.AddDays(29), End = DateTime.Now.AddDays(42) },
+                        new Order() { ApartmentId = 13, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60) }
+                    };
+                    Order order;
+                    foreach (var item in orders)
+                    {
+                        order = orderRepos.AddAsync(item).Result;
+                    }
+
+                }
+
             }
         }
     }

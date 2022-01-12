@@ -24,8 +24,8 @@ namespace WebAPI.Controllers
         {
             try
             {
-                await _service.EditProfileAsync(id, model);
-                return Ok("User profile successfully updated.");
+               string token= await _service.EditProfileAsync(id, model);
+                return Ok(new { token });
             }
             catch (Exception ex)
             {

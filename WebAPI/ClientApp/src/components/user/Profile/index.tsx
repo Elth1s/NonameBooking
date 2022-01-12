@@ -78,12 +78,12 @@ const Profile = () => {
                         blob = base64ImageToBlob(imgRef.current?.src)
                         var file = new File([blob], "image.png");
                         await UpdateProfile(id, values, file);
-                        toast.success('Update success!');
                     }
                 }
                 else {
                     await UpdateProfile(id, values);
                 }
+                toast.success('Update success!');
             }
             catch (exeption) {
                 const serverErrors = exeption as ProfileServerError;
@@ -210,7 +210,7 @@ const Profile = () => {
                                         </Grid>
                                     </Grid>
                                     <Grid container sx={{ display: 'flex', justifyContent: 'center', width: "30%" }} >
-                                        {formik.values.photo == "" || cropperObj != null
+                                        {formik.values.photo == "" || formik.values.photo == null || cropperObj != null
                                             ? <>
                                                 <label htmlFor="Image">
                                                     <img

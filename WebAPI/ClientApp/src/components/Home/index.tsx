@@ -11,7 +11,7 @@ import {
     FormikProvider,
     useFormik
 } from "formik";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 
@@ -24,12 +24,21 @@ import { useActions } from "../../hooks/useActions";
 const HomePage = () => {
     const navigate = useNavigate();
 
-    const { countries } = useTypedSelector((state) => state.home);
-    const { GetCountries } = useActions();
+    const { countries, cities } = useTypedSelector((state) => state.home);
+    const { GetCountries, GetCitiesByCountryId } = useActions();
+
+    const [value, setValue] = useState<any>(null);
 
     async function getCountries() {
         try {
             await GetCountries();
+        } catch (ex) {
+            console.log("Problem fetch");
+        }
+    }
+    async function getCitiesByCountryId(id: number) {
+        try {
+            await GetCitiesByCountryId(id);
         } catch (ex) {
             console.log("Problem fetch");
         }
@@ -40,16 +49,21 @@ const HomePage = () => {
     }, []);
 
 
-    const searchModel: ISearch = { country: "", city: "" };
+    const searchModel: ISearch = { countryId: "", cityId: "" };
     const formik = useFormik({
         initialValues: searchModel,
         validationSchema: SearchSchema,
         onSubmit: async (values, { setFieldError }) => {
-            console.log(values)
+            if (values.cityId)
+                navigate(`/apartments?countryId=${values.countryId}&cityId=${values.cityId}`)
+            else
+                navigate(`/cities?countryId=${values.countryId}&cityId=${"NONE"}`)
+
         }
     });
 
-    const { errors, touched, isSubmitting, handleSubmit, getFieldProps, setFieldValue } = formik;
+
+    const { errors, touched, handleSubmit, getFieldProps, setFieldValue } = formik;
 
     return (
         <>
@@ -62,14 +76,60 @@ const HomePage = () => {
                     <Form autoComplete="off" noValidate onSubmit={handleSubmit} >
                         <Box sx={{ display: 'flex', justifyContent: 'center', }}>
                             <Autocomplete
-                                sx={{ width: 300 }}
+                                sx={{ width: 223, marginX: 2 }}
                                 options={countries}
                                 autoHighlight
                                 onChange={(e, value) => {
-                                    if (value)
-                                        setFieldValue("country", value?.name)
-                                    else
-                                        setFieldValue("country", "")
+                                    if (value) {
+                                        setFieldValue("countryId", value?.id)
+                                        getCitiesByCountryId(value?.id);
+                                        setFieldValue("cityId", "")
+                                        setValue(null)
+                                    }
+                                    else {
+                                        setFieldValue("countryId", "")
+                                        setFieldValue("cityId", "")
+                                        setValue(null)
+                                        getCitiesByCountryId(0);
+                                    }
+                                }}
+                                getOptionLabel={(option) => option.name}
+                                renderOption={(props, option) => (
+                                    <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                                        <img
+                                            loading="lazy"
+                                            width="20"
+                                            src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
+                                            srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
+                                            alt=""
+                                        />
+                                        {option.name}
+                                    </Box>
+                                )}
+                                renderInput={(params) => (
+                                    <CssTextField
+                                        {...params}
+                                        {...getFieldProps('countryId')}
+                                        label="Country *"
+                                        error={Boolean(touched.countryId && errors.countryId)}
+                                        helperText={touched.countryId && errors.countryId}
+                                        inputProps={{
+                                            ...params.inputProps,
+                                            autoComplete: 'countryId',
+                                        }}
+                                    />
+                                )}
+                            />
+
+                            <Autocomplete
+                                sx={{ width: 223, marginX: 2 }}
+                                options={cities}
+                                autoHighlight
+                                value={value}
+                                autoComplete={false}
+                                onChange={(e, value) => {
+                                    setFieldValue("cityId", value?.id)
+                                    setValue(value);
                                 }}
                                 getOptionLabel={(option) => option.name}
                                 renderOption={(props, option) => (
@@ -80,27 +140,17 @@ const HomePage = () => {
                                 renderInput={(params) => (
                                     <CssTextField
                                         {...params}
-                                        {...getFieldProps('country')}
-                                        autoComplete="country"
-                                        label="Country *"
-                                        error={Boolean(touched.country && errors.country)}
-                                        helperText={touched.country && errors.country}
+                                        {...getFieldProps('cityId')}
+                                        label="City"
                                         inputProps={{
                                             ...params.inputProps,
-                                            autoComplete: 'country',// disable autocomplete and autofill
+                                            autoComplete: 'cityId',
                                         }}
                                     />
                                 )}
                             />
                             {/* <CssTextField
                                 sx={{ marginX: 2 }}
-                                autoComplete="country"
-                                label="country"
-                                {...getFieldProps('country')}
-                                error={Boolean(touched.country && errors.country)}
-                                helperText={touched.country && errors.country} /> */}
-                            <CssTextField
-                                sx={{ marginX: 2 }}
                                 autoComplete="city"
                                 label="City"
                                 {...getFieldProps('city')}
@@ -112,14 +162,7 @@ const HomePage = () => {
                                 label="City"
                                 {...getFieldProps('city')}
                                 error={Boolean(touched.city && errors.city)}
-                                helperText={touched.city && errors.city} />
-                            <CssTextField
-                                sx={{ marginX: 2 }}
-                                autoComplete="city"
-                                label="City"
-                                {...getFieldProps('city')}
-                                error={Boolean(touched.city && errors.city)}
-                                helperText={touched.city && errors.city} />
+                                helperText={touched.city && errors.city} /> */}
                             <IconButton
                                 sx={{ paddingY: 0, height: 52 }}
                                 type="submit"

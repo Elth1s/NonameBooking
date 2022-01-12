@@ -10,7 +10,8 @@ const initialState: AuthState = {
         name: "",
         surname: "",
         photo: "",
-        email: ""
+        email: "",
+        roles: ""
     },
     isAuth: false,
 }
@@ -31,7 +32,8 @@ export const authReducer = (state = initialState, action: AuthAction): AuthState
                     name: "",
                     surname: "",
                     photo: "",
-                    email: ""
+                    email: "",
+                    roles: ""
                 },
                 isAuth: false
             }

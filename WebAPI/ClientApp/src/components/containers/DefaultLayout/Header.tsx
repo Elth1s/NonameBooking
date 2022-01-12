@@ -93,7 +93,7 @@ const Header = () => {
                                 aria-haspopup="true"
                                 aria-expanded={open ? 'true' : undefined}
                             >
-                                {(user.photo == "") ? <Avatar sx={{ width: 32, height: 32, color: "#55FCF1", border: 2, borderColor: '#45A29E' }} style={{ backgroundColor: "transparent" }}>{user.name[0]}</Avatar> : <Avatar alt="Image" sx={{ width: 32, height: 32, color: "#55FCF1", border: 2, borderColor: '#45A29E' }} src={baseURL + user.photo} />}
+                                {(user.photo == "") ? <Avatar sx={{ width: 32, height: 32, color: "#55FCF1", border: 2, borderColor: '#45A29E' }} style={{ backgroundColor: "transparent" }}>{user.name[0].toUpperCase()}</Avatar> : <Avatar alt="Image" sx={{ width: 32, height: 32, color: "#55FCF1", border: 2, borderColor: '#45A29E' }} src={baseURL + user.photo} />}
                             </IconButton>)}
 
 

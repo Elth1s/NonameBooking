@@ -1,8 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 
-
-
 import LogIn from './components/auth/LogIn';
 import SignUp from './components/auth/SignUp';
 import AdminLayout from './components/containers/AdminLayout';
@@ -17,7 +15,11 @@ import UserLayout from './components/containers/UserLayout';
 import Profile from './components/user/Profile';
 import WishList from './components/user/WishList';
 
+import { useTypedSelector } from './hooks/useTypedSelector';
+import CitiesList from './components/user/Apartments/CitiesList';
+
 function App() {
+  const { isAuth, user: { roles } } = useTypedSelector((store) => store.auth);
   return (
     <>
       <ToastContainer
@@ -34,6 +36,7 @@ function App() {
       <Routes>
         <Route path="/" element={<DefaultLayout />}>
           <Route index element={<HomePage />} />
+          <Route path="/cities" element={<CitiesList />} />
 
         </Route>
         <Route element={<AuthLayout />}>
@@ -41,17 +44,21 @@ function App() {
           <Route path="/auth/signup" element={<SignUp />} />
 
         </Route>
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route path="/admin/countries/list" element={<CountriesList />} />
-          <Route path="/admin/countries/create" element={<CreateCountry />} />
-          <Route path="/admin/countries/update/:id" element={<UpdateCountry />} />
+        {isAuth && roles === "Admin" && (
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route path="/admin/countries/list" element={<CountriesList />} />
+            <Route path="/admin/countries/create" element={<CreateCountry />} />
+            <Route path="/admin/countries/update/:id" element={<UpdateCountry />} />
 
-        </Route>
-        <Route path="/user" element={<UserLayout />}>
-          <Route path="/user/profile" element={<Profile />} />
-          <Route path="/user/wishlist" element={<WishList />} />
+          </Route>
+        )}
+        {isAuth && (
+          <Route path="/user" element={<UserLayout />}>
+            <Route path="/user/profile" element={<Profile />} />
+            <Route path="/user/wishlist" element={<WishList />} />
 
-        </Route>
+          </Route>
+        )}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>

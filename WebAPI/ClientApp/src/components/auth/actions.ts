@@ -74,6 +74,6 @@ export const AuthUser = (token: string, dispatch: Dispatch<AuthAction>) => {
     const user = jwt_decode(token) as IUser;
     dispatch({
         type: AuthActionTypes.AUTH_SUCCESS,
-        payload: { id: user.id, name: user.name, surname: user.surname, photo: user.photo, email: user.email }
+        payload: { id: user.id, name: user.name, surname: user.surname, photo: user.photo, email: user.email, roles: user.roles }
     })
 }

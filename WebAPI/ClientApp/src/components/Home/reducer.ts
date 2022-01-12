@@ -1,11 +1,8 @@
 import { HomeAction, HomeActionTypes, HomeState } from "./types";
 
 const initialState: HomeState = {
-    search: {
-        country: "",
-        city: "",
-    },
-    countries: []
+    countries: [],
+    cities: [],
 }
 
 export const homeReducer = (state = initialState, action: HomeAction): HomeState => {
@@ -14,6 +11,11 @@ export const homeReducer = (state = initialState, action: HomeAction): HomeState
             return {
                 ...state,
                 countries: action.payload,
+            }
+        case HomeActionTypes.GET_CITIES_BY_COUNTRY_ID:
+            return {
+                ...state,
+                cities: action.payload,
             }
         default:
             return state;

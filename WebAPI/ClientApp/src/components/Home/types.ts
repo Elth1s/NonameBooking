@@ -1,24 +1,30 @@
 export enum HomeActionTypes {
     GET_COUNTRIES = "GET_COUNTRIES",
+    GET_CITIES_BY_COUNTRY_ID = "GET_CITIES_BY_COUNTRY_ID",
 }
 
 
 
 
 export interface ISearch {
-    country: string,
-    city: string,
+    countryId: string,
+    cityId: string,
 }
 
 export interface ICountry {
     id: number,
-    name: string
+    name: string,
+    code: string
+}
+export interface ICity {
+    id: number,
+    name: string,
 }
 
 
 export interface HomeState {
-    search: ISearch,
     countries: Array<ICountry>
+    cities: Array<ICity>,
 }
 
 
@@ -30,4 +36,9 @@ export interface GetCountriesAction {
     payload: Array<ICountry>
 }
 
-export type HomeAction = GetCountriesAction;
+export interface GetCitiesByCountryIdAction {
+    type: HomeActionTypes.GET_CITIES_BY_COUNTRY_ID,
+    payload: Array<ICity>,
+}
+
+export type HomeAction = GetCountriesAction | GetCitiesByCountryIdAction;

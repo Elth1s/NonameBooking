@@ -8,5 +8,6 @@
         public int ApartmentId { get; set; }
         public string ApartmentName { get; set; }
         public string OrderStatusName { get; set; }
+        public float Total { get; set; }
     }
 }

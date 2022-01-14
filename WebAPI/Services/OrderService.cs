@@ -2,6 +2,7 @@
 using DAL;
 using DAL.Models;
 using Microsoft.AspNetCore.Identity;
+using WebAPI.Constants;
 using WebAPI.Interfaces;
 using WebAPI.Models;
 using WebAPI.Models.Response;
@@ -71,6 +72,7 @@ namespace WebAPI.Services
             order.OrderStatusId = model.OrderStatusId;
             order.ApartmentId = model.ApartmentId;
             order.OrderStatusId = model.OrderStatusId;
+            order.Total = model.Total;
 
             await _orderRepository.UpdateAsync(order);
             await _orderRepository.SaveChangesAsync();
@@ -103,6 +105,10 @@ namespace WebAPI.Services
                 throw new Exception($"Order with id {id} doesn't exist.");
 
             var result = _mapper.Map<OrderFullInfoResponse>(order);
+
+            if (result.OrderStatusName == OrderStatuses.Booked && DateTime.Now.Date <= result.End.Date)
+                result.Address = order.Apartment.Address;
+
             return result;
         }
 

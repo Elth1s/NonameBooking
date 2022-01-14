@@ -2,6 +2,7 @@
 {
     public class OrderFullInfoResponse : OrderResponse
     {
-        public string UserFullName { get; set; }  
+        public string UserFullName { get; set; }
+        public string Address { get; set; }
     }
 }

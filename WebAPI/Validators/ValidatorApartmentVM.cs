@@ -19,6 +19,11 @@ namespace WebAPI.Validators
             RuleFor(c => c.Description).Cascade(CascadeMode.Stop)
                 .MaximumLength(250).WithMessage("{PropertyName} max length 250 characters!");
 
+            //Address
+            RuleFor(a => a.Address).Cascade(CascadeMode.Stop)
+                .NotEmpty().WithName("Address").WithMessage("{PropertyName} is required!")
+                .MaximumLength(250).WithMessage("{PropertyName} max length 250 characters!"); ;
+
             //Price
             RuleFor(c => c.Price).Cascade(CascadeMode.Stop)
                .InclusiveBetween(0.1f, 10_000_000f).WithMessage("{PropertyName} should be beetween 0.1 and 10 000 000");
@@ -37,6 +42,8 @@ namespace WebAPI.Validators
             RuleFor(a => a.Bathrooms).Cascade(CascadeMode.Stop)
                 .NotEmpty().WithName("Beds").WithMessage("{PropertyName} is required!")
                 .InclusiveBetween(1, 16).WithMessage("{PropertyName} must be between 1 and 16!");
+
+
 
         }
     }

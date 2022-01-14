@@ -15,15 +15,18 @@ namespace WebAPI.Validators
 
 
             //Start
-            RuleFor(c => c.Start).Cascade(CascadeMode.Stop)
+            RuleFor(o => o.Start).Cascade(CascadeMode.Stop)
                 .NotEmpty().WithName("Start date").WithMessage("{PropertyName} is required!");
 
             //End
-            RuleFor(c => c.End).Cascade(CascadeMode.Stop)
+            RuleFor(o => o.End).Cascade(CascadeMode.Stop)
                .NotEmpty().WithName("End date").WithMessage("{PropertyName} is required!")
-               .GreaterThan(c => c.Start.Value).When(c => c.Start.HasValue).WithMessage("{PropertyName} must after start date")
-               .Must((c,end) => {return IsValidDates(c.ApartmentId, c.Start.Value, end.Value); }).WithMessage("Invalid range of dates.");
+               .GreaterThan(o => o.Start.Value).When(o => o.Start.HasValue).WithMessage("{PropertyName} must after start date")
+               .Must((o,end) => {return IsValidDates(o.ApartmentId, o.Start.Value, end.Value); }).WithMessage("Invalid range of dates.");
 
+            //Total
+            RuleFor(o => o.Total).NotEmpty().WithName("Total").WithMessage("{PropertyName} is required!")
+                .GreaterThan(0).WithMessage("{PropertyName} must be greater than 0!");
 
         }
         private bool IsValidDates(int apartmentId, DateTime start, DateTime end)

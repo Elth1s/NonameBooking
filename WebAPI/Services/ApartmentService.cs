@@ -120,6 +120,7 @@ namespace WebAPI.Services
             apartment.OwnerId = model.OwnerId;
             apartment.CityId = model.CityId;
             apartment.Price = model.Price;
+            apartment.Address = model.Address;
             apartment.TypeOfApartmentId = model.TypeOfApartmentId;
             apartment.Beds = model.Beds;
             apartment.Bedrooms = model.Bedrooms;
@@ -218,7 +219,7 @@ namespace WebAPI.Services
                 request.PriceRange = new PriceRange() { Start = 0, End = float.MaxValue };
 
             if (request.DateRange == null)
-                request.DateRange = new DateRange() { Start=DateTime.Now, End=DateTime.Now.AddYears(1) };
+                request.DateRange = new DateRange() { Start=DateTime.Now, End=DateTime.Now.AddMonths(3) };
 
             var spec = new ApartmentSearchSpecification(request.CountryId,request.PriceRange, request.DateRange,request.TypesOfApartment,request.Filters,request.Beds,request.Bedrooms,request.Bathrooms);
             var apartments = await _apartmentRepository.ListAsync(spec);
@@ -236,6 +237,7 @@ namespace WebAPI.Services
                 new CityWithApartmentResponse  {
                   Id=g.Key.Id,
                   Name=g.Key.Name,
+                  Image=Path.Combine(ImagePath.ApartmentsImagePath,g.Key.Image),
                   Apartments=g.Select(ga=> _mapper.Map<CityApartment>(ga)).Take(request.TakeApartments?? TakeApartment)})
                 .ToList();
 
@@ -248,7 +250,8 @@ namespace WebAPI.Services
                 new CityWithApartmentResponse
                 {
                     Id = g.Key.Id,
-                    Name = g.Key.Name
+                    Name = g.Key.Name,
+                    Image = Path.Combine(ImagePath.ApartmentsImagePath, g.Key.Image),
                 }));
 
             return result;

@@ -7,6 +7,7 @@ namespace WebAPI.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public float Price { get; set; }
+        public string Address { get; set; }
         public int TypeOfApartmentId { get; set; }
         public int CityId { get; set; }
         public string OwnerId { get; set; }

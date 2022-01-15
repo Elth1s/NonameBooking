@@ -3,9 +3,11 @@ import {
     Avatar,
     Box,
     IconButton,
-    Typography
+    Typography,
+    Popper
 } from "@mui/material";
 import { Search } from '@mui/icons-material';
+import { makeStyles, createStyles } from "@mui/styles";
 import {
     Form,
     FormikProvider,
@@ -21,19 +23,56 @@ import { SearchSchema } from "./validation";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { useActions } from "../../hooks/useActions";
 
+const useStyles = makeStyles((theme) =>
+    createStyles({
+        root: {
+            "& .MuiAutocomplete-listbox": {
+                background: "#18181b",
+                color: "#f1f1f1",
+                fontSize: 18,
+                borderRadius: 3,
+                "& :hover": {
+                    backgroundColor: "#222226"
+                }
+            },
+            "& .MuiAutocomplete-paper": {
+                color: "#f1f1f1",
+                fontSize: 18,
+                borderRadius: 3,
+                background: "#18181b",
+            },
+            "& .MuiAutocomplete-noOptions": {
+                borderRadius: 3,
+                color: "#f1f1f1",
+                background: "#18181b",
+            }
+        }
+    })
+);
+
+const CustomPopper = function (props: any) {
+    const classes = useStyles();
+    return <Popper {...props} className={classes.root} placement="bottom" />;
+};
+
 const HomePage = () => {
+    const [loading, setLoading] = useState<boolean>(false);
+    const [value, setValue] = useState<any>(null);
+
     const navigate = useNavigate();
 
     const { countries, cities } = useTypedSelector((state) => state.home);
     const { GetCountries, GetCitiesByCountryId } = useActions();
 
-    const [value, setValue] = useState<any>(null);
 
     async function getCountries() {
+        setLoading(true);
         try {
             await GetCountries();
+            setLoading(false);
         } catch (ex) {
             console.log("Problem fetch");
+            setLoading(false);
         }
     }
     async function getCitiesByCountryId(id: number) {
@@ -57,14 +96,13 @@ const HomePage = () => {
             if (values.cityId)
                 navigate(`/apartments?countryId=${values.countryId}&cityId=${values.cityId}`)
             else
-                navigate(`/cities?countryId=${values.countryId}&cityId=${"NONE"}`)
-
+                navigate(`/cities?countryId=${values.countryId}`)
+            getCitiesByCountryId(0);
         }
     });
 
 
     const { errors, touched, handleSubmit, getFieldProps, setFieldValue } = formik;
-
     return (
         <>
             <Box sx={{ borderRadius: "30px", height: "90vh", backgroundImage: "url(https://images.unsplash.com/photo-1594237926304-3e833086e6ca?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80)", backgroundRepeat: "no-repeat", backgroundSize: "cover" }}>
@@ -79,7 +117,9 @@ const HomePage = () => {
                                 sx={{ width: 223, marginX: 2 }}
                                 options={countries}
                                 autoHighlight
+                                loading={loading}
                                 onChange={(e, value) => {
+                                    console.log(value)
                                     if (value) {
                                         setFieldValue("countryId", value?.id)
                                         getCitiesByCountryId(value?.id);
@@ -95,7 +135,7 @@ const HomePage = () => {
                                 }}
                                 getOptionLabel={(option) => option.name}
                                 renderOption={(props, option) => (
-                                    <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                                    <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 }, backgroundColor: "#18181b" }} {...props}>
                                         <img
                                             loading="lazy"
                                             width="20"
@@ -119,6 +159,7 @@ const HomePage = () => {
                                         }}
                                     />
                                 )}
+                                PopperComponent={CustomPopper}
                             />
 
                             <Autocomplete
@@ -133,7 +174,7 @@ const HomePage = () => {
                                 }}
                                 getOptionLabel={(option) => option.name}
                                 renderOption={(props, option) => (
-                                    <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                                    <Box key={option.id} component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
                                         {option.name}
                                     </Box>
                                 )}
@@ -148,6 +189,7 @@ const HomePage = () => {
                                         }}
                                     />
                                 )}
+                                PopperComponent={CustomPopper}
                             />
                             {/* <CssTextField
                                 sx={{ marginX: 2 }}

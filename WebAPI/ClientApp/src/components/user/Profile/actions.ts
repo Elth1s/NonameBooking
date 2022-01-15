@@ -1,6 +1,8 @@
 import axios, { AxiosError } from "axios"
 import { Dispatch } from "react"
 import http from "../../../http_comon"
+import { AuthUser } from "../../auth/actions"
+import { AuthAction } from "../../auth/types"
 import { IProfile, ProfileAction, ProfileActionTypes, ProfileServerError } from "./types"
 
 export const GetProfile = (id: string) => {
@@ -27,7 +29,7 @@ export const GetProfile = (id: string) => {
 }
 
 export const UpdateProfile = (id: string, data: IProfile, image?: File) => {
-    return async () => {
+    return async (dispatch: Dispatch<AuthAction>) => {
         try {
             var formData = new FormData();
             formData.append("name", data.name);
@@ -35,11 +37,14 @@ export const UpdateProfile = (id: string, data: IProfile, image?: File) => {
             formData.append("phone", data.phone);
             if (image)
                 formData.append("photo", image);
-            await http.put(`api/Profile/edit-profile/${id}`, formData, {
+            let response = await http.put(`api/Profile/edit-profile/${id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             })
+            const { token } = response.data;
+            localStorage.token = token;
+            AuthUser(token, dispatch);
             return Promise.resolve();
         }
         catch (ex) {

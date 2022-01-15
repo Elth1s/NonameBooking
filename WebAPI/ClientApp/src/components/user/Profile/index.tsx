@@ -24,6 +24,7 @@ import { useNavigate } from "react-router-dom";
 import { useActions } from "../../../hooks/useActions";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { CssTextField } from "../../comon/CssTextField";
+import ChangePasswordDialog from "../../comon/ChangePasswordDialog";
 import { ProfileSchema } from "./validation";
 import { ProfileServerError } from "./types";
 import { base64ImageToBlob } from "./actions";
@@ -43,7 +44,8 @@ const Profile = () => {
 
     const { GetProfile, UpdateProfile } = useActions();
     const [loading, setLoading] = useState<boolean>(false);
-    const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+    const [isCropperDialogOpen, setIsCropperDialogOpen] = React.useState(false);
+    const [isChangePasswordDialogOpen, setIsChangePasswordDialogOpen] = React.useState(false);
 
 
     const { id } = useTypedSelector((store) => store.auth.user);
@@ -120,7 +122,7 @@ const Profile = () => {
         else
             cropperObj?.replace(url);
 
-        setIsDialogOpen(true);
+        setIsCropperDialogOpen(true);
     }
 
     const handleImageChange = async function (e: React.ChangeEvent<HTMLInputElement>) {
@@ -134,17 +136,27 @@ const Profile = () => {
         cropperObj?.rotate(90);
     };
 
-    const modalClose = () => {
-        setIsDialogOpen(false);
+    const cropperDialogClose = () => {
+        setIsCropperDialogOpen(false);
     };
 
-    const modalSave = async function (e: React.MouseEvent<HTMLElement>) {
+    const changePasswordDialogOpen = () => {
+        setIsChangePasswordDialogOpen(true);
+    };
+
+    const changePasswordDialogClose = () => {
+        setIsChangePasswordDialogOpen(false);
+    };
+
+    const { errors, touched, isSubmitting, handleSubmit, getFieldProps, setFieldValue } = formik;
+
+    const cropperDialogSave = async function (e: React.MouseEvent<HTMLElement>) {
         const base = cropperObj?.getCroppedCanvas().toDataURL() as string;
         await setFileSelected(base)
-        setIsDialogOpen(false);
+        setFieldValue("photo", "")
+        setIsCropperDialogOpen(false);
     };
 
-    const { errors, touched, isSubmitting, handleSubmit, getFieldProps } = formik;
 
     return (
         <Box sx={{ flexGrow: 1, m: 1, mx: 3, }}>
@@ -196,7 +208,16 @@ const Profile = () => {
                                             />
                                         </Grid>
 
-                                        <Grid item xs={12} mt={3} display="flex" justifyContent="end" >
+                                        <Grid item xs={12} mt={3} display="flex" justifyContent="space-between" >
+                                            <Button
+                                                sx={{ paddingX: "35px" }}
+                                                size="large"
+                                                variant="contained"
+                                                style={{ backgroundColor: "#45A29E" }}
+                                                onClick={changePasswordDialogOpen}
+                                            >
+                                                Change password
+                                            </Button>
                                             <LoadingButton
                                                 sx={{ paddingX: "35px" }}
                                                 size="large"
@@ -210,13 +231,13 @@ const Profile = () => {
                                         </Grid>
                                     </Grid>
                                     <Grid container sx={{ display: 'flex', justifyContent: 'center', width: "30%" }} >
-                                        {formik.values.photo == "" || formik.values.photo == null || cropperObj != null
+                                        {(formik.values.photo == null || formik.values.photo == "")
                                             ? <>
                                                 <label htmlFor="Image">
                                                     <img
                                                         src={fileSelected}
                                                         alt="Image"
-                                                        style={{ width: "160px", height: "160px", cursor: "pointer" }} />
+                                                        style={{ width: "160px", height: "160px", cursor: "pointer", borderRadius: 7 }} />
                                                 </label>
                                                 <input style={{ display: "none" }} type="file" name="Image" id="Image" onChange={handleImageChange} />
                                             </>
@@ -238,42 +259,51 @@ const Profile = () => {
                         </FormikProvider>
                     </Box>
                     <Dialog
-                        open={isDialogOpen}
+                        open={isCropperDialogOpen}
                         TransitionComponent={Transition}
                         maxWidth="md"
                         keepMounted
-                        onClose={modalClose}
+                        onClose={cropperDialogClose}
                         aria-describedby="alert-dialog-slide-description"
-
+                        PaperProps={{
+                            style: { borderRadius: 10, background: "#18181b", minWidth: "550px", minHeight: "300px" }
+                        }}
                     >
-                        <DialogTitle sx={{ m: 0, p: 2 }}>
-                            Modal title
+                        <DialogTitle sx={{ m: 0, p: 2 }} color="#55FCF1" >
+                            Change photo
                             <IconButton
                                 aria-label="close"
-                                onClick={modalClose}
+                                onClick={cropperDialogClose}
                                 sx={{
                                     position: 'absolute',
+                                    my: "auto",
                                     right: 8,
-                                    top: 8,
-                                    color: (theme) => theme.palette.grey[500],
+                                    top: 10,
+                                    color: "#55FCF1"
                                 }}
                             >
                                 <Close />
                             </IconButton>
                         </DialogTitle>
-                        <DialogContent dividers>
+                        <DialogContent dividers sx={{ borderColor: '#45A29E' }}>
 
                             <img ref={imgRef as LegacyRef<HTMLImageElement>}
                                 src={fileSelected} />
 
                         </DialogContent>
                         <DialogActions>
-                            <Button autoFocus onClick={modalSave}>
+                            <Button
+                                size="medium"
+                                variant="contained"
+                                style={{ backgroundColor: "#45A29E" }}
+                                onClick={cropperDialogSave}
+                            >
                                 Save changes
                             </Button>
                         </DialogActions>
 
                     </Dialog >
+                    <ChangePasswordDialog isChangePasswordDialogOpen={isChangePasswordDialogOpen} Transition={Transition} changePasswordDialogClose={changePasswordDialogClose} id={id} />
                 </>
             }
         </Box>

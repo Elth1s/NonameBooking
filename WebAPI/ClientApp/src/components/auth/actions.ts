@@ -52,7 +52,7 @@ export const RegisterUser = (data: IRegisterModel) => {
             if (axios.isAxiosError(error)) {
                 const serverError = error as AxiosError<RegisterServerError>;
                 if (serverError && serverError.response) {
-                    // serverError.response.data.status = serverError.response.status;
+                    serverError.response.data.status = serverError.response.status;
                     // serverError.response.data.errors = serverError.response.;
                     return Promise.reject(serverError.response.data);
                 }
@@ -71,6 +71,7 @@ export const LogoutUser = () => {
 
 export const AuthUser = (token: string, dispatch: Dispatch<AuthAction>) => {
     // const user = jwt.decode(token) as IUser;
+    // jwt.verify(token)
     const user = jwt_decode(token) as IUser;
     dispatch({
         type: AuthActionTypes.AUTH_SUCCESS,

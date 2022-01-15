@@ -27,6 +27,7 @@ interface IMenuItem {
     link: string,
 }
 
+
 const menuItems: Array<IMenuItem> = [
     {
         label: 'Home',
@@ -45,9 +46,11 @@ const menuItems: Array<IMenuItem> = [
     }
 ];
 
+
 const Header = () => {
-    const { user, isAuth } = useTypedSelector((state) => state.auth);
     const { LogoutUser } = useActions();
+    const { user, isAuth } = useTypedSelector((state) => state.auth);
+
 
     const navigate = useNavigate();
 
@@ -149,22 +152,34 @@ const Header = () => {
                 </Box>
                 <Divider sx={{ my: 1, background: "#45A29E" }} />
                 {menuItems.map((option) => (
+                    option.label == "Admin" && user.roles != "Admin"
+                        ?
+                        < MenuItem
+                            key={option.label}
+                            to={option.link}
+                            component={Link}
+                            onClick={handleClose}
+                            sx={{ py: 1, px: 2.5 }}
+                            style={{ textDecoration: 'none', color: 'unset', display: "none" }}
+                        >
 
-                    < MenuItem
-                        key={option.label}
-                        to={option.link}
-                        component={Link}
-                        onClick={handleClose}
-                        sx={{ py: 1, px: 2.5 }}
-                        style={{ textDecoration: 'none', color: 'unset' }}
-                    >
-                        <IconButton sx={{ mr: 2, width: 24, height: 24, color: "#f1f1f1" }}>
-                            {option.icon}
-                        </IconButton>
-                        <Typography variant="subtitle1" noWrap sx={{ color: '#f1f1f1' }}>
-                            {option.label}
-                        </Typography>
-                    </MenuItem>
+                        </MenuItem>
+                        :
+                        < MenuItem
+                            key={option.label}
+                            to={option.link}
+                            component={Link}
+                            onClick={handleClose}
+                            sx={{ py: 1, px: 2.5 }}
+                            style={{ textDecoration: 'none', color: 'unset' }}
+                        >
+                            <IconButton sx={{ mr: 2, width: 24, height: 24, color: "#f1f1f1" }}>
+                                {option.icon}
+                            </IconButton>
+                            <Typography variant="subtitle1" noWrap sx={{ color: '#f1f1f1' }}>
+                                {option.label}
+                            </Typography>
+                        </MenuItem>
                 ))}
                 <Divider sx={{ my: 1, background: "#45A29E" }} />
                 <MenuItem

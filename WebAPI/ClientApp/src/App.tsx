@@ -16,7 +16,8 @@ import Profile from './components/user/Profile';
 import WishList from './components/user/WishList';
 
 import { useTypedSelector } from './hooks/useTypedSelector';
-import CitiesList from './components/user/Apartments/CitiesList';
+import CitiesList from './components/user/CitiesList';
+import ApartmentsList from './components/user/ApartmentsList';
 
 function App() {
   const { isAuth, user: { roles } } = useTypedSelector((store) => store.auth);
@@ -37,6 +38,7 @@ function App() {
         <Route path="/" element={<DefaultLayout />}>
           <Route index element={<HomePage />} />
           <Route path="/cities" element={<CitiesList />} />
+          <Route path="/apartments" element={<ApartmentsList />} />
 
         </Route>
         <Route element={<AuthLayout />}>

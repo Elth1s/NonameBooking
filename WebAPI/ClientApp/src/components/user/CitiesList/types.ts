@@ -14,17 +14,18 @@ export interface ICity {
     id: number,
     name: string,
     image: string,
-    Apartments?: Array<IApartment>
+    apartments: Array<IApartment>
 }
 
 
 export interface CityState {
-    cities: Array<ICity>
+    citiesWithApartment: Array<ICity>,
+    citiesWithoutApartment: Array<ICity>,
 }
 
 export interface GetCitiesAction {
     type: CitiesActionTypes.GET_CITIES,
-    payload: Array<ICity>,
+    payload: CityState
 }
 
 export type CityAction = GetCitiesAction;

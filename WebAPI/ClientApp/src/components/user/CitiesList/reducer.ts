@@ -1,7 +1,8 @@
 import { CitiesActionTypes, CityAction, CityState } from "./types";
 
 const initialState: CityState = {
-    cities: []
+    citiesWithApartment: [],
+    citiesWithoutApartment: []
 }
 
 export const userCityReducer = (state = initialState, action: CityAction): CityState => {
@@ -9,7 +10,8 @@ export const userCityReducer = (state = initialState, action: CityAction): CityS
         case CitiesActionTypes.GET_CITIES:
             return {
                 ...state,
-                cities: action.payload,
+                citiesWithApartment: action.payload.citiesWithApartment,
+                citiesWithoutApartment: action.payload.citiesWithoutApartment,
             }
         default:
             return state;

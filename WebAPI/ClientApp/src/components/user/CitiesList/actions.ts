@@ -1,6 +1,6 @@
 import { Dispatch } from "react"
-import { CitiesActionTypes, CityAction, ICity } from "./types"
-import http from "../../../../http_comon"
+import { CitiesActionTypes, CityAction, ICity, CityState } from "./types"
+import http from "../../../http_comon"
 import { ISearch } from "../types"
 import qs from "qs"
 
@@ -12,8 +12,8 @@ export const GetCitiesWithApartments = (id: string, search: ISearch) => {
             let response = await http.get<Array<ICity>>(`api/Apartment/search-group-by-city`, {
                 params: {
                     countryId: id,
-                    takeApartments: 4,
-                    takeCityGroup: 23,
+                    takeApartments: 5,
+                    takeCityGroup: 18,
                     takeCityGroupWithApartment: 3,
                     priceRange: search.priceRange,
                     dateRange: search.dateRange,
@@ -27,9 +27,16 @@ export const GetCitiesWithApartments = (id: string, search: ISearch) => {
                     return qs.stringify(params)
                 }
             })
+            let сityState: CityState = { citiesWithApartment: [], citiesWithoutApartment: [] };
+            response.data.forEach(city => {
+                if (city.apartments)
+                    сityState.citiesWithApartment.push(city)
+                else
+                    сityState.citiesWithoutApartment.push(city)
+            });
             dispatch({
                 type: CitiesActionTypes.GET_CITIES,
-                payload: response.data
+                payload: сityState
             })
             return Promise.resolve();
         }

@@ -16,14 +16,21 @@ export interface IApartment {
     filterName: Array<string>,
 }
 
+export interface IApartmentResponse {
+    count: number,
+    cityName: string,
+    apartments: Array<IApartment>
+}
 
 export interface ApartmentState {
+    count: number,
+    cityName: string,
     apartments: Array<IApartment>,
 }
 
 export interface GetApartmentsAction {
     type: ApartmentsActionTypes.GET_APARTMENTS,
-    payload: Array<IApartment>,
+    payload: IApartmentResponse
 }
 
 export type ApartmentAction = GetApartmentsAction;

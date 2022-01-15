@@ -6,6 +6,7 @@ import * as ChangePasswordActionCreators from "../../components/comon/ChangePass
 import * as UserApartmentsActionCreators from "../../components/user/ApartmentsList/actions"
 import * as UserCitiesActionCreators from "../../components/user/CitiesList/actions"
 import * as AdminCitiesActionCreators from "../../components/admin/Cities/actions";
+import * as UserApartmentPageActionCreators from "../../components/user/ApartmentPage/actions"
 
 export default {
     ...AuthActionCreators,
@@ -15,5 +16,6 @@ export default {
     ...ChangePasswordActionCreators,
     ...UserApartmentsActionCreators,
     ...UserCitiesActionCreators,
-    ...AdminCitiesActionCreators
+    ...AdminCitiesActionCreators,
+    ...UserApartmentPageActionCreators,
 }

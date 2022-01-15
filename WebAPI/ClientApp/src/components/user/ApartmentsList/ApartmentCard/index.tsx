@@ -10,15 +10,16 @@ import {
     Breadcrumbs
 } from "@mui/material";
 import { FC } from "react";
+import { Link } from "react-router-dom";
 
 import emptyImage from "../../../../images/empty.jpg"
 import { IApartment } from "../types";
 
-const ApartmentCard: FC<IApartment> = ({ typeOfApartmentName, cityName, filterName, images, name, price, bedrooms, beds, bathrooms }) => {
+const ApartmentCard: FC<IApartment> = ({ id, typeOfApartmentName, cityName, filterName, images, name, price, bedrooms, beds, bathrooms }) => {
     return (
         <Grid item xs={5}>
             <Divider sx={{ my: 3, width: "100%", background: "#45A29E" }} />
-            <CardActionArea sx={{ borderRadius: 3 }}>
+            <CardActionArea sx={{ borderRadius: 3 }} component={Link} to={`/apartment?id=${id}`} >
                 <Card sx={{ display: "flex", backgroundColor: "#18181b", boxShadow: 0 }}>
                     <CardMedia
                         component="img"
@@ -61,6 +62,7 @@ const ApartmentCard: FC<IApartment> = ({ typeOfApartmentName, cityName, filterNa
                             <Breadcrumbs separator="·" aria-label="breadcrumb" sx={{ color: "#f1f1f1" }}>
                                 {filterName.slice(0, 3).map((filter) => (
                                     <Typography
+                                        key={filter}
                                         variant="subtitle2"
                                         component="div"
                                     >

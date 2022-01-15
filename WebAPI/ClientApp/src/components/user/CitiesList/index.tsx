@@ -5,8 +5,9 @@ import {
     Stack,
     Grid
 } from "@mui/material";
+import { ArrowForwardIos } from '@mui/icons-material';
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 import { useActions } from "../../../hooks/useActions";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
@@ -21,6 +22,7 @@ const CitiesList = () => {
     const { GetCitiesWithApartments } = useActions();
 
     const [loadingPage, setLoadingPage] = useState<boolean>(false);
+    const [countryId, setCountryId] = useState<string>("");
     const navigate = useNavigate();
 
     const search: ISearch = {
@@ -43,8 +45,10 @@ const CitiesList = () => {
             if (id === null) {
                 navigate("/");
             }
-            else
+            else {
                 await GetCitiesWithApartments(id, search);
+                setCountryId(id)
+            }
             setLoadingPage(false);
         } catch (ex) {
             console.log("Problem fetch");
@@ -78,7 +82,24 @@ const CitiesList = () => {
                                             {city.apartments.slice(0, 4).map((apartment) => (
                                                 <CityApartmentCard key={apartment.id} {...apartment} />
                                             ))}
-                                            {city.apartments.length > 4 && <h1>Hello</h1>}
+                                            {city.apartments.length > 4 &&
+                                                <Box component={Link} to={`/apartments?countryId=${countryId}&cityId=${city.id}`} style={{ textDecoration: 'none' }}
+                                                    sx={{
+                                                        height: 170,
+                                                        width: 250,
+                                                        backgroundColor: "inherit",
+                                                        border: 1,
+                                                        borderRadius: 3,
+                                                        borderColor: "#45A29E",
+                                                        display: "flex",
+                                                        justifyContent: "space-between",
+                                                        alignItems: "end"
+                                                    }}>
+                                                    <Typography variant="h6" gutterBottom color="#55FCF1" sx={{ m: 1 }}>
+                                                        Show all
+                                                    </Typography>
+                                                    <ArrowForwardIos sx={{ m: 1, mb: 1.5, color: "#55FCF1" }} />
+                                                </Box>}
                                         </Grid>
                                     </Stack>
                                 </Box>
@@ -95,7 +116,7 @@ const CitiesList = () => {
                             <Stack direction="row">
                                 <Grid container >
                                     {citiesWithoutApartment.map((city) => (
-                                        <CityCard key={city.id} {...city} />
+                                        <CityCard key={city.id} countryId={countryId} {...city} />
                                     ))}
 
                                 </Grid>

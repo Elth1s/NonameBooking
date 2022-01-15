@@ -119,7 +119,6 @@ const HomePage = () => {
                                 autoHighlight
                                 loading={loading}
                                 onChange={(e, value) => {
-                                    console.log(value)
                                     if (value) {
                                         setFieldValue("countryId", value?.id)
                                         getCitiesByCountryId(value?.id);
@@ -155,7 +154,6 @@ const HomePage = () => {
                                         helperText={touched.countryId && errors.countryId}
                                         inputProps={{
                                             ...params.inputProps,
-                                            autoComplete: 'countryId',
                                         }}
                                     />
                                 )}
@@ -185,7 +183,6 @@ const HomePage = () => {
                                         label="City"
                                         inputProps={{
                                             ...params.inputProps,
-                                            autoComplete: 'cityId',
                                         }}
                                     />
                                 )}

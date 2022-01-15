@@ -1,17 +1,18 @@
 import { Dispatch } from "react"
-import { ApartmentsActionTypes, ApartmentAction, IApartment } from "./types"
+import { ApartmentsActionTypes, ApartmentAction, IApartmentResponse } from "./types"
 import http from "../../../http_comon"
 import { ISearch } from "../types"
 import qs from "qs"
 
 
 
-export const GetApartments = (id: string, search: ISearch) => {
+export const GetApartments = (cityId: string, countryId: string, search: ISearch) => {
     return async (dispatch: Dispatch<ApartmentAction>) => {
         try {
-            let response = await http.get<Array<IApartment>>(`api/Apartment/search-by-city`, {
+            let response = await http.get<IApartmentResponse>(`api/Apartment/search-by-city`, {
                 params: {
-                    cityId: id,
+                    cityId: cityId,
+                    countryId: countryId,
                     take: 100,
                     page: 1,
                     priceRange: search.priceRange,

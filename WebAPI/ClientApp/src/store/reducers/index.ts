@@ -6,6 +6,7 @@ import { profileReducer } from "../../components/user/Profile/reducer";
 import { userCityReducer } from "../../components/user/CitiesList/reducer";
 import { userApartmentReducer } from "../../components/user/ApartmentsList/reducer"
 import { cityReducer } from "../../components/admin/Cities/reducer";
+import { userApartmentPageReducer } from "../../components/user/ApartmentPage/reducer"
 
 export const rootReducer = combineReducers({
     auth: authReducer,
@@ -15,6 +16,7 @@ export const rootReducer = combineReducers({
     userCity: userCityReducer,
     userApartment: userApartmentReducer,
     adminCity: cityReducer,
+    userApartmentPage: userApartmentPageReducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

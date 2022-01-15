@@ -252,7 +252,7 @@ namespace WebAPI.Services
                 {
                     Id = g.Key.Id,
                     Name = g.Key.Name,
-                    Image = Path.Combine(ImagePath.ApartmentsImagePath, g.Key.Image),
+                    Image = Path.Combine(ImagePath.CitiesImagePath, g.Key.Image),
                 }));
 
             return result;

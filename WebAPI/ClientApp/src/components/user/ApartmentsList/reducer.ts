@@ -1,6 +1,8 @@
 import { ApartmentAction, ApartmentsActionTypes, ApartmentState } from "./types";
 
 const initialState: ApartmentState = {
+    count: 0,
+    cityName: "",
     apartments: []
 }
 
@@ -9,7 +11,9 @@ export const userApartmentReducer = (state = initialState, action: ApartmentActi
         case ApartmentsActionTypes.GET_APARTMENTS:
             return {
                 ...state,
-                apartments: action.payload,
+                count: action.payload.count,
+                cityName: action.payload.cityName,
+                apartments: action.payload.apartments,
             }
         default:
             return state;

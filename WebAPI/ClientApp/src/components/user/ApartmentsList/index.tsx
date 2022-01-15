@@ -16,7 +16,7 @@ import ApartmentCard from "./ApartmentCard";
 
 const ApartmentsList = () => {
 
-    const { apartments } = useTypedSelector((state) => state.userApartment);
+    const { count, cityName, apartments } = useTypedSelector((state) => state.userApartment);
     const { GetApartments } = useActions();
 
     const [loadingPage, setLoadingPage] = useState<boolean>(false);
@@ -38,12 +38,13 @@ const ApartmentsList = () => {
         try {
             const url = window.location.search;
             const params = new URLSearchParams(url);
-            let id = params.get("cityId");
-            if (id === null) {
+            let cityId = params.get("cityId");
+            let countryId = params.get("countryId");
+            if (cityId === null || countryId === null) {
                 navigate("/");
             }
             else
-                await GetApartments(id, search);
+                await GetApartments(cityId, countryId, search);
             setLoadingPage(false);
         } catch (ex) {
             console.log("Problem fetch");
@@ -64,12 +65,12 @@ const ApartmentsList = () => {
                     <Box>
                         <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ py: 1 }}>
                             <Typography variant="h4" gutterBottom color="#55FCF1" sx={{ my: "auto" }}>
-                                apartment.cityName
+                                {cityName}: {count} apartments
                             </Typography>
                         </Stack>
                         <Grid container sx={{ display: "flex", justifyContent: "space-between" }}>
                             {apartments.map((apartment) => (
-                                <ApartmentCard {...apartment} />
+                                <ApartmentCard key={apartment.id} {...apartment} />
                             ))}
                         </Grid>
                     </Box>

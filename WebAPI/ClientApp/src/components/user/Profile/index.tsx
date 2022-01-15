@@ -31,6 +31,7 @@ import { base64ImageToBlob } from "../../comon/CropperDialog/actions";
 
 import defaultImage from "../../../images/download-photo.png"
 import { baseURL } from "../../../http_comon"
+import CropperDialog from "../../comon/CropperDialog";
 
 
 const Transition = React.forwardRef(function Transition(props: any, ref) {
@@ -258,51 +259,13 @@ const Profile = () => {
                             </Form>
                         </FormikProvider>
                     </Box>
-                    <Dialog
-                        open={isCropperDialogOpen}
-                        TransitionComponent={Transition}
-                        maxWidth="md"
-                        keepMounted
-                        onClose={cropperDialogClose}
-                        aria-describedby="alert-dialog-slide-description"
-                        PaperProps={{
-                            style: { borderRadius: 10, background: "#18181b", minWidth: "550px", minHeight: "300px" }
-                        }}
-                    >
-                        <DialogTitle sx={{ m: 0, p: 2 }} color="#55FCF1" >
-                            Change photo
-                            <IconButton
-                                aria-label="close"
-                                onClick={cropperDialogClose}
-                                sx={{
-                                    position: 'absolute',
-                                    my: "auto",
-                                    right: 8,
-                                    top: 10,
-                                    color: "#55FCF1"
-                                }}
-                            >
-                                <Close />
-                            </IconButton>
-                        </DialogTitle>
-                        <DialogContent dividers sx={{ borderColor: '#45A29E' }}>
-
-                            <img ref={imgRef as LegacyRef<HTMLImageElement>}
-                                src={fileSelected} />
-
-                        </DialogContent>
-                        <DialogActions>
-                            <Button
-                                size="medium"
-                                variant="contained"
-                                style={{ backgroundColor: "#45A29E" }}
-                                onClick={cropperDialogSave}
-                            >
-                                Save changes
-                            </Button>
-                        </DialogActions>
-
-                    </Dialog >
+                    <CropperDialog
+                        Transition={Transition}
+                        imgRef={imgRef}
+                        modalSave={cropperDialogSave}
+                        isDialogOpen={isCropperDialogOpen}
+                        modalClose={cropperDialogClose}
+                        image={fileSelected} />
                     <ChangePasswordDialog isChangePasswordDialogOpen={isChangePasswordDialogOpen} Transition={Transition} changePasswordDialogClose={changePasswordDialogClose} id={id} />
                 </>
             }

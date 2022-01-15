@@ -8,19 +8,17 @@ import {
     Box
 } from "@mui/material";
 import { FC } from "react";
+import { Link } from "react-router-dom";
 
 import emptyImage from "../../../../images/empty.jpg"
+import { IApartment } from "../types";
 
-interface ICityApartment {
-    images: Array<string>,
-    name: string,
-    price: number,
-}
 
-const CityApartmentCard: FC<ICityApartment> = ({ images, name, price }) => {
+const CityApartmentCard: FC<IApartment> = ({ id, images, name, price }) => {
+
     return (
         <Grid item xs={5} md={4} lg={3} xl={2} sx={{ mb: 2, mr: { xs: 8, md: 14, lg: 10, xl: 6 } }}>
-            <CardActionArea sx={{ height: "100%", borderRadius: 3 }}>
+            <CardActionArea sx={{ height: "100%", borderRadius: 3 }} component={Link} to={`/apartment?id=${id}`}>
                 <Card sx={{ backgroundColor: "#18181b", boxShadow: 0 }}>
                     <CardMedia
                         component="img"

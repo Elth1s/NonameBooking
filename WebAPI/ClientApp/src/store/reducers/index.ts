@@ -5,7 +5,7 @@ import { homeReducer } from "../../components/Home/reducer";
 import { profileReducer } from "../../components/user/Profile/reducer";
 import { userCityReducer } from "../../components/user/CitiesList/reducer";
 import { userApartmentReducer } from "../../components/user/ApartmentsList/reducer"
-import { cityReducer } from "../../components/admin/Cities/reducer";
+import { adminCityReducer } from "../../components/admin/Cities/reducer";
 import { userApartmentPageReducer } from "../../components/user/ApartmentPage/reducer"
 
 export const rootReducer = combineReducers({
@@ -15,7 +15,7 @@ export const rootReducer = combineReducers({
     profile: profileReducer,
     userCity: userCityReducer,
     userApartment: userApartmentReducer,
-    adminCity: cityReducer,
+    adminCity: adminCityReducer,
     userApartmentPage: userApartmentPageReducer
 });
 

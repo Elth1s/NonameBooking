@@ -1,15 +1,15 @@
 
 import { Dispatch } from "react"
-import { CityAction, CitiesActionTypes, ICityItem, ICity, CityServerError } from "./types";
+import { CityAction, AdminCitiesActionTypes, ICityItem, ICity, CityServerError } from "./types";
 import http from "../../../http_comon"
 import axios, { AxiosError } from "axios";
 
-export const GetCities = () => {
+export const GetAdminCities = () => {
     return async (dispatch: Dispatch<CityAction>) => {
         try {
             let response = await http.get<Array<ICityItem>>('api/City/get-all')
             dispatch({
-                type: CitiesActionTypes.GET_CITIES,
+                type: AdminCitiesActionTypes.GET_ADMIN_CITIES,
                 payload: response.data
             })
             return Promise.resolve();
@@ -33,7 +33,7 @@ export const GetCity = (id: string | null) => {
             let response = await http.get<ICity>(`api/City/get-by-id/${id}`);
             const data = response.data;
             dispatch({
-                type: CitiesActionTypes.GET_CITY_BY_ID,
+                type: AdminCitiesActionTypes.GET_CITY_BY_ID,
                 payload: data,
             });
             return Promise.resolve();

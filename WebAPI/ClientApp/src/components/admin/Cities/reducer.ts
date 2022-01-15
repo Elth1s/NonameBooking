@@ -1,4 +1,4 @@
-import { CityAction, CitiesActionTypes, CityState } from "./types";
+import { CityAction, AdminCitiesActionTypes, CityState } from "./types";
 
 const initialState: CityState = {
     cities: [],
@@ -9,14 +9,14 @@ const initialState: CityState = {
     }
 }
 
-export const cityReducer = (state = initialState, action: CityAction): CityState => {
+export const adminCityReducer = (state = initialState, action: CityAction): CityState => {
     switch (action.type) {
-        case CitiesActionTypes.GET_CITIES:
+        case AdminCitiesActionTypes.GET_ADMIN_CITIES:
             return {
                 ...state,
                 cities: action.payload
             }
-        case CitiesActionTypes.GET_CITY_BY_ID:
+        case AdminCitiesActionTypes.GET_CITY_BY_ID:
             return {
                 ...state,
                 selectedCity: action.payload

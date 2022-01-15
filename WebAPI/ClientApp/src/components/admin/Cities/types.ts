@@ -1,5 +1,5 @@
-export enum CitiesActionTypes {
-    GET_CITIES = "GET_CITIES",
+export enum AdminCitiesActionTypes {
+    GET_ADMIN_CITIES = "GET_ADMIN_CITIES",
     GET_CITY_BY_ID = "GET_CITY_BY_ID",
 }
 
@@ -27,12 +27,12 @@ export interface CityServerError {
     errors: Array<any>,
 }
 export interface GetCitiesAction {
-    type: CitiesActionTypes.GET_CITIES,
+    type: AdminCitiesActionTypes.GET_ADMIN_CITIES,
     payload: Array<ICityItem>
 }
 
 export interface GetCityByIdAction {
-    type: CitiesActionTypes.GET_CITY_BY_ID,
+    type: AdminCitiesActionTypes.GET_CITY_BY_ID,
     payload: ICity
 }
 

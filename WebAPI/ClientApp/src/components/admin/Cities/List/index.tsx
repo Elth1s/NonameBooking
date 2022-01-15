@@ -37,12 +37,12 @@ const CitiesList = () => {
     const [page, setPage] = useState<number>(0);
     const [rowsPerPage, setRowsPerPage] = useState<number>(5);
     const { cities } = useTypedSelector((state) => state.adminCity);
-    const { GetCities, DeleteCity } = useActions();
+    const { GetAdminCities, DeleteCity } = useActions();
 
     async function getCities() {
         setLoading(true);
         try {
-            await GetCities();
+            await GetAdminCities();
             setLoading(false);
         } catch (ex) {
             console.log("Problem fetch");
@@ -58,7 +58,7 @@ const CitiesList = () => {
         setLoading(true);
         try {
             await DeleteCity(id);
-            await GetCities();
+            await GetAdminCities();
             setLoading(false);
             toast.success('City deleted successfully.', { position: "top-right" });
         }

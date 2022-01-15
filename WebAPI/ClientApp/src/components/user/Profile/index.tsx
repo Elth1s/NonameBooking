@@ -27,7 +27,7 @@ import { CssTextField } from "../../comon/CssTextField";
 import ChangePasswordDialog from "../../comon/ChangePasswordDialog";
 import { ProfileSchema } from "./validation";
 import { ProfileServerError } from "./types";
-import { base64ImageToBlob } from "./actions";
+import { base64ImageToBlob } from "../../comon/CropperDialog/actions";
 
 import defaultImage from "../../../images/download-photo.png"
 import { baseURL } from "../../../http_comon"

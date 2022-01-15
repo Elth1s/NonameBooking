@@ -11,6 +11,9 @@ import NotFound from './components/NotFound';
 import CountriesList from './components/admin/Countries/List';
 import UpdateCountry from './components/admin/Countries/Update';
 import CreateCountry from './components/admin/Countries/Create';
+import AdminCitiesList from './components/admin/Cities/List';
+import UpdateCity from './components/admin/Cities/Update';
+import CreateCity from './components/admin/Cities/Create';
 import UserLayout from './components/containers/UserLayout';
 import Profile from './components/user/Profile';
 import WishList from './components/user/WishList';
@@ -52,6 +55,9 @@ function App() {
             <Route path="/admin/countries/create" element={<CreateCountry />} />
             <Route path="/admin/countries/update/:id" element={<UpdateCountry />} />
 
+            <Route path="/admin/cities/list" element={<AdminCitiesList />} />
+            <Route path="/admin/cities/create" element={<CreateCity />} />
+            <Route path="/admin/cities/update/:id" element={<UpdateCity />} />
           </Route>
         )}
         {isAuth && (

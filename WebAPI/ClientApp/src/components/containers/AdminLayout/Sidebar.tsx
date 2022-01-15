@@ -33,7 +33,7 @@ const menu: Array<IMenuItem> = [
     {
         icon: <ListAltOutlined />,
         title: "Apartment",
-        link: "/admin/apartment",
+        link: "/admin/apartments/list",
     },
     {
         icon: <ListAltOutlined />,
@@ -43,7 +43,7 @@ const menu: Array<IMenuItem> = [
     {
         icon: <ListAltOutlined />,
         title: "City",
-        link: "/admin/city",
+        link: "/admin/cities/list",
     },
 ];
 

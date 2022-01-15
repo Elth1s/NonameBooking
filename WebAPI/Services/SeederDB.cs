@@ -353,13 +353,13 @@ namespace WebAPI.Services
                         new (){ Name="Hørsholm",CountryId=61,Image="city.png"},               
                         new (){ Name="Odense", CountryId=61, Image="city.png" },
                         new (){ Name="Aalborg",CountryId=61,Image="city.png"},
-                        new (){ Name="Esbjerg",CountryId=61,Image="city.png"},
+                        new (){ Name="Farum",CountryId=61,Image="city.png"},
                         new (){ Name="Kolding",CountryId=61,Image="city.png"},
                        
                         new (){ Name="Horsens",CountryId=61,Image="city.png"},
                         new (){ Name="Vejle",CountryId=61,Image="city.png"},
                         new (){ Name="Roskilde", CountryId=61, Image="city.png" },
-                        new (){ Name="Herning",CountryId=61,Image="city.png"},
+                        new (){ Name="Ikast",CountryId=61,Image="city.png"},
                         new (){ Name="Helsingør",CountryId=61,Image="city.png"},
                         
                         new (){ Name="Silkeborg",CountryId=61,Image="city.png"},

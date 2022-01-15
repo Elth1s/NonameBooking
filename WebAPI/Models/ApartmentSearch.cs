@@ -2,6 +2,7 @@
 {
     public class ApartmentSearch
     {
+        public int CountryId { get; set; }
         public PriceRange? PriceRange { get; set; }
         public DateRange? DateRange { get; set; }
         public IEnumerable<int>? TypesOfApartment { get; set; }

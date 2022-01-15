@@ -45,6 +45,7 @@ namespace WebAPI.Services
             await _cityRepository.AddAsync(city);
             await _cityRepository.SaveChangesAsync();
         }
+
         public async Task EditCityAsync(int id, CityVM model)
         {
             var country = await _countryRepository.GetByIdAsync(model.CountryId);
@@ -126,7 +127,8 @@ namespace WebAPI.Services
 
         public async Task<IEnumerable<CityFullInfoResponse>> GetAllCitiesAsync()
         {
-            var cities = await _cityRepository.ListAsync();
+            var spec = new CityIncludeInfoSpecification();
+            var cities = await _cityRepository.ListAsync(spec);
             var result = cities.Select(c => _mapper.Map<CityFullInfoResponse>(c));
             return result;
         }

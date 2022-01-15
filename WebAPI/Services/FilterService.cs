@@ -4,6 +4,7 @@ using DAL.Models;
 using WebAPI.Interfaces;
 using WebAPI.Models;
 using WebAPI.Models.Response;
+using WebAPI.Specifications;
 
 namespace WebAPI.Services
 {
@@ -58,7 +59,8 @@ namespace WebAPI.Services
         }
         public async Task<FilterWithFilterGroupResponse> GetFilterByIdAsync(int id)
         {
-            var filter = await _filterRepository.GetByIdAsync(id);
+            var spec = new FilterIncludeInfoSpecification(id);
+            var filter = await _filterRepository.GetByIdAsync(spec);
             if (filter == null)
                 throw new Exception($"Filter with id {id} doesn't exist.");
 
@@ -69,7 +71,8 @@ namespace WebAPI.Services
 
         public async Task<IEnumerable<FilterWithFilterGroupResponse>> GetAllFiltersAsync()
         {
-            var filters = await _filterRepository.ListAsync();
+            var spec = new FilterIncludeInfoSpecification();
+            var filters = await _filterRepository.ListAsync(spec);
             var result = filters.Select(f => _mapper.Map<FilterWithFilterGroupResponse>(f));
             return result;
         }

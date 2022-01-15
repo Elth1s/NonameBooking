@@ -11,7 +11,7 @@ namespace WebAPI.Interfaces
         Task<ApartmentFullInfoResponse> GetApartmentByIdAsync(int id);
        
         Task<IEnumerable<ApartmentResponse>>GetApartmentsByOwnerIdAsync(string ownerId);
-        Task<IEnumerable<ApartmentResponse>> SearchApartmentsByCityAsync(ApartmentRequest request);
+        Task <CityWithApartmentsWithCountResponse> SearchApartmentsByCityAsync(ApartmentRequest request);
 
         Task<IEnumerable<CityWithApartmentResponse>> SearchApartmentsGroupByCityAsync(ApartmentGroupByCityRequest request);
         Task<IEnumerable<ApartmentResponse>> GetAllApartmentsAsync();

@@ -221,15 +221,16 @@ namespace WebAPI.Services
             if (request.DateRange == null)
                 request.DateRange = new DateRange() { Start=DateTime.Now, End=DateTime.Now.AddMonths(3) };
 
-            var spec = new ApartmentSearchSpecification(request.CountryId,request.PriceRange, request.DateRange,request.TypesOfApartment,request.Filters,request.Beds,request.Bedrooms,request.Bathrooms);
+            var spec = new ApartmentSearchSpecification(request.CountryId,null,request.PriceRange, request.DateRange,request.TypesOfApartment,request.Filters,request.Beds,request.Bedrooms,request.Bathrooms);
             var apartments = await _apartmentRepository.ListAsync(spec);
 
-            var groupByCity = apartments.GroupBy(a => a.City).OrderByDescending(g=> g.Key.Apartments.Count);
            
             var groups = request.TakeCityGroup ?? TakeCityGroup;
             var groupsWithApartments = request.TakeCityGroupWithApartment ?? TakeCityGroupWithApartment;
             if (groups < groupsWithApartments)
                 groupsWithApartments = groups;
+
+            var groupByCity = apartments.GroupBy(a => a.City).OrderByDescending(g=> g.Key.Apartments.Count);
 
             var result =
                 groupByCity.Take(groupsWithApartments)
@@ -257,7 +258,8 @@ namespace WebAPI.Services
             return result;
             
         }
-        public async Task<IEnumerable<ApartmentResponse>> SearchApartmentsByCityAsync(ApartmentRequest request)
+       
+        public async Task<CityWithApartmentsWithCountResponse> SearchApartmentsByCityAsync(ApartmentRequest request)
         {
             if (request.PriceRange == null)
                 request.PriceRange = new PriceRange() { Start = 0, End = float.MaxValue };
@@ -269,10 +271,8 @@ namespace WebAPI.Services
                 request.Page = Page;
 
 
-
-            int skip = request.Page.Value > 1 ? (request.Take.Value * (request.Page.Value - 1 )) : 0;
-
             var spec = new ApartmentSearchSpecification(
+                request.CountryId,
                 request.CityId,
                 request.PriceRange,
                 request.DateRange,
@@ -280,12 +280,17 @@ namespace WebAPI.Services
                 request.Filters,
                 request.Beds,
                 request.Bedrooms,
-                request.Bathrooms,
-                request.Take.Value,
-                skip);
+                request.Bathrooms);
+
+            int skip = request.Page.Value > 1 ? (request.Take.Value * (request.Page.Value - 1 )) : 0;
+
 
             var apartments = await _apartmentRepository.ListAsync(spec);
-            var result = apartments.Select(a => _mapper.Map<ApartmentResponse>(a));
+            var cityName = apartments.GroupBy(a => a.City).Select(g=>g.Key.Name).First();
+            var resultApartment = apartments.Skip(skip).Take(request.Take.Value).Select(a => _mapper.Map<ApartmentResponse>(a));
+
+            var result =new CityWithApartmentsWithCountResponse() { Count=apartments.Count, CityName=cityName, Apartments=resultApartment } ;
+
             return result;
         }
 

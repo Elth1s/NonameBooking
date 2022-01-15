@@ -30,7 +30,8 @@ namespace WebAPI.Mapper
                 .ForMember(cvm => cvm.Image, opt => opt.Ignore()); ;
 
             CreateMap<City, CityFullInfoResponse>()
-            .ForMember(c => c.Image, opt => opt.MapFrom(u => Path.Combine(ImagePath.CitiesImagePath, u.Image)));
+            .ForMember(c => c.Image, opt => opt.MapFrom(u => Path.Combine(ImagePath.CitiesImagePath, u.Image)))
+            .ForMember(c=>c.CountryName,opt=>opt.MapFrom(c=>c.Country.Name));
 
             CreateMap<City, CityResponse>();
 
@@ -75,7 +76,8 @@ namespace WebAPI.Mapper
             //Filter
             CreateMap<FilterVM, Filter>();
 
-            CreateMap<Filter, FilterWithFilterGroupResponse>();
+            CreateMap<Filter, FilterWithFilterGroupResponse>()
+                .ForMember(f=>f.FilterGroupName,opt=>opt.MapFrom(r=>r.FilterGroup.Name));
 
             //OrderStatus
             CreateMap<OrderStatusVM, OrderStatus>();

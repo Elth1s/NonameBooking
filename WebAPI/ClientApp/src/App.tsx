@@ -14,6 +14,16 @@ import CreateCountry from './components/admin/Countries/Create';
 import AdminCitiesList from './components/admin/Cities/List';
 import UpdateCity from './components/admin/Cities/Update';
 import CreateCity from './components/admin/Cities/Create';
+import AdminTypeOfApartmentsList from './components/admin/TypeOfApartments/List';
+import UpdateTypeOfApartment from './components/admin/TypeOfApartments/Update';
+import CreateTypeOfApartment from './components/admin/TypeOfApartments/Create';
+import AdminFilterGroupsList from './components/admin/FilterGroups/List';
+import UpdateFilterGroup from './components/admin/FilterGroups/Update';
+import CreateFilterGroup from './components/admin/FilterGroups/Create';
+import AdminFiltersList from './components/admin/Filters/List';
+import UpdateFilter from './components/admin/Filters/Update';
+import CreateFilter from './components/admin/Filters/Create';
+import AdminApartmentsList from './components/admin/Apartments/List';
 import UserLayout from './components/containers/UserLayout';
 import Profile from './components/user/Profile';
 import WishList from './components/user/WishList';
@@ -60,6 +70,20 @@ function App() {
             <Route path="/admin/cities/list" element={<AdminCitiesList />} />
             <Route path="/admin/cities/create" element={<CreateCity />} />
             <Route path="/admin/cities/update/:id" element={<UpdateCity />} />
+
+            <Route path="/admin/typeOfApartments/list" element={<AdminTypeOfApartmentsList />} />
+            <Route path="/admin/typeOfApartments/create" element={<CreateTypeOfApartment />} />
+            <Route path="/admin/typeOfApartments/update/:id" element={<UpdateTypeOfApartment />} />
+
+            <Route path="/admin/filterGroups/list" element={<AdminFilterGroupsList />} />
+            <Route path="/admin/filterGroups/create" element={<CreateFilterGroup />} />
+            <Route path="/admin/filterGroups/update/:id" element={<UpdateFilterGroup />} />
+
+            <Route path="/admin/filters/list" element={<AdminFiltersList />} />
+            <Route path="/admin/filters/create" element={<CreateFilter />} />
+            <Route path="/admin/filters/update/:id" element={<UpdateFilter />} />
+
+            <Route path="/admin/apartments/list" element={<AdminApartmentsList />} />
           </Route>
         )}
         {isAuth && (

@@ -79,6 +79,21 @@ namespace WebAPI.Controllers
                 return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
             }
         }
+        [Authorize]
+        [HttpGet]
+        [Route("get-filters-by-group/{id}")]
+        public async Task<IActionResult> GetFiltersByGroup(int id)
+        {
+            try
+            {
+                var _result = await _service.GetFilterByGroupIdAsync(id);
+                return Ok(_result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
+            }
+        }
 
         [Authorize(Roles = "Admin")]
         [HttpGet]

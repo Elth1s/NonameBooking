@@ -45,7 +45,7 @@ const UpdateCountry = () => {
 
     const formik = useFormik({
         initialValues: selectedCountry,
-        // validationSchema: CountrySchema,
+        validationSchema: CountrySchema,
         enableReinitialize: true,
         onSubmit: async (values, { setFieldError }) => {
             try {
@@ -107,7 +107,17 @@ const UpdateCountry = () => {
                                             helperText={touched.name && errors.name}
                                         />
                                     </Grid>
-
+                                    <Grid item xs={12}>
+                                        <CssTextField
+                                            fullWidth
+                                            autoComplete="code"
+                                            type="text"
+                                            label="Code"
+                                            {...getFieldProps('code')}
+                                            error={Boolean(touched.code && errors.code)}
+                                            helperText={touched.code && errors.code}
+                                        />
+                                    </Grid>
                                     <Grid item xs={12} mt={3} display="flex" justifyContent="end" >
                                         <LoadingButton
                                             sx={{ paddingX: "35px" }}

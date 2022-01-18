@@ -71,7 +71,7 @@ const Profile = () => {
 
     const formik = useFormik({
         initialValues: userInfo,
-        // validationSchema: ProfileSchema,
+        validationSchema: ProfileSchema,
         enableReinitialize: true,
         onSubmit: async (values, { setFieldError }) => {
             try {

@@ -66,7 +66,7 @@ namespace WebAPI.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpGet]
-        [Route("get-by-id")]
+        [Route("get-by-id/{id}")]
         public async Task<IActionResult> GetFilterGroupById(int id)
         {
             try

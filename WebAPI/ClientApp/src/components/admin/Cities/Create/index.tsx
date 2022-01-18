@@ -19,43 +19,12 @@ import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import { useActions } from "../../../../hooks/useActions";
 import { CssTextField } from "../../../comon/CssTextField";
 import { CitySchema } from "../validation";
-import { CityServerError, ICity } from "../types";
+import { CityServerError, IAdminCity } from "../types";
 import { base64ImageToBlob } from "../../../comon/CropperDialog/actions";
 import CropperDialog from "../../../comon/CropperDialog";
-import { makeStyles, createStyles } from "@mui/styles";
+import CustomPopper from "../../../comon/CustomPopper";
 
 import defaultImage from "../../../../images/download-photo.png"
-
-const useStyles = makeStyles((theme) =>
-    createStyles({
-        root: {
-            "& .MuiAutocomplete-listbox": {
-                background: "#18181b",
-                color: "#f1f1f1",
-                fontSize: 18,
-                borderRadius: 3,
-                "& :hover": {
-                    backgroundColor: "#222226"
-                }
-            },
-            "& .MuiAutocomplete-paper": {
-                color: "#f1f1f1",
-                fontSize: 18,
-                borderRadius: 3,
-                background: "#18181b",
-            },
-            "& .MuiAutocomplete-noOptions": {
-                borderRadius: 3,
-                color: "#f1f1f1",
-                background: "#18181b",
-            }
-        }
-    })
-);
-const CustomPopper = function (props: any) {
-    const classes = useStyles();
-    return <Popper {...props} className={classes.root} placement="bottom" />;
-};
 
 const Transition = React.forwardRef(function Transition(props: any, ref) {
     return <Slide direction="left" ref={ref} {...props} />;
@@ -65,7 +34,7 @@ const CreateCity = () => {
     const [fileSelected, setFileSelected] = React.useState<string>(defaultImage)
     const [cropperObj, setCropperObj] = useState<Cropper>();
     const imgRef = useRef<HTMLImageElement>(null);
-    // const [value, setValue] = useState<any>(null);
+
     const { countries } = useTypedSelector((state) => state.home);
     const [loading, setLoading] = useState<boolean>(false);
     const [isCropperDialogOpen, setIsCropperDialogOpen] = React.useState(false);
@@ -88,7 +57,7 @@ const CreateCity = () => {
     }, []);
 
 
-    const cityModel: ICity = { name: '', countryId: '', image: '' };
+    const cityModel: IAdminCity = { name: '', countryId: '', image: '', countryName: '' };
 
     const formik = useFormik({
         initialValues: cityModel,
@@ -102,13 +71,13 @@ const CreateCity = () => {
                         blob = base64ImageToBlob(imgRef.current?.src)
                         var file = new File([blob], "image.png");
                         await CreateCity(values, file)
+                        navigate("/admin/cities/list");
+                        toast.success('City create successfully!');
                     }
                 }
                 else {
-                    await CreateCity(values)
+                    toast.error('File is required.');
                 }
-                navigate("/admin/cities/list");
-                toast.success('City create successfully!');
             }
             catch (exeption) {
                 const serverErrors = exeption as CityServerError;
@@ -182,105 +151,99 @@ const CreateCity = () => {
                     Back
                 </Button>
             </Stack>
-            {loading ? <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                <CircularProgress sx={{ color: "#66fcf1", mt: 3 }} />
-            </Box> :
-                <>
-                    <Box sx={{ mt: 3 }} >
-                        <FormikProvider value={formik} >
-                            <Form autoComplete="off" noValidate onSubmit={handleSubmit} >
-                                <Box sx={{ width: "100%", display: "flex" }}>
-                                    <Grid container spacing={4} sx={{ width: "70%" }}>
-                                        <Grid item xs={12} >
+            <Box sx={{ mt: 3 }} >
+                <FormikProvider value={formik} >
+                    <Form autoComplete="off" noValidate onSubmit={handleSubmit} >
+                        <Box sx={{ width: "100%", display: "flex" }}>
+                            <Grid container spacing={4} sx={{ width: "70%" }}>
+                                <Grid item xs={12} >
+                                    <CssTextField
+                                        fullWidth
+                                        autoComplete="name"
+                                        type="text"
+                                        label="Name"
+                                        {...getFieldProps('name')}
+                                        error={Boolean(touched.name && errors.name)}
+                                        helperText={touched.name && errors.name}
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Autocomplete
+                                        options={countries}
+                                        autoHighlight
+                                        loading={loading}
+                                        onChange={(e, value) => {
+                                            console.log(value)
+                                            if (value) {
+                                                setFieldValue("countryId", value?.id)
+                                            }
+                                            else {
+                                                setFieldValue("countryId", "")
+                                            }
+                                        }}
+                                        getOptionLabel={(option) => option.name}
+                                        renderOption={(props, option) => (
+                                            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 }, backgroundColor: "#18181b" }} {...props}>
+                                                <img
+                                                    loading="lazy"
+                                                    width="20"
+                                                    src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
+                                                    srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
+                                                    alt=""
+                                                />
+                                                {option.name}
+                                            </Box>
+                                        )}
+                                        renderInput={(params) => (
                                             <CssTextField
-                                                fullWidth
-                                                autoComplete="name"
-                                                type="text"
-                                                label="Name"
-                                                {...getFieldProps('name')}
-                                                error={Boolean(touched.name && errors.name)}
-                                                helperText={touched.name && errors.name}
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12}>
-                                            <Autocomplete
-                                                options={countries}
-                                                autoHighlight
-                                                loading={loading}
-                                                onChange={(e, value) => {
-                                                    console.log(value)
-                                                    if (value) {
-                                                        setFieldValue("countryId", value?.id)
-                                                    }
-                                                    else {
-                                                        setFieldValue("countryId", "")
-                                                    }
+                                                {...params}
+                                                {...getFieldProps('countryId')}
+                                                label="Country *"
+                                                error={Boolean(touched.countryId && errors.countryId)}
+                                                helperText={touched.countryId && errors.countryId}
+                                                inputProps={{
+                                                    ...params.inputProps
                                                 }}
-                                                getOptionLabel={(option) => option.name}
-                                                renderOption={(props, option) => (
-                                                    <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 }, backgroundColor: "#18181b" }} {...props}>
-                                                        <img
-                                                            loading="lazy"
-                                                            width="20"
-                                                            src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
-                                                            srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
-                                                            alt=""
-                                                        />
-                                                        {option.name}
-                                                    </Box>
-                                                )}
-                                                renderInput={(params) => (
-                                                    <CssTextField
-                                                        {...params}
-                                                        {...getFieldProps('countryId')}
-                                                        label="Country *"
-                                                        error={Boolean(touched.countryId && errors.countryId)}
-                                                        helperText={touched.countryId && errors.countryId}
-                                                        inputProps={{
-                                                            ...params.inputProps
-                                                        }}
-                                                    />
-                                                )}
-                                                PopperComponent={CustomPopper}
                                             />
-                                        </Grid>
-                                        <Grid item xs={12} mt={3} display="flex" justifyContent="end" >
-                                            <LoadingButton
-                                                sx={{ paddingX: "35px" }}
-                                                size="large"
-                                                type="submit"
-                                                variant="contained"
-                                                loading={isSubmitting}
-                                                style={{ backgroundColor: "#45A29E" }}
-                                            >
-                                                Create
-                                            </LoadingButton>
-                                        </Grid>
-                                    </Grid>
-                                    <Grid container sx={{ display: 'flex', justifyContent: 'end', width: "30%" }} >
-                                        <label htmlFor="Image">
-                                            <img
-                                                src={fileSelected}
-                                                alt="Image"
-                                                style={{ width: "160px", height: "160px", cursor: "pointer", borderRadius: 7 }} />
-                                        </label>
-                                        <input style={{ display: "none" }} type="file" name="Image" id="Image" onChange={handleImageChange} />
-                                    </Grid>
+                                        )}
+                                        PopperComponent={CustomPopper}
+                                    />
+                                </Grid>
+                                <Grid item xs={12} mt={3} display="flex" justifyContent="end" >
+                                    <LoadingButton
+                                        sx={{ paddingX: "35px" }}
+                                        size="large"
+                                        type="submit"
+                                        variant="contained"
+                                        loading={isSubmitting}
+                                        style={{ backgroundColor: "#45A29E" }}
+                                    >
+                                        Create
+                                    </LoadingButton>
+                                </Grid>
+                            </Grid>
+                            <Grid container sx={{ display: 'flex', justifyContent: 'end', width: "30%" }} >
+                                <label htmlFor="Image">
+                                    <img
+                                        src={fileSelected}
+                                        alt="Image"
+                                        style={{ width: "160px", height: "160px", cursor: "pointer", borderRadius: 7 }} />
+                                </label>
+                                <input style={{ display: "none" }} type="file" name="Image" id="Image" onChange={handleImageChange} />
+                            </Grid>
 
-                                </Box>
+                        </Box>
 
-                            </Form>
-                        </FormikProvider>
-                    </Box>
-                    <CropperDialog
-                        Transition={Transition}
-                        imgRef={imgRef}
-                        modalSave={cropperDialogSave}
-                        isDialogOpen={isCropperDialogOpen}
-                        modalClose={cropperDialogClose}
-                        image={fileSelected} />
-                </>
-            }
+                    </Form>
+                </FormikProvider>
+            </Box>
+            <CropperDialog
+                Transition={Transition}
+                imgRef={imgRef}
+                modalSave={cropperDialogSave}
+                isDialogOpen={isCropperDialogOpen}
+                modalClose={cropperDialogClose}
+                image={fileSelected} />
         </Box>
     )
 }

@@ -6,6 +6,10 @@ import * as ChangePasswordActionCreators from "../../components/comon/ChangePass
 import * as UserApartmentsActionCreators from "../../components/user/ApartmentsList/actions"
 import * as UserCitiesActionCreators from "../../components/user/CitiesList/actions"
 import * as AdminCitiesActionCreators from "../../components/admin/Cities/actions";
+import * as AdminTypeOfApartmentsActionCreators from "../../components/admin/TypeOfApartments/actions"
+import * as AdminFilterGroupsActionCreators from "../../components/admin/FilterGroups/actions"
+import * as AdminApartmentsActionCreators from "../../components/admin/Apartments/actions"
+import * as AdminFiltersActionCreators from "../../components/admin/Filters/actions"
 import * as UserApartmentPageActionCreators from "../../components/user/ApartmentPage/actions"
 
 export default {
@@ -17,5 +21,9 @@ export default {
     ...UserApartmentsActionCreators,
     ...UserCitiesActionCreators,
     ...AdminCitiesActionCreators,
+    ...AdminTypeOfApartmentsActionCreators,
+    ...AdminFilterGroupsActionCreators,
+    ...AdminFiltersActionCreators,
+    ...AdminApartmentsActionCreators,
     ...UserApartmentPageActionCreators,
 }

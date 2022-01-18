@@ -104,7 +104,8 @@ namespace WebAPI.Services
 
         public async Task<CityFullInfoResponse> GetCityByIdAsync(int id)
         {
-            var city = await _cityRepository.GetByIdAsync(id);
+            var spec = new CityIncludeInfoSpecification(id);
+            var city = await _cityRepository.GetBySpecAsync(spec);
             if (city == null)
                 throw new Exception($"City with id {id} doesn't exist.");
 
@@ -118,7 +119,7 @@ namespace WebAPI.Services
             if (country == null)
                 throw new Exception($"Country with id {id} doesn't exist.");
 
-            var spec = new CitiesByCountryIdSpecification(id);
+            var spec = new CityListByCountryIdSpecification(id);
             var cities = await _cityRepository.ListAsync(spec);
             var result = cities.Select(c => _mapper.Map<CityResponse>(c));
             return result;

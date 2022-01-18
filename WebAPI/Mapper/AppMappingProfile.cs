@@ -51,7 +51,7 @@ namespace WebAPI.Mapper
               .ForMember(ar => ar.CityName, opt => opt.MapFrom(a => a.City.Name))
               .ForMember(ar => ar.CountryId, opt => opt.MapFrom(a => a.City.CountryId))
               .ForMember(ar => ar.CountryName, opt => opt.MapFrom(a => a.City.Country.Name))
-              .ForMember(ar => ar.Dates, opt => opt.MapFrom(a => a.Orders.Select(o => new DateRange { Start = o.Start, End = o.End })))
+              .ForMember(ar => ar.Dates, opt => opt.MapFrom(a => a.Orders.Where(o=>o.OrderStatus.Status!=OrderStatuses.Canceled).Select(o => new DateRange { Start = o.Start, End = o.End })))
               .ForMember(ar => ar.Images, opt => opt.MapFrom(a => a.Images.Select(i => Path.Combine(ImagePath.ApartmentsImagePath, i.Name))))
               .ForMember(ar=>ar.FilterGroupWithFilters,opt=>opt.MapFrom(a=>a.Filters.GroupBy(f=>new { f.FilterGroup }).Select(f=>new FilterGroupWithFiltersResponse() { Id=f.Key.FilterGroup.Id, Name = f.Key.FilterGroup.Name, Filters= f.Select(f => new FilterResponse { Id=f.Id,Name= f.Name}) })));
 
@@ -75,6 +75,8 @@ namespace WebAPI.Mapper
 
             //Filter
             CreateMap<FilterVM, Filter>();
+
+            CreateMap<Filter, FilterResponse>();
 
             CreateMap<Filter, FilterWithFilterGroupResponse>()
                 .ForMember(f=>f.FilterGroupName,opt=>opt.MapFrom(r=>r.FilterGroup.Name));

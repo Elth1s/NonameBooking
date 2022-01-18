@@ -3,13 +3,13 @@ export enum CountriesActionTypes {
 }
 
 
-export interface ICountry {
-    name: string
+export interface IAdminCountry {
+    name: string,
+    code: string
 }
 
-
 export interface CountryState {
-    selectedCountry: ICountry
+    selectedCountry: IAdminCountry
 }
 
 export interface CountryServerError {
@@ -18,11 +18,9 @@ export interface CountryServerError {
     errors: Array<any>,
 }
 
-
-
 export interface GetCountryByIdAction {
     type: CountriesActionTypes.GET_COUNTRY_BY_ID,
-    payload: ICountry
+    payload: IAdminCountry
 }
 
 export type CountryAction = GetCountryByIdAction;

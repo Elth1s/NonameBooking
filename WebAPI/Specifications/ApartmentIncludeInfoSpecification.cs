@@ -22,6 +22,7 @@ namespace WebAPI.Specifications
                 .ThenInclude(c => c.Country)
                 .Include(a => a.Owner)
                 .Include(a => a.Orders)
+                .ThenInclude(o=>o.OrderStatus)
                 .Include(a => a.Images)
                 .Include(a => a.Filters)
                 .ThenInclude(f=>f.FilterGroup)

@@ -3,6 +3,7 @@ import { CountryAction, CountriesActionTypes, CountryState } from "./types";
 const initialState: CountryState = {
     selectedCountry: {
         name: "",
+        code: ""
     }
 }
 

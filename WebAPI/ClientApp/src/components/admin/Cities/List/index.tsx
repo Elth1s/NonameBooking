@@ -151,7 +151,7 @@ const CitiesList = () => {
                                 <TableRow>
                                     <TablePagination sx={{ border: 0, color: "#55FCF1" }}
                                         rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                                        colSpan={3}
+                                        colSpan={5}
                                         count={cities.length}
                                         rowsPerPage={rowsPerPage}
                                         page={page}

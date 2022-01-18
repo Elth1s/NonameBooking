@@ -60,7 +60,7 @@ namespace WebAPI.Services
         public async Task<FilterWithFilterGroupResponse> GetFilterByIdAsync(int id)
         {
             var spec = new FilterIncludeInfoSpecification(id);
-            var filter = await _filterRepository.GetByIdAsync(spec);
+            var filter = await _filterRepository.GetBySpecAsync(spec);
             if (filter == null)
                 throw new Exception($"Filter with id {id} doesn't exist.");
 
@@ -77,5 +77,12 @@ namespace WebAPI.Services
             return result;
         }
 
+        public async Task<IEnumerable<FilterResponse>> GetFilterByGroupIdAsync(int groupId)
+        {
+            var spec = new FilterListByGroupIdSpecification(groupId);
+            var filters = await _filterRepository.ListAsync(spec);
+            var result = filters.Select(f => _mapper.Map<FilterResponse>(f));
+            return result;
+        }
     }
 }

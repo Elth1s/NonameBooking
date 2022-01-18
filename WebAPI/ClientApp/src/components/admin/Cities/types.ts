@@ -1,23 +1,24 @@
 export enum AdminCitiesActionTypes {
     GET_ADMIN_CITIES = "GET_ADMIN_CITIES",
-    GET_CITY_BY_ID = "GET_CITY_BY_ID",
+    GET_ADMIN_CITY_BY_ID = "GET_ADMIN_CITY_BY_ID",
 }
 
 export interface ICityItem {
     id: number,
     name: string,
-    countryName: number,
+    countryName: string,
     image: string
 }
 
-export interface ICity {
+export interface IAdminCity {
     name: string,
-    countryId: string,
+    countryId: string | number,
+    countryName: string,
     image: string
 }
 
 export interface CityState {
-    selectedCity: ICity
+    selectedCity: IAdminCity
     cities: Array<ICityItem>
 }
 
@@ -32,8 +33,8 @@ export interface GetCitiesAction {
 }
 
 export interface GetCityByIdAction {
-    type: AdminCitiesActionTypes.GET_CITY_BY_ID,
-    payload: ICity
+    type: AdminCitiesActionTypes.GET_ADMIN_CITY_BY_ID,
+    payload: IAdminCity
 }
 
 export type CityAction = GetCityByIdAction | GetCitiesAction;

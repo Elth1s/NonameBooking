@@ -3,7 +3,7 @@ using DAL.Models;
 
 namespace WebAPI.Specifications
 {
-    public class OrderStatusStatusSpecification : Specification<OrderStatus>
+    public class OrderStatusStatusSpecification : Specification<OrderStatus>,ISingleResultSpecification<OrderStatus>
     {
         public OrderStatusStatusSpecification(string status)
         {

@@ -100,8 +100,14 @@ const CountriesList = () => {
                                     <TableCell component="th" scope="row" sx={{ width: 70 }} align="center" >
                                         Id
                                     </TableCell>
-                                    <TableCell>
+                                    <TableCell align="center">
                                         Name
+                                    </TableCell>
+                                    <TableCell sx={{ width: 70 }} align="center" >
+                                        Code
+                                    </TableCell>
+                                    <TableCell sx={{ width: 70 }} align="center" >
+                                        Flag
                                     </TableCell>
                                     <TableCell align="right">
                                     </TableCell>
@@ -116,10 +122,21 @@ const CountriesList = () => {
                                         <TableCell scope="row" sx={{ width: 70 }} align="center" >
                                             {row.id}.
                                         </TableCell>
-                                        <TableCell>
+                                        <TableCell align="center">
                                             {row.name}
                                         </TableCell>
+                                        <TableCell sx={{ width: 70 }} align="center">
+                                            {row.code}
+                                        </TableCell>
+                                        <TableCell align="center">
+                                            <img
+                                                loading="lazy"
+                                                width="30"
+                                                src={`https://flagcdn.com/w40/${row.code.toLowerCase()}.png`}
 
+                                                alt=""
+                                            />
+                                        </TableCell>
                                         <TableCell align="right">
                                             <IconButton aria-label="edit" sx={{ color: "#ffb74d" }} component={Link} to={`/admin/countries/update/${row.id}`} style={{ textDecoration: 'none', color: '#ffb74d' }}>
                                                 <Edit />

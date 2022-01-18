@@ -32,10 +32,6 @@ namespace WebAPI.Services
         }
         public async Task CreateOrderAsync(OrderVM model)
         {
-            var status = await _orderStatusRepository.GetByIdAsync(model.OrderStatusId);
-            if (status == null)
-                throw new Exception($"Failed to create order! Order status with id {model.OrderStatusId} doesn't exist.");
-
             var apartment = await _apartmentRepository.GetByIdAsync(model.ApartmentId);
             if (apartment == null)
                 throw new Exception($"Failed to create order! Apartment with id {model.ApartmentId} doesn't exist.");
@@ -44,35 +40,26 @@ namespace WebAPI.Services
             if (user == null)
                 throw new Exception($"Failed to create order! User with id {model.UserId} doesn't exist.");
 
+            var spec = new OrderStatusStatusSpecification(OrderStatuses.Processing);
+            var status = await _orderStatusRepository.GetBySpecAsync(spec);
+            if (status == null)
+                throw new Exception($"Failed to create order!");
+            
             var order = _mapper.Map<Order>(model);
+            order.OrderStatusId = status.Id;
             await _orderRepository.AddAsync(order);
             await _orderRepository.SaveChangesAsync();
         }
-        public async Task EditOrderAsync(string id, OrderVM model)
+        public async Task EditOrderStatusAsync(string id, int orderStatusId)
         {
-            var status = await _orderStatusRepository.GetByIdAsync(model.OrderStatusId);
+            var status = await _orderStatusRepository.GetByIdAsync(orderStatusId);
             if (status == null)
-                throw new Exception($"Failed to create order! Order status with id {model.OrderStatusId} doesn't exist.");
-
-            var apartment = await _apartmentRepository.GetByIdAsync(model.ApartmentId);
-            if (apartment == null)
-                throw new Exception($"Failed to create order! Apartment with id {model.ApartmentId} doesn't exist.");
-
-            var user = await _userManager.FindByIdAsync(model.UserId);
-            if (user == null)
-                throw new Exception($"Failed to create order! User with id {model.UserId} doesn't exist.");
-
+                throw new Exception($"Failed to edit order! Status with id {orderStatusId} doesn't exist.");
             var order = await _orderRepository.GetByIdAsync(id);
             if (order == null)
-                throw new Exception($"Order with id {id} doesn't exist.");
+                throw new Exception($"Failed to create order! Order with id {id} doesn't exist.");
 
-            order.Start = model.Start.Value;
-            order.End = model.End.Value;
-            order.UserId = model.UserId;
-            order.OrderStatusId = model.OrderStatusId;
-            order.ApartmentId = model.ApartmentId;
-            order.OrderStatusId = model.OrderStatusId;
-            order.Total = model.Total;
+            order.OrderStatusId = orderStatusId;
 
             await _orderRepository.UpdateAsync(order);
             await _orderRepository.SaveChangesAsync();

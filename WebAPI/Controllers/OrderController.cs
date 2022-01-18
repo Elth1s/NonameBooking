@@ -34,12 +34,12 @@ namespace WebAPI.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPut]
-        [Route("edit/{id}")]
-        public async Task<IActionResult> EditOrder(string id, [FromBody] OrderVM model)
+        [Route("edit-order-status/{id}")]
+        public async Task<IActionResult> EditStatusOrder(string id, int orderStatusId)
         {
             try
             {
-                await _service.EditOrderAsync(id, model);
+                await _service.EditOrderStatusAsync(id, orderStatusId);
                 return Ok("Order successfully edited.");
             }
             catch (Exception ex)

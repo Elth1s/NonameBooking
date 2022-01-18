@@ -3,9 +3,9 @@ using DAL.Models;
 
 namespace WebAPI.Specifications
 {
-    public class CitiesByCountryIdSpecification : Specification<City>
+    public class CityListByCountryIdSpecification : Specification<City>
     {
-        public CitiesByCountryIdSpecification(int countryId)
+        public CityListByCountryIdSpecification(int countryId)
         {
             Query.Where(c => c.CountryId == countryId);
         }

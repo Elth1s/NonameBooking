@@ -1,9 +1,9 @@
 import { Dispatch } from "react"
-import { CountryAction, CountriesActionTypes, ICountry, CountryServerError } from "./types";
+import { CountryAction, CountriesActionTypes, IAdminCountry, CountryServerError } from "./types";
 import http from "../../../http_comon"
 import axios, { AxiosError } from "axios";
 
-export const CreateCountry = (data: ICountry) => {
+export const CreateCountry = (data: IAdminCountry) => {
     return async () => {
 
         try {
@@ -45,7 +45,7 @@ export const DeleteCountry = (id: number) => {
 export const GetCountry = (id: string | null) => {
     return async (dispatch: Dispatch<CountryAction>) => {
         try {
-            let response = await http.get<ICountry>(`api/Country/get-by-id/${id}`);
+            let response = await http.get<IAdminCountry>(`api/Country/get-by-id/${id}`);
             const data = response.data;
             dispatch({
                 type: CountriesActionTypes.GET_COUNTRY_BY_ID,
@@ -66,7 +66,7 @@ export const GetCountry = (id: string | null) => {
     }
 }
 
-export const UpdateCountry = (id: string, data: ICountry) => {
+export const UpdateCountry = (id: string, data: IAdminCountry) => {
     return async () => {
         try {
             await http.put(`api/Country/edit/${id}`, data)

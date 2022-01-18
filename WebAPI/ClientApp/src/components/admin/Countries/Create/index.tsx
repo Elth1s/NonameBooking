@@ -30,7 +30,7 @@ import TablePaginationActions from "../../../comon/TablePaginationActions";
 import { useEffect, useState } from "react";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import { useActions } from "../../../../hooks/useActions";
-import { CountryServerError, ICountry } from "../types";
+import { CountryServerError, IAdminCountry } from "../types";
 import { Form, FormikProvider, useFormik } from "formik";
 import { CountrySchema } from "../validation";
 import { CssTextField } from "../../../comon/CssTextField";
@@ -43,11 +43,11 @@ const CreateCountry = () => {
         document.title = "Create country";
     }, []);
 
-    const countryModel: ICountry = { name: '' };
+    const countryModel: IAdminCountry = { name: '', code: '' };
 
     const formik = useFormik({
         initialValues: countryModel,
-        // validationSchema: CountrySchema,
+        validationSchema: CountrySchema,
         onSubmit: async (values, { setFieldError }) => {
             try {
                 await CreateCountry(values);
@@ -105,7 +105,17 @@ const CreateCountry = () => {
                                         helperText={touched.name && errors.name}
                                     />
                                 </Grid>
-
+                                <Grid item xs={12}>
+                                    <CssTextField
+                                        fullWidth
+                                        autoComplete="code"
+                                        type="text"
+                                        label="Code"
+                                        {...getFieldProps('code')}
+                                        error={Boolean(touched.code && errors.code)}
+                                        helperText={touched.code && errors.code}
+                                    />
+                                </Grid>
                                 <Grid item xs={12} mt={3} display="flex" justifyContent="end" >
                                     <LoadingButton
                                         sx={{ paddingX: "35px" }}

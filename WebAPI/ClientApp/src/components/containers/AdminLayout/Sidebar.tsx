@@ -4,12 +4,18 @@ import {
     Drawer,
     ListItem,
     ListItemIcon,
-    ListItemText,
+    ListItemText
 } from "@mui/material";
 import MaterialLink from "@mui/material/Link"
 import {
-    AccountCircleOutlined,
-    ListAltOutlined
+
+    ListAltOutlined,
+    HomeOutlined,
+    ApartmentOutlined,
+    PublicOutlined,
+    FormatListBulletedOutlined,
+    MapsHomeWorkOutlined,
+    CottageOutlined
 } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { FC } from "react";
@@ -25,25 +31,40 @@ interface IMenuItem {
 
 const menu: Array<IMenuItem> = [
     {
-        icon: <AccountCircleOutlined />,
+        icon: <HomeOutlined />,
         title: "Home",
         link: "/admin",
         divider: true,
     },
     {
-        icon: <ListAltOutlined />,
-        title: "Apartment",
-        link: "/admin/apartments/list",
-    },
-    {
-        icon: <ListAltOutlined />,
+        icon: <PublicOutlined />,
         title: "Countries",
         link: "/admin/countries/list",
     },
     {
-        icon: <ListAltOutlined />,
-        title: "City",
+        icon: <ApartmentOutlined />,
+        title: "Cities",
         link: "/admin/cities/list",
+    },
+    {
+        icon: <ListAltOutlined />,
+        title: "Filter groups",
+        link: "/admin/filterGroups/list",
+    },
+    {
+        icon: <FormatListBulletedOutlined />,
+        title: "Filters",
+        link: "/admin/filters/list",
+    },
+    {
+        icon: <MapsHomeWorkOutlined />,
+        title: "Type of apartments",
+        link: "/admin/typeOfApartments/list",
+    },
+    {
+        icon: <CottageOutlined />,
+        title: "Apartments",
+        link: "/admin/apartments/list",
     },
 ];
 

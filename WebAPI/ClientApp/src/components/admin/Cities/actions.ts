@@ -1,6 +1,6 @@
 
 import { Dispatch } from "react"
-import { CityAction, AdminCitiesActionTypes, ICityItem, ICity, CityServerError } from "./types";
+import { CityAction, AdminCitiesActionTypes, ICityItem, IAdminCity, CityServerError } from "./types";
 import http from "../../../http_comon"
 import axios, { AxiosError } from "axios";
 
@@ -27,13 +27,13 @@ export const GetAdminCities = () => {
     }
 }
 
-export const GetCity = (id: string | null) => {
+export const GetAdminCity = (id: string) => {
     return async (dispatch: Dispatch<CityAction>) => {
         try {
-            let response = await http.get<ICity>(`api/City/get-by-id/${id}`);
+            let response = await http.get<IAdminCity>(`api/City/get-by-id/${id}`);
             const data = response.data;
             dispatch({
-                type: AdminCitiesActionTypes.GET_CITY_BY_ID,
+                type: AdminCitiesActionTypes.GET_ADMIN_CITY_BY_ID,
                 payload: data,
             });
             return Promise.resolve();
@@ -70,7 +70,36 @@ export const DeleteCity = (id: number) => {
     }
 }
 
-export const CreateCity = (data: ICity, image?: File) => {
+export const CreateCity = (data: IAdminCity, image: File) => {
+    return async () => {
+
+        try {
+            var formData = new FormData();
+            formData.append("name", data.name);
+            formData.append("countryId", data.countryId.toString());
+            formData.append("image", image);
+
+            let response = await http.post('api/City/create', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            return Promise.resolve();
+        }
+        catch (ex) {
+            if (axios.isAxiosError(ex)) {
+                const serverError = ex as AxiosError<CityServerError>;
+                if (serverError && serverError.response) {
+                    serverError.response.data.status = serverError.response.status;
+                    return Promise.reject(serverError.response.data);
+                }
+            }
+            return Promise.reject(ex)
+        }
+    }
+}
+
+export const UpdateCity = (id: string, data: IAdminCity, image?: File) => {
     return async () => {
 
         try {
@@ -80,7 +109,7 @@ export const CreateCity = (data: ICity, image?: File) => {
             if (image)
                 formData.append("image", image);
 
-            let response = await http.post('api/City/create', formData, {
+            let response = await http.put(`api/City/edit/${id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

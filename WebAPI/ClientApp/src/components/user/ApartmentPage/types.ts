@@ -1,3 +1,5 @@
+import { IDateRange, IFilterGroup } from "../types";
+
 export enum ApartmentPageActionTypes {
     GET_APARTMENT = "GET_APARTMENT",
 }
@@ -6,22 +8,6 @@ export interface IBestImage {
     img: string,
     rows?: number,
     cols?: number
-}
-
-export interface IDateRange {
-    start: Date,
-    end: Date,
-}
-
-export interface IFilter {
-    id: number,
-    name: string,
-}
-
-export interface IFilterGroup {
-    id: number,
-    name: string,
-    filters: Array<IFilter>
 }
 
 export interface IApartment {

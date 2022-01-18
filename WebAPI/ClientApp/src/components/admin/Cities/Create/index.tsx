@@ -81,7 +81,6 @@ const CreateCity = () => {
             }
             catch (exeption) {
                 const serverErrors = exeption as CityServerError;
-                console.log(serverErrors)
                 if (serverErrors.errors)
                     Object.entries(serverErrors.errors).forEach(([key, value]) => {
                         if (Array.isArray(value)) {
@@ -104,7 +103,7 @@ const CreateCity = () => {
     const selectImage = async (url: string) => {
         if (!cropperObj) {
             const cropper = new Cropper(imgRef.current as HTMLImageElement, {
-                aspectRatio: 1 / 1,
+                aspectRatio: 16 / 10,
                 viewMode: 1,
                 dragMode: 'move',
             });
@@ -173,7 +172,6 @@ const CreateCity = () => {
                                         autoHighlight
                                         loading={loading}
                                         onChange={(e, value) => {
-                                            console.log(value)
                                             if (value) {
                                                 setFieldValue("countryId", value?.id)
                                             }

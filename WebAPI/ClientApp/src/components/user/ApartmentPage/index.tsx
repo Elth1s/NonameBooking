@@ -19,7 +19,7 @@ import { toast } from 'react-toastify';
 import { useActions } from "../../../hooks/useActions";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { getNewImages } from "./actions"
-import { IDateRange } from "./types"
+import { IDateRange } from "../types"
 import emptyImage from "../../../images/empty.jpg"
 import PlaceOffersDialog from "../../comon/PlaceOffersDialog";
 import SelectDate from "../../comon/SelectDate";
@@ -230,7 +230,7 @@ const ApartmentPage = () => {
                                 }}
                             >
                                 <Box>
-                                    <Typography variant="h5" gutterBottom color="#55FCF1" sx={{ my: 1 }} onClick={() => { console.log(dateValue) }}>
+                                    <Typography variant="h5" gutterBottom color="#55FCF1" sx={{ my: 1 }}>
                                         <b>${selectedApartment.price}</b> / night
                                     </Typography>
                                     <SelectDate datesForDisable={selectedApartment.dates} value={dateValue} setValue={setDateValue} />

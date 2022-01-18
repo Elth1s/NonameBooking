@@ -87,8 +87,6 @@ const UpdateCity = () => {
                     }
                 }
                 else {
-                    console.log(values)
-                    console.log(typeof (values.countryId))
                     await UpdateCity(id, values)
                 }
                 navigate("/admin/cities/list");
@@ -96,7 +94,6 @@ const UpdateCity = () => {
             }
             catch (exeption) {
                 const serverErrors = exeption as CityServerError;
-                console.log(serverErrors)
                 if (serverErrors.errors)
                     Object.entries(serverErrors.errors).forEach(([key, value]) => {
                         if (Array.isArray(value)) {
@@ -119,7 +116,7 @@ const UpdateCity = () => {
     const selectImage = async (url: string) => {
         if (!cropperObj) {
             const cropper = new Cropper(imgRef.current as HTMLImageElement, {
-                aspectRatio: 1 / 1,
+                aspectRatio: 16 / 9,
                 viewMode: 1,
                 dragMode: 'move',
             });

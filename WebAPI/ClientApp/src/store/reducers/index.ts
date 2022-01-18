@@ -12,6 +12,7 @@ import { adminFilterReducer } from "../../components/admin/Filters/reducer";
 import { adminApartmentReducer } from "../../components/admin/Apartments/reducer";
 import { userApartmentPageReducer } from "../../components/user/ApartmentPage/reducer"
 import { currentUserApartmentReducer } from "../../components/user/Apartments/reducer"
+import { searchReducer } from "../../components/user/reducer"
 
 export const rootReducer = combineReducers({
     auth: authReducer,
@@ -25,8 +26,9 @@ export const rootReducer = combineReducers({
     adminFilterGroup: adminFilterGroupReducer,
     adminFilter: adminFilterReducer,
     adminApartment: adminApartmentReducer,
+    search: searchReducer,
     userApartmentPage: userApartmentPageReducer,
-    currentUserApartment: currentUserApartmentReducer
+    currentUserApartment: currentUserApartmentReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

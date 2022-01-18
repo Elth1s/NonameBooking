@@ -47,7 +47,6 @@ const ChangePasswordDialog: FC<IChangePasswordDialog> = ({ isChangePasswordDialo
             }
             catch (exeption) {
                 const serverErrors = exeption as ChangePasswordServerError;
-                console.log(serverErrors)
                 if (serverErrors.errors)
                     Object.entries(serverErrors.errors).forEach(([key, value]) => {
                         if (Array.isArray(value)) {

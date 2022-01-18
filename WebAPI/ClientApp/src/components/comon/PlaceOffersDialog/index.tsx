@@ -19,7 +19,7 @@ import { Form, FormikProvider, useFormik } from "formik";
 import { toast } from "react-toastify";
 
 import { useActions } from "../../../hooks/useActions";
-import { IFilterGroup } from "../../user/ApartmentPage/types";
+import { IFilterGroup } from "../../user/types";
 
 
 interface IPlaceOffersDialog {

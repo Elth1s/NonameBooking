@@ -71,7 +71,6 @@ const UpdateFilter = () => {
             }
             catch (exeption) {
                 const serverErrors = exeption as FilterServerError;
-                console.log(serverErrors)
                 if (serverErrors.errors)
                     Object.entries(serverErrors.errors).forEach(([key, value]) => {
                         if (Array.isArray(value)) {
@@ -129,7 +128,6 @@ const UpdateFilter = () => {
                                             loading={loading}
                                             defaultValue={{ id: selectedFilter.filterGroupId, name: selectedFilter.filterGroupName }}
                                             onChange={(e, value) => {
-                                                console.log(value)
                                                 if (value) {
                                                     setFieldValue("filterGroupId", value?.id)
                                                 }

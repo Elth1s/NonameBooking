@@ -54,7 +54,6 @@ const CreateFilterGroup = () => {
             }
             catch (exeption) {
                 const serverErrors = exeption as FilterGroupServerError;
-                console.log(serverErrors)
                 if (serverErrors.errors)
                     Object.entries(serverErrors.errors).forEach(([key, value]) => {
                         if (Array.isArray(value)) {

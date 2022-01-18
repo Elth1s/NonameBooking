@@ -80,7 +80,6 @@ const Profile = () => {
             }
             catch (exeption) {
                 const serverErrors = exeption as ProfileServerError;
-                console.log(serverErrors)
                 if (serverErrors.errors)
                     Object.entries(serverErrors.errors).forEach(([key, value]) => {
                         if (Array.isArray(value)) {

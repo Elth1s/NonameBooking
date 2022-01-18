@@ -30,7 +30,7 @@ const AdminLayout = () => {
             {/* <div className="contaier"> */}
             <Box
                 component="main"
-                sx={{ flexGrow: 1, width: { md: `calc(100% - ${props.drawerWidth}px)` }, ml: "auto" }}
+                sx={{ flexGrow: 1, width: { md: `calc(100% - ${props.drawerWidth}px)` }, ml: "auto", mb: 3 }}
             >
                 <Outlet />
                 {showButton && (

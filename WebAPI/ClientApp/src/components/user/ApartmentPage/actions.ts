@@ -1,5 +1,6 @@
 import { Dispatch } from "react"
-import { ApartmentPageActionTypes, ApartmentAction, IApartment, IBestImage, IDateRange } from "./types"
+import { ApartmentPageActionTypes, ApartmentAction, IApartment, IBestImage } from "./types"
+import { IDateRange } from "../types"
 import http from "../../../http_comon"
 
 import { baseURL } from "../../../http_comon"
@@ -73,9 +74,6 @@ export const Reserve = (dateRange: IDateRange, totalPrice: number, userId: strin
                 if (serverError && serverError.response) {
                     serverError.response.data.status = serverError.response.status;
                     // serverError.response.data.errors = serverError.response.;
-                    console.log(serverError)
-                    console.log(serverError.response)
-                    console.log(serverError.response.data)
                     return Promise.reject(serverError.response.data);
                 }
             }

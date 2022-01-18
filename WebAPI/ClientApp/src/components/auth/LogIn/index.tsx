@@ -41,7 +41,6 @@ const LogIn = () => {
             }
             catch (exeption) {
                 const serverErrors = exeption as LoginServerError;
-                console.log(serverErrors)
                 if (serverErrors.errors)
                     Object.entries(serverErrors.errors).forEach(([key, value]) => {
                         if (Array.isArray(value)) {

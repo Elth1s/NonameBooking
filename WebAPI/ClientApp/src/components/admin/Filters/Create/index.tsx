@@ -60,7 +60,6 @@ const CreateFilter = () => {
             }
             catch (exeption) {
                 const serverErrors = exeption as FilterServerError;
-                console.log(serverErrors)
                 if (serverErrors.errors)
                     Object.entries(serverErrors.errors).forEach(([key, value]) => {
                         if (Array.isArray(value)) {
@@ -113,7 +112,6 @@ const CreateFilter = () => {
                                     autoHighlight
                                     loading={loading}
                                     onChange={(e, value) => {
-                                        console.log(value)
                                         if (value) {
                                             setFieldValue("filterGroupId", value?.id)
                                         }

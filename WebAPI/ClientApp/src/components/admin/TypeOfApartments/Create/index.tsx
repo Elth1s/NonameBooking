@@ -54,7 +54,6 @@ const CreateTypeOfApartment = () => {
             }
             catch (exeption) {
                 const serverErrors = exeption as TypeOfApartmentServerError;
-                console.log(serverErrors)
                 if (serverErrors.errors)
                     Object.entries(serverErrors.errors).forEach(([key, value]) => {
                         if (Array.isArray(value)) {

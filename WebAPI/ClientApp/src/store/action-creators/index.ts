@@ -11,7 +11,9 @@ import * as AdminFilterGroupsActionCreators from "../../components/admin/FilterG
 import * as AdminApartmentsActionCreators from "../../components/admin/Apartments/actions"
 import * as AdminFiltersActionCreators from "../../components/admin/Filters/actions"
 import * as UserApartmentPageActionCreators from "../../components/user/ApartmentPage/actions"
+import * as SearchActionCreators from "../../components/user/actions"
 import * as CurrentUserApartmentActionCreators from "../../components/user/Apartments/actions"
+
 const actions = {
     ...AuthActionCreators,
     ...HomeActionCreators,
@@ -26,6 +28,7 @@ const actions = {
     ...AdminFiltersActionCreators,
     ...AdminApartmentsActionCreators,
     ...UserApartmentPageActionCreators,
-    ...CurrentUserApartmentActionCreators
+    ...CurrentUserApartmentActionCreators,
+    ...SearchActionCreators,
 }
 export default actions;

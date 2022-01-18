@@ -271,6 +271,10 @@ namespace WebAPI.Services
        
         public async Task<CityWithApartmentsWithCountResponse> SearchApartmentsByCityAsync(ApartmentRequest request)
         {
+            var city = await _cityRepository.GetByIdAsync(request.CityId);
+            if (city == null)
+                throw new Exception($"City with id {request.CityId} doesn't exist.");
+
             if (request.PriceRange == null)
                 request.PriceRange = new PriceRange() { Start = 0, End = float.MaxValue };
             if (request.DateRange == null)
@@ -296,10 +300,10 @@ namespace WebAPI.Services
 
 
             var apartments = await _apartmentRepository.ListAsync(spec);
-            var cityName = apartments.GroupBy(a => a.City).Select(g=>g.Key.Name).First();
+            
             var resultApartment = apartments.Skip(skip).Take(request.Take.Value).Select(a => _mapper.Map<ApartmentResponse>(a));
 
-            var result =new CityWithApartmentsWithCountResponse() { Count=apartments.Count, CityName=cityName, Apartments=resultApartment } ;
+            var result =new CityWithApartmentsWithCountResponse() { Count=apartments.Count, CityName=city.Name, Apartments=resultApartment } ;
 
             return result;
         }

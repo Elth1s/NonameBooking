@@ -6,22 +6,22 @@ import qs from "qs"
 
 
 
-export const GetApartments = (cityId: string, countryId: string, search: ISearch) => {
+export const GetApartments = (cityId: number, page: number, search: ISearch) => {
     return async (dispatch: Dispatch<ApartmentAction>) => {
         try {
             let response = await http.get<IApartmentResponse>(`api/Apartment/search-by-city`, {
                 params: {
                     cityId: cityId,
-                    countryId: countryId,
-                    take: 100,
-                    page: 1,
-                    priceRange: search.priceRange,
-                    dateRange: search.dateRange,
+                    countryId: search.countryId,
+                    take: 4,
+                    page: page,
+                    priceRange: { start: search.priceStart, end: search.priceEnd },
+                    dateRange: { start: search.dateStart, end: search.dateEnd },
                     typesOfApartment: search.typesOfApartment,
                     filters: search.filters,
-                    beds: search.beds,
-                    bedrooms: search.bedrooms,
-                    bathrooms: search.bathrooms,
+                    beds: search.beds == '' || search.beds == null ? 0 : search.beds,
+                    bedrooms: search.bedrooms == '' || search.bedrooms == null ? 0 : search.bedrooms,
+                    bathrooms: search.bathrooms == '' || search.bathrooms == null ? 0 : search.bathrooms,
                 },
                 paramsSerializer: params => {
                     return qs.stringify(params)

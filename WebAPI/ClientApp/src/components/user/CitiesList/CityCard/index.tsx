@@ -28,7 +28,7 @@ const CityCard: FC<ICity> = ({ countryId, id, image, name }) => {
                         {image
                             ? <CardMedia
                                 component="img"
-                                sx={{ width: 140, borderRadius: 3 }}
+                                sx={{ width: 140, height: 93, borderRadius: 3 }}
                                 image={baseURL + image}
                                 alt="images"
                             />

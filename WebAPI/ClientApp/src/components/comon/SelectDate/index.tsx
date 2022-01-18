@@ -6,7 +6,7 @@ import { Box, TextField } from "@mui/material";
 import { compareAsc } from 'date-fns'
 
 import { CssTextField } from "../CssTextField"
-import { IDateRange } from "../../user/ApartmentPage/types";
+import { IDateRange } from "../../user/types";
 
 interface IDate {
     value: any,
@@ -27,10 +27,6 @@ function addMonths(date: any, months: number) {
     }
     return date;
 }
-
-
-
-
 
 
 const SelectDate: FC<IDate> = ({ value, setValue, datesForDisable }) => {

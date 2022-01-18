@@ -9,8 +9,6 @@ import {
     MenuItem,
     Divider,
     Typography,
-    Icon,
-    Button
 } from "@mui/material";
 import { Home, Person, Login, Logout } from "@mui/icons-material";
 
@@ -96,7 +94,27 @@ const Header = () => {
                                 aria-haspopup="true"
                                 aria-expanded={open ? 'true' : undefined}
                             >
-                                {(user.photo == "") ? <Avatar sx={{ width: 32, height: 32, color: "#55FCF1", border: 2, borderColor: '#45A29E' }} style={{ backgroundColor: "transparent" }}>{user.name[0].toUpperCase()}</Avatar> : <Avatar alt="Image" sx={{ width: 32, height: 32, color: "#55FCF1", border: 2, borderColor: '#45A29E' }} src={baseURL + user.photo} />}
+                                {(user.photo === "")
+                                    ? <Avatar
+                                        sx={{
+                                            width: 32,
+                                            height: 32,
+                                            color: "#55FCF1",
+                                            border: 2,
+                                            borderColor: '#45A29E'
+                                        }}
+                                        style={{ backgroundColor: "transparent" }}
+                                    >
+                                        {user.name[0].toUpperCase()}
+                                    </Avatar>
+                                    : <Avatar alt="Image"
+                                        sx={{
+                                            width: 32,
+                                            height: 32,
+                                            color: "#55FCF1",
+                                            border: 2,
+                                            borderColor: '#45A29E'
+                                        }} src={baseURL + user.photo} />}
                             </IconButton>)}
 
 
@@ -152,7 +170,7 @@ const Header = () => {
                 </Box>
                 <Divider sx={{ my: 1, background: "#45A29E" }} />
                 {menuItems.map((option) => (
-                    option.label == "Admin" && user.roles != "Admin"
+                    option.label === "Admin" && user.roles !== "Admin"
                         ?
                         < MenuItem
                             key={option.label}

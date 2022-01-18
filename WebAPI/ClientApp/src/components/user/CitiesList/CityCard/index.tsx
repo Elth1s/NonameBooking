@@ -2,7 +2,6 @@ import {
     Card,
     CardActionArea,
     CardMedia,
-    CardContent,
     Typography,
     Grid,
     Box

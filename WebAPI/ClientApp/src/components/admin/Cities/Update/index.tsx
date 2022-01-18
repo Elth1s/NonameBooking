@@ -175,8 +175,8 @@ const UpdateCity = () => {
                         <FormikProvider value={formik} >
                             <Form autoComplete="off" noValidate onSubmit={handleSubmit} >
                                 <Box sx={{ width: "100%", display: "flex" }}>
-                                    <Grid container spacing={4} sx={{ width: "70%" }}>
-                                        <Grid item xs={12} >
+                                    <Grid item sx={{ width: "70%" }}>
+                                        <Grid item xs={12} mb={3}>
                                             <CssTextField
                                                 fullWidth
                                                 autoComplete="name"
@@ -243,7 +243,7 @@ const UpdateCity = () => {
                                             </LoadingButton>
                                         </Grid>
                                     </Grid>
-                                    <Grid container sx={{ display: 'flex', justifyContent: 'end', width: "30%" }} >
+                                    <Grid item sx={{ display: 'flex', justifyContent: 'end', width: "30%" }} >
                                         {(formik.values.image == null || formik.values.image == "")
                                             ? <>
                                                 <label htmlFor="Image">

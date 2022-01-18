@@ -119,14 +119,14 @@ const CreateCity = () => {
 
     const handleImageChange = async function (e: React.ChangeEvent<HTMLInputElement>) {
         const fileList = e.target.files;
-        if (!fileList || fileList.length == 0) return;
+        if (!fileList || fileList.length === 0) return;
 
         await selectImage(URL.createObjectURL(fileList[0]));
     };
 
-    const rotateImg = () => {
-        cropperObj?.rotate(90);
-    };
+    // const rotateImg = () => {
+    //     cropperObj?.rotate(90);
+    // };
 
     const cropperDialogClose = () => {
         setIsCropperDialogOpen(false);
@@ -155,8 +155,8 @@ const CreateCity = () => {
                 <FormikProvider value={formik} >
                     <Form autoComplete="off" noValidate onSubmit={handleSubmit} >
                         <Box sx={{ width: "100%", display: "flex" }}>
-                            <Grid container spacing={4} sx={{ width: "70%" }}>
-                                <Grid item xs={12} >
+                            <Grid item sx={{ width: "70%" }}>
+                                <Grid item xs={12} mb={3}>
                                     <CssTextField
                                         fullWidth
                                         autoComplete="name"
@@ -222,7 +222,7 @@ const CreateCity = () => {
                                     </LoadingButton>
                                 </Grid>
                             </Grid>
-                            <Grid container sx={{ display: 'flex', justifyContent: 'end', width: "30%" }} >
+                            <Grid item sx={{ display: 'flex', justifyContent: 'end', width: "30%" }} >
                                 <label htmlFor="Image">
                                     <img
                                         src={fileSelected}

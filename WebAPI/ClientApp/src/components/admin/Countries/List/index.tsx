@@ -20,7 +20,6 @@ import {
     Edit,
     KeyboardArrowDown
 } from "@mui/icons-material";
-import { makeStyles } from '@mui/styles';
 
 import { Link } from "react-router-dom";
 import { toast } from 'react-toastify';
@@ -137,7 +136,7 @@ const CountriesList = () => {
                                                 alt=""
                                             />
                                         </TableCell>
-                                        <TableCell align="right">
+                                        <TableCell sx={{ width: 120 }} align="right">
                                             <IconButton aria-label="edit" sx={{ color: "#ffb74d" }} component={Link} to={`/admin/countries/update/${row.id}`} style={{ textDecoration: 'none', color: '#ffb74d' }}>
                                                 <Edit />
                                             </IconButton>
@@ -154,7 +153,7 @@ const CountriesList = () => {
                                 <TableRow>
                                     <TablePagination sx={{ border: 0, color: "#55FCF1" }}
                                         rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                                        colSpan={3}
+                                        colSpan={5}
                                         count={countries.length}
                                         rowsPerPage={rowsPerPage}
                                         page={page}

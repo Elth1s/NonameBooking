@@ -12,7 +12,7 @@ import * as AdminApartmentsActionCreators from "../../components/admin/Apartment
 import * as AdminFiltersActionCreators from "../../components/admin/Filters/actions"
 import * as UserApartmentPageActionCreators from "../../components/user/ApartmentPage/actions"
 
-export default {
+const actions = {
     ...AuthActionCreators,
     ...HomeActionCreators,
     ...CountryActionCreators,
@@ -27,3 +27,4 @@ export default {
     ...AdminApartmentsActionCreators,
     ...UserApartmentPageActionCreators,
 }
+export default actions;

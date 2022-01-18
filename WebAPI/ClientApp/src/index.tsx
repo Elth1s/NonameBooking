@@ -10,6 +10,7 @@ import './index.css';
 import './App.css';
 import "cropperjs/dist/cropper.css";
 import 'react-toastify/dist/ReactToastify.css';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 const token = localStorage.token as string;
 

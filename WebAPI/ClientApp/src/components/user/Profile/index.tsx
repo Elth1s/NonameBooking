@@ -1,25 +1,17 @@
 import {
-    Avatar,
     Box,
     Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
     Grid,
-    IconButton,
     Slide,
     Stack,
     Typography,
     CircularProgress
 } from "@mui/material";
-import { Close } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import Cropper from "cropperjs";
 import { toast } from "react-toastify";
 import { Form, FormikProvider, useFormik } from "formik";
-import React, { LegacyRef, useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState, forwardRef } from "react";
 
 import { useActions } from "../../../hooks/useActions";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
@@ -34,25 +26,23 @@ import { baseURL } from "../../../http_comon"
 import CropperDialog from "../../comon/CropperDialog";
 
 
-const Transition = React.forwardRef(function Transition(props: any, ref) {
+const Transition = forwardRef(function Transition(props: any, ref) {
     return <Slide direction="left" ref={ref} {...props} />;
 });
 
 const Profile = () => {
-    const [fileSelected, setFileSelected] = React.useState<string>(defaultImage)
+    const [fileSelected, setFileSelected] = useState<string>(defaultImage)
     const [cropperObj, setCropperObj] = useState<Cropper>();
     const imgRef = useRef<HTMLImageElement>(null);
 
     const { GetProfile, UpdateProfile } = useActions();
     const [loading, setLoading] = useState<boolean>(false);
-    const [isCropperDialogOpen, setIsCropperDialogOpen] = React.useState(false);
-    const [isChangePasswordDialogOpen, setIsChangePasswordDialogOpen] = React.useState(false);
+    const [isCropperDialogOpen, setIsCropperDialogOpen] = useState(false);
+    const [isChangePasswordDialogOpen, setIsChangePasswordDialogOpen] = useState(false);
 
 
     const { id } = useTypedSelector((store) => store.auth.user);
     const { userInfo } = useTypedSelector((store) => store.profile);
-
-    const navigate = useNavigate();
 
     useEffect(() => {
         async function getProfile() {
@@ -128,14 +118,14 @@ const Profile = () => {
 
     const handleImageChange = async function (e: React.ChangeEvent<HTMLInputElement>) {
         const fileList = e.target.files;
-        if (!fileList || fileList.length == 0) return;
+        if (!fileList || fileList.length === 0) return;
 
         await selectImage(URL.createObjectURL(fileList[0]));
     };
 
-    const rotateImg = () => {
-        cropperObj?.rotate(90);
-    };
+    // const rotateImg = () => {
+    //     cropperObj?.rotate(90);
+    // };
 
     const cropperDialogClose = () => {
         setIsCropperDialogOpen(false);
@@ -232,12 +222,12 @@ const Profile = () => {
                                         </Grid>
                                     </Grid>
                                     <Grid container sx={{ display: 'flex', justifyContent: 'center', width: "30%" }} >
-                                        {(formik.values.photo == null || formik.values.photo == "")
+                                        {(formik.values.photo === null || formik.values.photo === "")
                                             ? <>
                                                 <label htmlFor="Image">
                                                     <img
                                                         src={fileSelected}
-                                                        alt="Image"
+                                                        alt="DefaultImage"
                                                         style={{ width: "160px", height: "160px", cursor: "pointer", borderRadius: 7 }} />
                                                 </label>
                                                 <input style={{ display: "none" }} type="file" name="Image" id="Image" onChange={handleImageChange} />
@@ -246,7 +236,7 @@ const Profile = () => {
                                                 <label htmlFor="Image">
                                                     <img
                                                         src={baseURL + formik.values.photo}
-                                                        alt="Image"
+                                                        alt="UserImage"
                                                         style={{ width: "160px", height: "160px", cursor: "pointer", borderRadius: 7 }} />
                                                 </label>
                                                 <input style={{ display: "none" }} type="file" name="Image" id="Image" onChange={handleImageChange} />

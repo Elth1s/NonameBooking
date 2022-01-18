@@ -48,6 +48,7 @@ const CropperDialog: React.FC<ICropperDialog> = ({ isDialogOpen, Transition, mod
             <DialogContent dividers sx={{ borderColor: '#45A29E' }}>
 
                 <img ref={imgRef}
+                    alt="SelectedImage"
                     src={image} />
 
             </DialogContent>

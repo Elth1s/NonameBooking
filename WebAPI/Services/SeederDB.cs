@@ -578,7 +578,7 @@ namespace WebAPI.Services
                 //Apartment
                 if (apartmentRepos.ListAsync().Result.Count == 0)
                 {
-                    var ownerId = manager.FindByEmailAsync(firstEmail).Result.Id;
+                    var ownerId = manager.FindByEmailAsync(secondEmail).Result.Id;
                     var filtersId1 = new List<int>() {1,2,3,5,6,7,10,11,18,16,17,20,35,36,30,31,37,38,39,40,42,43,44,45,46,47,48,74,81,80,62,63 };
                     var filtersId2 = new List<int>() {1,4,8,10,13,17,21,23,35,31,37,38,42,62,63 };
                     var filtersId3 = new List<int>() {4,9,17,21,36,37,40,42,74,62 };

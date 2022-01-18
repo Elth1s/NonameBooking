@@ -32,7 +32,7 @@ const LogIn = () => {
 
     const formik = useFormik({
         initialValues: loginModel,
-        // validationSchema: LogInSchema,
+        validationSchema: LogInSchema,
         onSubmit: async (values, { setFieldError }) => {
             try {
                 await LoginUser(values);

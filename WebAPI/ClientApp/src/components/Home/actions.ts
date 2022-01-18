@@ -29,7 +29,7 @@ export const GetCountries = () => {
 export const GetCitiesByCountryId = (id: number) => {
     return async (dispatch: Dispatch<HomeAction>) => {
         try {
-            if (id != 0) {
+            if (id !== 0) {
                 let response = await http.get<Array<ICity>>(`api/City/get-cities-by-country-id/${id}`)
                 dispatch({
                     type: HomeActionTypes.GET_CITIES_BY_COUNTRY_ID,

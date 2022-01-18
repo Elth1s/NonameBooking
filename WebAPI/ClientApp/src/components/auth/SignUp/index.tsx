@@ -32,7 +32,7 @@ const SignUp = () => {
 
     const formik = useFormik({
         initialValues: registerModel,
-        // validationSchema: SignUpSchema,
+        validationSchema: SignUpSchema,
         onSubmit: async (values, { setFieldError }) => {
             try {
                 await RegisterUser(values);

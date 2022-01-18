@@ -8,7 +8,8 @@ import {
 import MaterialLink from "@mui/material/Link"
 import {
     Person,
-    ListAltOutlined
+    ListAltOutlined,
+    CottageOutlined
 } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { FC } from "react";
@@ -28,13 +29,17 @@ const menu: Array<IMenuItem> = [
         title: 'Profile',
         link: '/user/profile',
     },
+    // {
+    //     icon: <ListAltOutlined />,
+    //     title: "Wish list",
+    //     link: "/user/wishlist",
+    //     divider: true
+    // }
     {
-        icon: <ListAltOutlined />,
-        title: "Wish list",
-        link: "/user/wishlist",
-        divider: true
-
-    }
+        icon: <CottageOutlined />,
+        title: "Apartments",
+        link: "/user/apartments/list",
+    },
 ];
 
 const MenuItem: FC<IMenuItem> = ({ icon, title, link, divider }) => {

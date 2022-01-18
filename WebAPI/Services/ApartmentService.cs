@@ -221,7 +221,17 @@ namespace WebAPI.Services
             if (request.DateRange == null)
                 request.DateRange = new DateRange() { Start=DateTime.Now, End=DateTime.Now.AddMonths(3) };
 
-            var spec = new ApartmentSearchSpecification(request.CountryId,null,request.PriceRange, request.DateRange,request.TypesOfApartment,request.Filters,request.Beds,request.Bedrooms,request.Bathrooms);
+            var spec = new ApartmentSearchSpecification
+                (request.CountryId,
+                null,
+                request.PriceRange, 
+                request.DateRange,
+                request.TypesOfApartment,
+                request.Filters,
+                request.Beds??0,
+                request.Bedrooms??0,
+                request.Bathrooms??0);
+
             var apartments = await _apartmentRepository.ListAsync(spec);
 
            
@@ -278,9 +288,9 @@ namespace WebAPI.Services
                 request.DateRange,
                 request.TypesOfApartment,
                 request.Filters,
-                request.Beds,
-                request.Bedrooms,
-                request.Bathrooms);
+                request.Beds ?? 0,
+                request.Bedrooms ?? 0,
+                request.Bathrooms ?? 0);
 
             int skip = request.Page.Value > 1 ? (request.Take.Value * (request.Page.Value - 1 )) : 0;
 

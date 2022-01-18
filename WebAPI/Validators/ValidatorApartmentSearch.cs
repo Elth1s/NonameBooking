@@ -28,18 +28,19 @@ namespace WebAPI.Validators
 
             //Beds
             RuleFor(a => a.Beds).Cascade(CascadeMode.Stop)
-                .NotEmpty().WithName("Beds").WithMessage("{PropertyName} is required!")
-                .InclusiveBetween(0, 16).WithMessage("{PropertyName} must be between 0 and 16!");
+                .InclusiveBetween(0, 16).WithName("Beds").WithMessage("{PropertyName} must be between 0 and 16!")
+                .When(a => a.Beds.HasValue);
 
             //Bedrooms
             RuleFor(a => a.Bedrooms).Cascade(CascadeMode.Stop)
-                .NotEmpty().WithName("Beds").WithMessage("{PropertyName} is required!")
-                .InclusiveBetween(0, 16).WithMessage("{PropertyName} must be between 0 and 16!");
+                .InclusiveBetween(0, 16).WithName("Bedrooms").WithMessage("{PropertyName} must be between 0 and 16!")
+                .When(a => a.Bedrooms.HasValue);
+
 
             //Bathrooms
             RuleFor(a => a.Bathrooms).Cascade(CascadeMode.Stop)
-                .NotEmpty().WithName("Beds").WithMessage("{PropertyName} is required!")
-                .InclusiveBetween(0, 16).WithMessage("{PropertyName} must be between 0 and 16!");
+                .InclusiveBetween(0, 16).WithName("Bathrooms").WithMessage("{PropertyName} must be between 0 and 16!")
+                .When(a => a.Bathrooms.HasValue);
         }
     }
 

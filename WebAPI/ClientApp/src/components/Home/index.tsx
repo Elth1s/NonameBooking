@@ -15,45 +15,13 @@ import {
 } from "formik";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import CustomPopper from "../comon/CustomPopper";
 
 import { CssTextField } from "../comon/CssTextField";
 import { ISearch } from "./types";
 import { SearchSchema } from "./validation";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { useActions } from "../../hooks/useActions";
-
-const useStyles = makeStyles((theme) =>
-    createStyles({
-        root: {
-            "& .MuiAutocomplete-listbox": {
-                background: "#18181b",
-                color: "#f1f1f1",
-                fontSize: 18,
-                borderRadius: 3,
-                "& :hover": {
-                    backgroundColor: "#222226"
-                }
-            },
-            "& .MuiAutocomplete-paper": {
-                color: "#f1f1f1",
-                fontSize: 18,
-                borderRadius: 3,
-                background: "#18181b",
-            },
-            "& .MuiAutocomplete-noOptions": {
-                borderRadius: 3,
-                color: "#f1f1f1",
-                background: "#18181b",
-            }
-        }
-    })
-);
-
-const CustomPopper = function (props: any) {
-    const classes = useStyles();
-    return <Popper {...props} className={classes.root} placement="bottom" />;
-};
 
 const HomePage = () => {
     const [loading, setLoading] = useState<boolean>(false);

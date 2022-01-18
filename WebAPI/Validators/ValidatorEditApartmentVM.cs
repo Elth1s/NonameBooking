@@ -1,13 +1,11 @@
-﻿using DAL;
-using DAL.Models;
-using FluentValidation;
+﻿using FluentValidation;
 using WebAPI.Models;
 
 namespace WebAPI.Validators
 {
-    public class ValidatorApartmentVM : AbstractValidator<ApartmentVM>
+    public class ValidatorEditApartmentVM: AbstractValidator<EditApartmentVM>
     {
-        public ValidatorApartmentVM()
+        public ValidatorEditApartmentVM()
         {
             //Name
             RuleFor(c => c.Name).Cascade(CascadeMode.Stop)
@@ -42,7 +40,6 @@ namespace WebAPI.Validators
             RuleFor(a => a.Bathrooms).Cascade(CascadeMode.Stop)
                 .NotEmpty().WithName("Beds").WithMessage("{PropertyName} is required!")
                 .InclusiveBetween(1, 16).WithMessage("{PropertyName} must be between 1 and 16!");
-
         }
     }
 }

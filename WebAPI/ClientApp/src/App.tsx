@@ -27,6 +27,9 @@ import AdminApartmentsList from './components/admin/Apartments/List';
 import UserLayout from './components/containers/UserLayout';
 import Profile from './components/user/Profile';
 import WishList from './components/user/WishList';
+import UserApartmentsList from './components/user/Apartments/List';
+import CreateApartment from './components/user/Apartments/Create';
+import UpdateApartment from './components/user/Apartments/Update';
 
 import { useTypedSelector } from './hooks/useTypedSelector';
 import CitiesList from './components/user/CitiesList';
@@ -89,7 +92,10 @@ function App() {
         {isAuth && (
           <Route path="/user" element={<UserLayout />}>
             <Route path="/user/profile" element={<Profile />} />
-            <Route path="/user/wishlist" element={<WishList />} />
+            {/* <Route path="/user/wishlist" element={<WishList />} /> */}
+            <Route path="/user/apartments/list" element={<UserApartmentsList />} />
+            <Route path="/user/apartments/create" element={<CreateApartment />} />
+            <Route path="/user/apartments/update/:id" element={<UpdateApartment />} />
 
           </Route>
         )}

@@ -30,6 +30,11 @@ import WishList from './components/user/WishList';
 import UserApartmentsList from './components/user/Apartments/List';
 import CreateApartment from './components/user/Apartments/Create';
 import UpdateApartment from './components/user/Apartments/Update';
+import ApartmentOrdersList from './components/user/Apartments/Orders/List';
+import ApartmentViewOrder from './components/user/Apartments/Orders/View';
+
+import OrdersList from './components/user/Orders/List';
+import ViewOrder from './components/user/Orders/View';
 
 import { useTypedSelector } from './hooks/useTypedSelector';
 import CitiesList from './components/user/CitiesList';
@@ -96,6 +101,12 @@ function App() {
             <Route path="/user/apartments/list" element={<UserApartmentsList />} />
             <Route path="/user/apartments/create" element={<CreateApartment />} />
             <Route path="/user/apartments/update/:id" element={<UpdateApartment />} />
+            <Route path="/user/apartments/orders/list/:id" element={<ApartmentOrdersList />} />
+            <Route path="/user/apartments/orders/view/:id" element={<ApartmentViewOrder />} />
+
+
+            <Route path="/user/orders/list" element={<OrdersList />} />
+            <Route path="/user/orders/view/:id" element={<ViewOrder />} />
 
           </Route>
         )}

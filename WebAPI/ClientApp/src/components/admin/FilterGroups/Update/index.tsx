@@ -36,7 +36,7 @@ const UpdateFilterGroups = () => {
                 await GetAdminFilterGroup(id);
                 setLoading(false);
             } catch (ex) {
-                console.log("Problem fetch");
+                toast.error("Loading filter group failed.");
                 setLoading(false);
             }
         }

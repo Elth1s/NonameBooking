@@ -16,7 +16,7 @@ import {
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CustomPopper from "../comon/CustomPopper";
-
+import { toast } from 'react-toastify';
 import { CssTextField } from "../comon/CssTextField";
 import { ISearch } from "./types";
 import { SearchSchema } from "./validation";
@@ -39,7 +39,7 @@ const HomePage = () => {
             await GetCountries();
             setLoading(false);
         } catch (ex) {
-            console.log("Problem fetch");
+            toast.error("Loading countries failed.");
             setLoading(false);
         }
     }
@@ -47,7 +47,7 @@ const HomePage = () => {
         try {
             await GetCitiesByCountryId(id);
         } catch (ex) {
-            console.log("Problem fetch");
+            toast.error("Loading cities failed.");
         }
     }
     useEffect(() => {

@@ -13,7 +13,7 @@ import * as AdminFiltersActionCreators from "../../components/admin/Filters/acti
 import * as UserApartmentPageActionCreators from "../../components/user/ApartmentPage/actions"
 import * as SearchActionCreators from "../../components/user/actions"
 import * as CurrentUserApartmentActionCreators from "../../components/user/Apartments/actions"
-
+import * as OrderActionCreators from "../../components/user/Orders/actions"
 const actions = {
     ...AuthActionCreators,
     ...HomeActionCreators,
@@ -30,5 +30,6 @@ const actions = {
     ...UserApartmentPageActionCreators,
     ...CurrentUserApartmentActionCreators,
     ...SearchActionCreators,
+    ...OrderActionCreators
 }
 export default actions;

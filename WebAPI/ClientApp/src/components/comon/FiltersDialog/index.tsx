@@ -61,7 +61,7 @@ const FiltersDialog: FC<IFiltersDialog> = ({ isDialogOpen, Transition, dialogClo
             await GetFiltersForSearch();
             setLoading(false);
         } catch (ex) {
-            console.log("Problem fetch");
+            toast.error("Loading filters failed.");
             setLoading(false);
         }
     }
@@ -69,7 +69,7 @@ const FiltersDialog: FC<IFiltersDialog> = ({ isDialogOpen, Transition, dialogClo
         try {
             await GetTypesOfApartmentForSearch();
         } catch (ex) {
-            console.log("Problem fetch");
+            toast.error("Loading type of apartments failed.");
         }
     }
     useEffect(() => {

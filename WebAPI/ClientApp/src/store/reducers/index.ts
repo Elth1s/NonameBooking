@@ -12,6 +12,7 @@ import { adminFilterReducer } from "../../components/admin/Filters/reducer";
 import { adminApartmentReducer } from "../../components/admin/Apartments/reducer";
 import { userApartmentPageReducer } from "../../components/user/ApartmentPage/reducer"
 import { currentUserApartmentReducer } from "../../components/user/Apartments/reducer"
+import { orderReducer } from "../../components/user/Orders/reducer"
 import { searchReducer } from "../../components/user/reducer"
 
 export const rootReducer = combineReducers({
@@ -29,6 +30,7 @@ export const rootReducer = combineReducers({
     search: searchReducer,
     userApartmentPage: userApartmentPageReducer,
     currentUserApartment: currentUserApartmentReducer,
+    orderReducer: orderReducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

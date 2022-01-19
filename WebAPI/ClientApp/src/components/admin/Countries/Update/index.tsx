@@ -36,7 +36,7 @@ const UpdateCountry = () => {
                 await GetCountry(id);
                 setLoading(false);
             } catch (ex) {
-                console.log("Problem fetch");
+                toast.error("Loading country failed.");
                 setLoading(false);
             }
         }

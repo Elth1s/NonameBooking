@@ -47,7 +47,7 @@ const CreateCity = () => {
             await GetCountries();
             setLoading(false);
         } catch (ex) {
-            console.log("Problem fetch");
+            toast.error("Loading countries failed.");
             setLoading(false);
         }
     }

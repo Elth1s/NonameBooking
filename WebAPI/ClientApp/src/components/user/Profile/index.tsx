@@ -52,7 +52,7 @@ const Profile = () => {
                 await GetProfile(id);
                 setLoading(false);
             } catch (ex) {
-                console.log("Problem fetch");
+                toast.error("Loading profile failed.");
                 setLoading(false);
             }
         }

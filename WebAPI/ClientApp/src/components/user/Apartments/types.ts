@@ -2,6 +2,8 @@
 export enum UserApartmentsActionTypes {
     GET_USER_APARTMENTS = "GET_USER_APARTMENTS",
     GET_USER_APARTMENT_BY_ID = "GET_USER_APARTMENT_BY_ID",
+    GET_APARTMENT_ORDERS_BY_ID = "GET_APARTMENT_ORDERS_BY_ID",
+    GET_APARTMENT_SELECTED_ORDER_BY_ID = "GET_APARTMENT_SELECTED_ORDER_BY_ID",
 }
 export interface IFilter {
     id: number,
@@ -33,16 +35,35 @@ export interface IApartment {
     filterGroupWithFilters: Array<IFilterGroup>,
 }
 export interface IApartmentItem {
-    id: number,
+    id: string,
     name: string,
     price: number,
     typeOfApartmentName: string,
     cityName: string
 }
-
+export interface IOrderItem {
+    id: string,
+    start: Date,
+    end: Date,
+    apartmentId: string,
+    apartmentName: string
+    orderStatusName: string
+    total: number
+}
+export interface IOrder {
+    start: Date | string,
+    end: Date | string,
+    apartmentName: string,
+    apartmentId: string,
+    orderStatusName: string,
+    userFullName: string,
+    total: number
+}
 export interface UserApartmentState {
     apartments: Array<IApartmentItem>,
-    selectedApartment: IApartment
+    selectedApartment: IApartment,
+    orders: Array<IOrderItem>,
+    selectedOrder: IOrder
 }
 
 export interface ApartmentServerError {
@@ -60,5 +81,12 @@ export interface GetApartmentByIdAction {
     type: UserApartmentsActionTypes.GET_USER_APARTMENT_BY_ID,
     payload: IApartment
 }
-
-export type UserApartmentAction = GetApartmentsAction | GetApartmentByIdAction;
+export interface GetApartmentOrdersByIdAction {
+    type: UserApartmentsActionTypes.GET_APARTMENT_ORDERS_BY_ID,
+    payload: Array<IOrderItem>
+}
+export interface GetApartmentSelectedOrderByIdAction {
+    type: UserApartmentsActionTypes.GET_APARTMENT_SELECTED_ORDER_BY_ID,
+    payload: IOrder
+}
+export type UserApartmentAction = GetApartmentsAction | GetApartmentByIdAction | GetApartmentOrdersByIdAction | GetApartmentSelectedOrderByIdAction;

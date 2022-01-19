@@ -20,6 +20,16 @@ const initialState: UserApartmentState = {
         bathrooms: 0,
         images: [],
         filterGroupWithFilters: [],
+    },
+    orders: [],
+    selectedOrder: {
+        start: "",
+        end: "",
+        userFullName: "",
+        apartmentName: "",
+        apartmentId: "",
+        orderStatusName: "",
+        total: 0
     }
 }
 
@@ -52,7 +62,17 @@ export const currentUserApartmentReducer = (state = initialState, action: UserAp
         case UserApartmentsActionTypes.GET_USER_APARTMENT_BY_ID:
             return {
                 ...state,
-                selectedApartment: action.payload,
+                selectedApartment: action.payload
+            }
+        case UserApartmentsActionTypes.GET_APARTMENT_ORDERS_BY_ID:
+            return {
+                ...state,
+                orders: action.payload
+            }
+        case UserApartmentsActionTypes.GET_APARTMENT_SELECTED_ORDER_BY_ID:
+            return {
+                ...state,
+                selectedOrder: action.payload
             }
         default:
             return state;

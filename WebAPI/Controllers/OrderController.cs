@@ -32,14 +32,29 @@ namespace WebAPI.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin")]
+        
         [HttpPut]
-        [Route("edit-order-status/{id}")]
-        public async Task<IActionResult> EditStatusOrder(string id, int orderStatusId)
+        [Route("edit-status-to-booked/{id}")]
+        public async Task<IActionResult> EditStatusToBookedOrder(string id)
         {
             try
             {
-                await _service.EditOrderStatusAsync(id, orderStatusId);
+                await _service.EditOrderStatusToBookedAsync(id);
+                return Ok("Order successfully edited.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
+            }
+        }
+
+        [HttpPut]
+        [Route("edit-status-to-canceled/{id}")]
+        public async Task<IActionResult> EditStatusToCanceledOrder(string id)
+        {
+            try
+            {
+                await _service.EditOrderStatusToCanceledAsync(id);
                 return Ok("Order successfully edited.");
             }
             catch (Exception ex)
@@ -109,5 +124,22 @@ namespace WebAPI.Controllers
                 return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
             }
         }
+
+
+        [HttpGet]
+        [Route("get-by-apartment-id/{apartmentId}")]
+        public async Task<IActionResult> GetOrdersByApartmentIdAsync(int apartmentId)
+        {
+            try
+            {
+                var _result = await _service.GetOrdersByApartmentIdAsync(apartmentId);
+                return Ok(_result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, new { Title = ex.Message });
+            }
+        }
+        
     }
 }

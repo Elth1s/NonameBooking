@@ -15,14 +15,14 @@
 }
 
 .MuiTableHead-root .MuiTableRow-root{
-    border-color: rgb(85, 252, 241) !important;
+    border-color: #55fcf1 !important;
 }
 
 .MuiTableHead-root .MuiTableRow-root .MuiTableCell-root{
-    color:rgb(85, 252, 241)
+    color:#54fcf1
 }
 .MuiTableBody-root .MuiTableRow-root .MuiTableCell-root{
-    color:rgb(241, 241, 241)
+    color:#f1f1f1
 }
 
 .MuiTablePagination-menuItem{
@@ -146,3 +146,32 @@ td, th{
 .MuiBreadcrumbs-separator{
     font-weight: 1000;
 }
+
+/* Date Range Picker */
+.MuiPaper-root{
+    color: #f1f1f1 !important;
+    background: #18181b !important;
+}
+.MuiPickersDay-root{
+    color: #f1f1f1 !important; 
+}
+.MuiDateRangePickerDay-rangeIntervalDayHighlight{
+    background: #55fcf182 !important;
+}
+.MuiTypography-caption{
+    color: #f1f1f1dc !important;
+}
+.Mui-disabled{
+    color: #8e8e8e !important;
+}
+.MuiIconButton-edgeStart,.MuiIconButton-edgeEnd{
+    color: #f1f1f1 !important;
+}
+.MuiPickersDay-today{
+    border-color: #54fcf1 !important;
+}
+ .Mui-selected{ 
+    background-color: #54fcf18e !important;
+    font-weight: bolder;
+}
+

@@ -44,7 +44,7 @@ const FiltersList = () => {
             await GetAdminFilters();
             setLoading(false);
         } catch (ex) {
-            console.log("Problem fetch");
+            toast.error("Loading filters failed.");
             setLoading(false);
         }
     }

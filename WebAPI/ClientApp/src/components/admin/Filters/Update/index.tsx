@@ -35,7 +35,7 @@ const UpdateFilter = () => {
             await GetAdminFilterGroups();
             setLoading(false);
         } catch (ex) {
-            console.log("Problem fetch groups");
+            toast.error("Loading filter groups failed.");
             setLoading(false);
         }
     }
@@ -46,7 +46,7 @@ const UpdateFilter = () => {
 
             setLoading(false);
         } catch (ex) {
-            console.log("Problem fetch filter.");
+            toast.error("Loading filter failed.");
             setLoading(false);
         }
     }

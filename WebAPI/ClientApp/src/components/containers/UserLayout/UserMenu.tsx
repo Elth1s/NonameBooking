@@ -9,7 +9,8 @@ import MaterialLink from "@mui/material/Link"
 import {
     Person,
     ListAltOutlined,
-    CottageOutlined
+    CottageOutlined,
+    FilterFramesOutlined
 } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { FC } from "react";
@@ -39,6 +40,11 @@ const menu: Array<IMenuItem> = [
         icon: <CottageOutlined />,
         title: "Apartments",
         link: "/user/apartments/list",
+    },
+    {
+        icon: <FilterFramesOutlined />,
+        title: "Orders",
+        link: "/user/orders/list",
     },
 ];
 

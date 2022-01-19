@@ -44,7 +44,7 @@ const AdminFilterGroupsList = () => {
             await GetAdminFilterGroups();
             setLoading(false);
         } catch (ex) {
-            console.log("Problem fetch");
+            toast.error("Loading filter groups failed.");
             setLoading(false);
         }
     }

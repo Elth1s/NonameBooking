@@ -11,7 +11,7 @@ import { ArrowForwardIos, FilterList } from '@mui/icons-material';
 import { useEffect, useState, forwardRef } from "react";
 import { useNavigate, Link, useSearchParams } from "react-router-dom";
 import qs from "qs";
-
+import { toast } from 'react-toastify';
 import { useActions } from "../../../hooks/useActions";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { ISearch } from "../types";
@@ -67,7 +67,7 @@ const CitiesList = () => {
             }
             setLoadingPage(false);
         } catch (ex) {
-            console.log("Problem fetch");
+            toast.error("Loading cities failed.");
             setLoadingPage(false);
         }
     }

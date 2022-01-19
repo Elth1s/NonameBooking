@@ -20,7 +20,8 @@ import {
     KeyboardArrowDown,
     VisibilityOutlined,
     Edit,
-    Delete
+    Delete,
+    FilterFramesOutlined
 } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import { toast } from 'react-toastify';
@@ -44,7 +45,7 @@ const UserApartmentsList = () => {
             await GetUserApartments(userId);
             setLoading(false);
         } catch (ex) {
-            console.log("Problem fetch");
+            toast.error("Loading apartments failed.");
             setLoading(false);
         }
     }
@@ -64,7 +65,7 @@ const UserApartmentsList = () => {
         setPage(0);
     };
 
-    const DeleteApartmentHandle = async (id: number) => {
+    const DeleteApartmentHandle = async (id: string) => {
         setLoading(true);
         try {
             await DeleteApartment(id);
@@ -81,7 +82,7 @@ const UserApartmentsList = () => {
 
     return (
         <>
-            <Box sx={{ flexGrow: 1, m: 1, mx: 3, width: { lg: "75%", md: "95%" } }}>
+            <Box sx={{ flexGrow: 1, m: 1, mx: 3, width: { lg: "80%", md: "95%" } }}>
                 <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ py: 1 }}>
                     <Typography variant="h4" gutterBottom color="#55FCF1" sx={{ my: "auto" }}>
                         Your apartments
@@ -112,7 +113,7 @@ const UserApartmentsList = () => {
                                     <TableCell align="center">
                                         Price/night
                                     </TableCell>
-                                    <TableCell align="right" sx={{ width: 120 }}>
+                                    <TableCell align="right" sx={{ width: 160 }}>
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
@@ -137,9 +138,12 @@ const UserApartmentsList = () => {
                                         <TableCell align="center">
                                             {row.price} $
                                         </TableCell>
-                                        <TableCell align="right" sx={{ width: 120 }}>
+                                        <TableCell align="right" sx={{ width: 160 }}>
                                             <IconButton aria-label="view" sx={{ color: "#0288d1" }} component={Link} to={`/apartment?id=${row.id}`} style={{ textDecoration: 'none' }}>
                                                 <VisibilityOutlined />
+                                            </IconButton>
+                                            <IconButton aria-label="view-orders" sx={{ color: "#6a52b3" }} component={Link} to={`/user/apartments/orders/list/${row.id}`} style={{ textDecoration: 'none' }}>
+                                                <FilterFramesOutlined />
                                             </IconButton>
                                             <IconButton aria-label="edit" sx={{ color: "#ffb74d" }} component={Link} to={`/user/apartments/update/${row.id}`} style={{ textDecoration: 'none', color: '#ffb74d' }}>
                                                 <Edit />

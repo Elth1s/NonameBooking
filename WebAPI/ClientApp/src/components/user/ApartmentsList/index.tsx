@@ -13,7 +13,7 @@ import { FilterList } from '@mui/icons-material';
 import { useEffect, useState, forwardRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import qs from "qs";
-
+import { toast } from 'react-toastify';
 import { useActions } from "../../../hooks/useActions";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { IDateRange, ISearch } from "../types";
@@ -80,7 +80,7 @@ const ApartmentsList = () => {
             }
             setLoadingPage(false);
         } catch (ex) {
-            console.log("Problem fetch");
+            toast.error("Loading apartments failed.");
             setLoadingPage(false);
         }
     }

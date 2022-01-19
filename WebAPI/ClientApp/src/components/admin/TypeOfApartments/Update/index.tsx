@@ -36,7 +36,7 @@ const UpdateTypeOfApartment = () => {
                 await GetAdminTypeOfApartment(id);
                 setLoading(false);
             } catch (ex) {
-                console.log("Problem fetch");
+                toast.error("Loading type of apartment failed.");
                 setLoading(false);
             }
         }

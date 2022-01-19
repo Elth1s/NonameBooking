@@ -44,7 +44,7 @@ const CitiesList = () => {
             await GetAdminCities();
             setLoading(false);
         } catch (ex) {
-            console.log("Problem fetch");
+            toast.error("Loading cities failed.");
             setLoading(false);
         }
     }

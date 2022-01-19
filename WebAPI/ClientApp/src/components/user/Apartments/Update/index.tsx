@@ -41,7 +41,7 @@ const UpdateApartment = () => {
             await GetCountries();
             setLoading(false);
         } catch (ex) {
-            console.log("Problem fetch countries");
+            toast.error("Loading countries failed.");
             setLoading(false);
         }
     }
@@ -50,7 +50,7 @@ const UpdateApartment = () => {
         try {
             await GetCitiesByCountryId(id);
         } catch (ex) {
-            console.log("Problem fetch cities");
+            toast.error("Loading cities failed.");
         }
     }
     async function getTypeOfApartments() {
@@ -59,7 +59,7 @@ const UpdateApartment = () => {
             await GetAdminTypeOfApartments();
             setLoading(false);
         } catch (ex) {
-            console.log("Problem fetch types");
+            toast.error("Loading type of apartments failed.");
             setLoading(false);
         }
     }

@@ -49,7 +49,7 @@ const UpdateCity = () => {
             await GetCountries();
             setLoading(false);
         } catch (ex) {
-            console.log("Problem fetch countries");
+            toast.error("Loading countries failed.");
             setLoading(false);
         }
     }
@@ -59,7 +59,7 @@ const UpdateCity = () => {
             await GetAdminCity(id);
             setLoading(false);
         } catch (ex) {
-            console.log("Problem fetch city.");
+            toast.error("Loading city failed.");
             setLoading(false);
         }
     }

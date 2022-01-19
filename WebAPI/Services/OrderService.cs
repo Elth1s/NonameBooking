@@ -50,21 +50,36 @@ namespace WebAPI.Services
             await _orderRepository.AddAsync(order);
             await _orderRepository.SaveChangesAsync();
         }
-        public async Task EditOrderStatusAsync(string id, int orderStatusId)
+        public async Task EditOrderStatusToCanceledAsync (string id)
         {
-            var status = await _orderStatusRepository.GetByIdAsync(orderStatusId);
-            if (status == null)
-                throw new Exception($"Failed to edit order! Status with id {orderStatusId} doesn't exist.");
             var order = await _orderRepository.GetByIdAsync(id);
             if (order == null)
                 throw new Exception($"Failed to create order! Order with id {id} doesn't exist.");
+            var spec = new OrderStatusStatusSpecification(OrderStatuses.Canceled);
+            var status = await _orderStatusRepository.GetBySpecAsync(spec);
+            if (status == null)
+                throw new Exception($"Failed to edit order status to {OrderStatuses.Canceled}!");
 
-            order.OrderStatusId = orderStatusId;
+            order.OrderStatusId = status.Id;
 
             await _orderRepository.UpdateAsync(order);
             await _orderRepository.SaveChangesAsync();
         }
+        public async Task EditOrderStatusToBookedAsync(string id)
+        {
+            var order = await _orderRepository.GetByIdAsync(id);
+            if (order == null)
+                throw new Exception($"Failed to create order! Order with id {id} doesn't exist.");
+            var spec = new OrderStatusStatusSpecification(OrderStatuses.Booked);
+            var status = await _orderStatusRepository.GetBySpecAsync(spec);
+            if (status == null)
+                throw new Exception($"Failed to edit order status to {OrderStatuses.Booked}!");
 
+            order.OrderStatusId = status.Id;
+
+            await _orderRepository.UpdateAsync(order);
+            await _orderRepository.SaveChangesAsync();
+        }
         public async Task DeleteOrderAsync(string id)
         {
             var order = await _orderRepository.GetByIdAsync(id);
@@ -98,7 +113,18 @@ namespace WebAPI.Services
 
             return result;
         }
+        public async Task<IEnumerable<OrderResponse>> GetOrdersByApartmentIdAsync(int apartmentId)
+        {
+            var spec = new ApartmentIncludeInfoSpecification(apartmentId);
+            var apartment = await _apartmentRepository.GetBySpecAsync(spec);
+            if (apartment == null)
+                throw new Exception($"Apartment with id {apartmentId} doesn't exist.");
+        
+                
+            var result = apartment.Orders.Select(o => _mapper.Map<OrderResponse>(o));
+            return result;
 
+        }
         public async Task<IEnumerable<OrderResponse>> GetOrdersByUserIdAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -107,7 +133,7 @@ namespace WebAPI.Services
 
             var spec = new OrderGetByUserIdIncludeFullInfoSpecification(userId);
             var orders = await _orderRepository.ListAsync(spec);
-            var result =orders.Select(o=>_mapper.Map<OrderFullInfoResponse>(o));
+            var result =orders.Select(o=>_mapper.Map<OrderResponse>(o));
             return result;
 
         }

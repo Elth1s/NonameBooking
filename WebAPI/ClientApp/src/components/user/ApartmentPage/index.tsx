@@ -68,7 +68,7 @@ const ApartmentPage = () => {
                 await GetApartment(id);
             setLoadingPage(false);
         } catch (ex) {
-            console.log("Problem fetch");
+            toast.error("Loading apartments failed.");
             setLoadingPage(false);
         }
     }

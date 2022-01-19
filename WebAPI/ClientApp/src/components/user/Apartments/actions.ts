@@ -1,5 +1,5 @@
 import { Dispatch } from "react"
-import { UserApartmentAction, IApartment, UserApartmentsActionTypes, IApartmentItem, ApartmentServerError } from "./types";
+import { UserApartmentAction, IApartment, UserApartmentsActionTypes, IOrder, IOrderItem, IApartmentItem, ApartmentServerError } from "./types";
 import http from "../../../http_comon"
 import axios, { AxiosError } from "axios";
 
@@ -127,10 +127,76 @@ export const GetUserApartment = (id: string) => {
         }
     }
 }
-export const DeleteApartment = (id: number) => {
+export const DeleteApartment = (id: string) => {
     return async () => {
         try {
             await http.delete(`api/Apartment/delete/${id}`);
+            return Promise.resolve();
+        }
+        catch (ex) {
+            if (axios.isAxiosError(ex)) {
+                const serverError = ex as AxiosError<ApartmentServerError>;
+                if (serverError && serverError.response) {
+                    serverError.response.data.status = serverError.response.status;
+                    return Promise.reject(serverError.response.data);
+                }
+            }
+            return Promise.reject(ex)
+        }
+    }
+}
+
+export const GetApartmentOrdersById = (id: string) => {
+    return async (dispatch: Dispatch<UserApartmentAction>) => {
+        try {
+            let response = await http.get<Array<IOrderItem>>(`api/Order/get-by-apartment-id/${id}`);
+            const data = response.data;
+            dispatch({
+                type: UserApartmentsActionTypes.GET_APARTMENT_ORDERS_BY_ID,
+                payload: data,
+            });
+            return Promise.resolve();
+        }
+        catch (ex) {
+            if (axios.isAxiosError(ex)) {
+                const serverError = ex as AxiosError<ApartmentServerError>;
+                if (serverError && serverError.response) {
+                    serverError.response.data.status = serverError.response.status;
+                    return Promise.reject(serverError.response.data);
+                }
+            }
+            return Promise.reject(ex)
+        }
+    }
+}
+export const GetApartmentSelectedOrderByIdAction = (id: string) => {
+    return async (dispatch: Dispatch<UserApartmentAction>) => {
+        try {
+            let response = await http.get<IOrder>(`api/Order/get-by-id/${id}`);
+            const data = response.data;
+            dispatch({
+                type: UserApartmentsActionTypes.GET_APARTMENT_SELECTED_ORDER_BY_ID,
+                payload: data,
+            });
+            return Promise.resolve();
+        }
+        catch (ex) {
+            if (axios.isAxiosError(ex)) {
+                const serverError = ex as AxiosError<ApartmentServerError>;
+                if (serverError && serverError.response) {
+                    serverError.response.data.status = serverError.response.status;
+                    return Promise.reject(serverError.response.data);
+                }
+            }
+            return Promise.reject(ex)
+        }
+    }
+}
+
+export const BookedOrder = (id: string) => {
+    return async () => {
+        try {
+            await http.put(`api/Order/edit-status-to-booked/${id}`);
             return Promise.resolve();
         }
         catch (ex) {

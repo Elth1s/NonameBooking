@@ -15,7 +15,7 @@ export const GetCitiesWithApartments = (search: ISearch) => {
                     takeApartments: 5,
                     takeCityGroup: 18,
                     takeCityGroupWithApartment: 3,
-                    priceRange: { start: search.priceStart, end: search.priceEnd },
+                    priceRange: (search.priceStart == null || search.priceEnd == null || search.priceStart == "" || search.priceEnd == "") ? null : { start: search.priceStart, end: search.priceEnd },
                     dateRange: null,
                     typesOfApartment: search.typesOfApartment,
                     filters: search.filters,

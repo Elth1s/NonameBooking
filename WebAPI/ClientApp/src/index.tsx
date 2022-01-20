@@ -4,14 +4,18 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux';
 import { store } from './store'
-// import { AuthUser } from './components/auth/actions';
+import { AuthUser } from './components/auth/actions';
 
 import './index.css';
-
+import './App.css';
+import "cropperjs/dist/cropper.css";
+import 'react-toastify/dist/ReactToastify.css';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import "react-image-gallery/styles/css/image-gallery.css";
 const token = localStorage.token as string;
 
 if (token) {
-  // AuthUser(token, store.dispatch);
+  AuthUser(token, store.dispatch);
 }
 
 ReactDOM.render(

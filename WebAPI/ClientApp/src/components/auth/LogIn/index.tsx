@@ -8,8 +8,9 @@ import {
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import { Form, FormikProvider, useFormik } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 
 
 import { CssTextField } from "../../comon/CssTextField";
@@ -25,6 +26,10 @@ const LogIn = () => {
     const navigate = useNavigate();
     const loginModel: ILoginModel = { email: '', password: '' };
 
+    useEffect(() => {
+        document.title = "Login";
+    }, []);
+
     const formik = useFormik({
         initialValues: loginModel,
         validationSchema: LogInSchema,
@@ -32,25 +37,26 @@ const LogIn = () => {
             try {
                 await LoginUser(values);
                 navigate("/");
-                // toast.success('Login Success!');
+                toast.success('Login Success!');
             }
             catch (exeption) {
                 const serverErrors = exeption as LoginServerError;
-                Object.entries(serverErrors).forEach(([key, value]) => {
-                    if (Array.isArray(value)) {
-                        let message = "";
-                        value.forEach((item) => {
-                            message += `${item} `;
-                        });
-                        setFieldError(key, message);
-                    }
-                });
-                // let message = "Login Failed! ";
-                // if (serverErrors.status === 401)
-                //     message += "The user with the entered data does not exist.";
-                // if (serverErrors.status === 422)
-                //     message += "Validation failed.";
-                // toast.error(message);
+                if (serverErrors.errors)
+                    Object.entries(serverErrors.errors).forEach(([key, value]) => {
+                        if (Array.isArray(value)) {
+                            let message = "";
+                            value.forEach((item) => {
+                                message += `${item} `;
+                            });
+                            setFieldError(key.toLowerCase(), message);
+                        }
+                    });
+                let message = "Login failed! \n";
+                if (serverErrors.status === 400)
+                    message += "Validation failed.";
+                if (serverErrors.status === 401)
+                    message += "The user with the entered data does not exist.";
+                toast.error(message, { position: "top-right" });
             }
 
         }

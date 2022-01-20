@@ -26,6 +26,7 @@ namespace DAL
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderStatus> OrderStatuses { get; set; }
         public DbSet<TypeOfApartment> TypeOfApartments { get; set; }
+        public DbSet<ApartmentImage> ApartmentImages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -35,6 +36,9 @@ namespace DAL
                 .HasMany<Order>(a => a.Orders)
                 .WithOne(o=>o.Apartment)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<AppUser>().Property(u => u.Photo).IsRequired(false);
+                
         }
     }
 }

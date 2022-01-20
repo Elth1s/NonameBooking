@@ -1,5 +1,5 @@
 body {
-  background-color: #0B0C10 !important;
+  background-color: #18181b !important;
   color:#f1f1f1 !important;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -13,3 +13,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.Toastify__toast-body{
+  white-space: pre-line;
+}
+
+

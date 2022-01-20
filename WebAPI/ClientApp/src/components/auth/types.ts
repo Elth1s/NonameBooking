@@ -1,12 +1,15 @@
 export enum AuthActionTypes {
     AUTH_SUCCESS = "AUTH_SUCCESS",
-    GET_PROFILE = "GET_PROFILE"
+    AUTH_LOGOUT = "AUTH_LOGOUT"
 }
 
 export interface IUser {
+    id: string,
     name: string,
     surname: string,
-    image: string
+    photo: string,
+    email: string,
+    roles: string
 }
 
 export interface IAuthResponse {
@@ -24,10 +27,9 @@ export interface ILoginModel {
 }
 
 export interface LoginServerError {
+    title: string,
     status: number,
-    email: Array<string>,
-    password: Array<string>,
-    error: string
+    errors: Array<any>
 }
 
 export interface IRegisterModel {
@@ -36,7 +38,7 @@ export interface IRegisterModel {
     email: string,
     phone: string,
     password: string,
-    confirmPassword: string
+    confirmpassword: string
 };
 
 export interface RegisterServerError {
@@ -51,10 +53,8 @@ export interface AuthSuccessAction {
     payload: IUser
 }
 
-export interface GetProfileAction {
-    type: AuthActionTypes.GET_PROFILE,
-    payload: IUser
+export interface AuthLogOut {
+    type: AuthActionTypes.AUTH_LOGOUT
 }
 
-export type AuthAction = AuthSuccessAction;
-export type ProfileAction = GetProfileAction;
+export type AuthAction = AuthSuccessAction | AuthLogOut;

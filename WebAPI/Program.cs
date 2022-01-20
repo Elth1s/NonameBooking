@@ -12,10 +12,12 @@ using WebAPI.Services;
 using FluentValidation.AspNetCore;
 using System.Reflection;
 using WebAPI.Mapper;
+using Microsoft.Extensions.FileProviders;
+using WebAPI.Constants;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddMvc().AddJsonOptions(option => option.JsonSerializerOptions.PropertyNamingPolicy = null);
+//builder.Services.AddMvc().AddJsonOptions(option => option.JsonSerializerOptions.PropertyNamingPolicy = null);
 
 builder.Services.AddDbContext<BookingDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -28,6 +30,15 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 builder.Services.AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ICountryService, CountryService>();
+builder.Services.AddScoped<ICityService, CityService>();
+builder.Services.AddScoped<ITypeOfApartmentService, TypeOfApartmentService>();
+builder.Services.AddScoped<IApartmentService, ApartmentService>();
+builder.Services.AddScoped<IFilterGroupService, FilterGroupService>();
+builder.Services.AddScoped<IFilterService, FilterService>();
+builder.Services.AddScoped<IOrderStatusService, OrderStatusService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IProfileService, ProfileService>();
 
 var signinKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetValue<String>("JwtKey")));
 
@@ -103,6 +114,50 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
+var root = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.RootImagePath);
+if (!Directory.Exists(root))
+{
+    Directory.CreateDirectory(root);
+}
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(root),
+    RequestPath = "/"+ImagePath.RootImagePath
+});
+
+var usersImages = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.UsersImagePath);
+if (!Directory.Exists(usersImages))
+{
+    Directory.CreateDirectory(usersImages);
+}
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(usersImages),
+    RequestPath = "/" + ImagePath.UsersImagePath
+});
+
+var apartmentsImages = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.ApartmentsImagePath);
+if (!Directory.Exists(apartmentsImages))
+{
+    Directory.CreateDirectory(apartmentsImages);
+}
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(apartmentsImages),
+    RequestPath = "/" + ImagePath.ApartmentsImagePath
+});
+
+var citiesImages = Path.Combine(Directory.GetCurrentDirectory(), ImagePath.CitiesImagePath);
+if (!Directory.Exists(citiesImages))
+{
+    Directory.CreateDirectory(citiesImages);
+}
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(citiesImages),
+    RequestPath = "/" + ImagePath.CitiesImagePath
+});
+
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
@@ -118,5 +173,6 @@ app.UseSpa(spa =>
         spa.UseReactDevelopmentServer(npmScript: "start");
     }
 });
+app.SeedData();
 
 app.Run();

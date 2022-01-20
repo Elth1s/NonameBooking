@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DAL.Models
 {
-    public class OrderStatus
+    public class OrderStatus : IAggregateRoot
     {
         public int Id { get; set; }
         public string Status { get; set; }

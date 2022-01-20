@@ -1,0 +1,25 @@
+.image-gallery-slide{
+    background-color: #18181b;
+}
+
+.image-gallery-icon{
+    color:#f1f1f1 !important
+}
+
+.image-gallery-icon:hover{
+    color:#45A29E !important
+}
+
+.image-gallery-thumbnail.active, .image-gallery-thumbnail:focus{
+    border: 4px solid #45a29e !important;
+}
+
+.image-gallery-thumbnail:hover{
+    border: 4px solid #45a29e !important;
+}
+
+
+
+.image-gallery-content .image-gallery-slide .image-gallery-image {
+    max-height: calc(100vh - 77px) !important;
+}

@@ -1,5 +1,5 @@
 import { Dispatch } from "react"
-import { UserApartmentAction, IApartment, UserApartmentsActionTypes, IOrder, IOrderItem, IApartmentItem, ApartmentServerError } from "./types";
+import { UserApartmentAction, IApartment, UserApartmentsActionTypes, IOrder, IOrderItem, IApartmentItem, ApartmentServerError, IApartmentResponse, IFilter } from "./types";
 import http from "../../../http_comon"
 import axios, { AxiosError } from "axios";
 
@@ -25,7 +25,7 @@ export const GetUserApartments = (userId: string) => {
         }
     }
 }
-export const CreateApartment = (data: IApartment, image: Array<File> | null) => {
+export const CreateApartment = (data: IApartment, images: Array<File> | null) => {
     return async () => {
 
         try {
@@ -41,8 +41,15 @@ export const CreateApartment = (data: IApartment, image: Array<File> | null) => 
             formData.append("bathrooms", data.bathrooms.toString());
             formData.append("bedrooms", data.bedrooms.toString());
             formData.append("beds", data.beds.toString());
-            if (image) {
-                formData.append("image", image[0]);
+            if (images != null && images?.length != 0) {
+                images.forEach(element => {
+                    formData.append("images", element);
+                });
+            }
+            if (data.filters != null && data.filters?.length != 0) {
+                data.filters.forEach(element => {
+                    formData.append("FiltersId", element.id.toString());
+                });
             }
 
             let response = await http.post('api/Apartment/create', formData, {
@@ -53,7 +60,6 @@ export const CreateApartment = (data: IApartment, image: Array<File> | null) => 
             return Promise.resolve();
         }
         catch (ex) {
-            console.log(1)
             if (axios.isAxiosError(ex)) {
                 const serverError = ex as AxiosError<ApartmentServerError>;
                 if (serverError && serverError.response) {
@@ -65,7 +71,7 @@ export const CreateApartment = (data: IApartment, image: Array<File> | null) => 
         }
     }
 }
-export const UpdateApartment = (id: string, data: IApartment, image: Array<File> | null) => {
+export const UpdateApartment = (id: string, data: IApartment, images: Array<File> | null, imagesForDelete: Array<string> | null) => {
     return async () => {
 
         try {
@@ -81,10 +87,21 @@ export const UpdateApartment = (id: string, data: IApartment, image: Array<File>
             formData.append("bathrooms", data.bathrooms.toString());
             formData.append("bedrooms", data.bedrooms.toString());
             formData.append("beds", data.beds.toString());
-            if (image) {
-                formData.append("image", image[0]);
+            if (images != null && images?.length != 0) {
+                images.forEach(element => {
+                    formData.append("images", element);
+                });
             }
-
+            if (data.filters != null && data.filters?.length != 0) {
+                data.filters.forEach(element => {
+                    formData.append("FiltersId", element.id.toString());
+                });
+            }
+            if (imagesForDelete != null && imagesForDelete.length != 0) {
+                imagesForDelete.forEach(element => {
+                    formData.append("removedImages", element);
+                });
+            }
             let response = await http.put(`api/Apartment/edit/${id}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
@@ -93,7 +110,6 @@ export const UpdateApartment = (id: string, data: IApartment, image: Array<File>
             return Promise.resolve();
         }
         catch (ex) {
-            console.log(1)
             if (axios.isAxiosError(ex)) {
                 const serverError = ex as AxiosError<ApartmentServerError>;
                 if (serverError && serverError.response) {
@@ -108,10 +124,37 @@ export const UpdateApartment = (id: string, data: IApartment, image: Array<File>
 export const GetUserApartment = (id: string) => {
     return async (dispatch: Dispatch<UserApartmentAction>) => {
         try {
-            let response = await http.get<IApartment>(`api/Apartment/get-by-id/${id}`)
+            let response = await http.get<IApartmentResponse>(`api/Apartment/get-by-id/${id}`)
+            let { data } = response;
+            let filters = [] as Array<IFilter>;
+            data.filterGroupWithFilters.forEach(filterGroup => {
+                filterGroup.filters.forEach(filter => {
+                    filters.push(filter);
+                });
+            });
+            let Apartment = {
+                name: data.name,
+                description: data.description,
+                price: data.price,
+                typeOfApartmentId: data.typeOfApartmentId,
+                typeOfApartmentName: data.typeOfApartmentName,
+                countryId: data.countryId,
+                countryName: data.countryName,
+                address: data.address,
+                cityId: data.cityId,
+                cityName: data.cityName,
+                ownerId: data.ownerId,
+                ownerFullName: data.ownerFullName,
+                beds: data.beds,
+                bedrooms: data.bedrooms,
+                bathrooms: data.bathrooms,
+                images: data.images,
+                filters: filters,
+            }
+
             dispatch({
                 type: UserApartmentsActionTypes.GET_USER_APARTMENT_BY_ID,
-                payload: response.data
+                payload: Apartment
             })
             return Promise.resolve();
         }

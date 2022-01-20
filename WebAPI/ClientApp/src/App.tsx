@@ -26,7 +26,6 @@ import CreateFilter from './components/admin/Filters/Create';
 import AdminApartmentsList from './components/admin/Apartments/List';
 import UserLayout from './components/containers/UserLayout';
 import Profile from './components/user/Profile';
-import WishList from './components/user/WishList';
 import UserApartmentsList from './components/user/Apartments/List';
 import CreateApartment from './components/user/Apartments/Create';
 import UpdateApartment from './components/user/Apartments/Update';
@@ -70,7 +69,7 @@ function App() {
 
         </Route>
         {isAuth && roles === "Admin" && (
-          <Route path="/admin" element={<AdminLayout />}>
+          <Route element={<AdminLayout />}>
             <Route path="/admin/countries/list" element={<CountriesList />} />
             <Route path="/admin/countries/create" element={<CreateCountry />} />
             <Route path="/admin/countries/update/:id" element={<UpdateCountry />} />

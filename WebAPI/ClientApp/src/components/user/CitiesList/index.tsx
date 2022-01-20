@@ -14,7 +14,7 @@ import qs from "qs";
 import { toast } from 'react-toastify';
 import { useActions } from "../../../hooks/useActions";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
-import { ISearch } from "../types";
+import { IPriceRange, ISearch } from "../types";
 import CityApartmentCard from "./CityApartmentCard";
 import CityCard from "./CityCard";
 import FiltersDialog from "../../comon/FiltersDialog";
@@ -34,7 +34,7 @@ const CitiesList = () => {
 
     const [isFiltersDialog, setIsFiltersDialogOpen] = useState<boolean>(false);
 
-    const [priceValue, setPriceValue] = useState<any>([null, null]);
+    const [priceValue, setPriceValue] = useState<any>([10, 10000]);
     const [dateValue, setDateValue] = useState<any>([null, null]);
 
     const [search, setSearch] = useState<ISearch>(
@@ -42,10 +42,8 @@ const CitiesList = () => {
             countryId: searchParams.get("countryId"),
             priceStart: searchParams.get("priceStart"),
             priceEnd: searchParams.get("priceEnd"),
-            dateStart: searchParams.get("dateStart"),
-            dateEnd: searchParams.get("dateEnd"),
-            typesOfApartment: searchParams.getAll("typeOfApartment"),
-            filters: searchParams.getAll("filter"),
+            typesOfApartment: searchParams.getAll("typesOfApartment"),
+            filters: searchParams.getAll("filters"),
             beds: searchParams.get("beds"),
             bedrooms: searchParams.get("bedrooms"),
             bathrooms: searchParams.get("bathrooms"),
@@ -85,7 +83,7 @@ const CitiesList = () => {
     };
 
     const addOrDeleteFilter = (id: string) => {
-        const index = search.filters.findIndex(elem => elem === id);
+        const index = search.filters.findIndex(elem => elem == id);
         const tmpList = search.filters.slice();
         if (index === -1)
             tmpList.push(id)
@@ -98,10 +96,10 @@ const CitiesList = () => {
         setSearch(data);
     }
     const addOrDeleteTypeOfApartment = (id: string) => {
-        const index = search.typesOfApartment.findIndex(elem => elem === id);
+        const index = search.typesOfApartment.findIndex(elem => elem == id);
         const tmpList = search.typesOfApartment.slice();
         if (index === -1)
-            tmpList.push(id)
+            tmpList.push(id.toString())
         else
             tmpList.splice(index, 1);
         let data: ISearch = {
@@ -131,10 +129,19 @@ const CitiesList = () => {
         };
         setSearch(data);
     }
+    const changeSearchPriceValue = (prices: IPriceRange) => {
+        setPriceValue([prices.start, prices.end])
+        let data: ISearch = {
+            ...search,
+            priceStart: prices.start.toString(),
+            priceEnd: prices.end.toString(),
+        };
+        setSearch(data);
+    }
 
     const applyFilters = () => {
         filtersDialogClose()
-        setSearchParams(qs.stringify({ ...search }));
+        setSearchParams(qs.stringify({ ...search }, { indices: false }));
         getCitiesWithApartments(search)
     }
 
@@ -173,7 +180,7 @@ const CitiesList = () => {
                                                         <CityApartmentCard key={apartment.id} {...apartment} />
                                                     ))}
                                                     {city.apartments.length > 4 &&
-                                                        <Box component={Link} to={`/apartments?countryId=${search.countryId}&cityId=${city.id}`} style={{ textDecoration: 'none' }}
+                                                        <Box component={Link} to={`/apartments?cityId=${city.id}&${qs.stringify({ ...search }, { indices: false })}`} style={{ textDecoration: 'none' }}
                                                             sx={{
                                                                 height: 170,
                                                                 width: 250,
@@ -213,7 +220,7 @@ const CitiesList = () => {
                                     <Stack direction="row">
                                         <Grid container >
                                             {citiesWithoutApartment.map((city) => (
-                                                <CityCard key={city.id} countryId={search.countryId != null ? search.countryId : "0"} {...city} />
+                                                <CityCard key={city.id} countryId={search.countryId != null ? search.countryId : "0"} {...city} search={search} />
                                             ))}
 
                                         </Grid>
@@ -233,7 +240,7 @@ const CitiesList = () => {
                 selectedTypesOfApartments={search.typesOfApartment}
                 addOrDeleteTypeOfApartment={addOrDeleteTypeOfApartment}
                 priceValue={priceValue}
-                setPriceValue={setPriceValue}
+                setPriceValue={changeSearchPriceValue}
                 dateValue={dateValue}
                 setDateValue={setDateValue}
                 beds={search.beds}

@@ -11,19 +11,22 @@ import { Link } from "react-router-dom";
 
 import emptyImage from "../../../../images/empty.jpg"
 import { baseURL } from "../../../../http_comon"
+import { ISearch } from "../../types";
+import qs from "qs";
 
 interface ICity {
     countryId: string,
     id: number,
     image: string,
     name: string,
+    search: ISearch
 }
 
-const CityCard: FC<ICity> = ({ countryId, id, image, name }) => {
+const CityCard: FC<ICity> = ({ countryId, id, image, name, search }) => {
     return (
         <>
             <Grid item xs={5} md={4} lg={3} xl={2} sx={{ mb: 3, mr: { xs: 8, md: 14, lg: 10, xl: 6 } }} >
-                <CardActionArea sx={{ borderRadius: 3 }} component={Link} to={`/apartments?countryId=${countryId}&cityId=${id}`}>
+                <CardActionArea sx={{ borderRadius: 3 }} component={Link} to={`/apartments?countryId=${countryId}&cityId=${id}&${qs.stringify({ ...search }, { indices: false })}`}>
                     <Card sx={{ display: "flex", backgroundColor: "#18181b", boxShadow: 0 }}>
                         {image
                             ? <CardMedia

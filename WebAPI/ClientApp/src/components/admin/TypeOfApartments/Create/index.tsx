@@ -83,7 +83,7 @@ const CreateTypeOfApartment = () => {
                     <Typography variant="h4" gutterBottom color="#55FCF1" sx={{ my: "auto" }}>
                         Create type of apartment
                     </Typography>
-                    <Button variant="contained" size="large" component={Link} to={`/admin/countries/list`} style={{ backgroundColor: "#45A29E", textDecoration: 'none', color: 'white' }}>
+                    <Button variant="contained" size="large" component={Link} to={`/admin/typeOfApartments/list`} style={{ backgroundColor: "#45A29E", textDecoration: 'none', color: 'white' }}>
                         Back
                     </Button>
                 </Stack>

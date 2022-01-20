@@ -31,12 +31,6 @@ interface IMenuItem {
 
 const menu: Array<IMenuItem> = [
     {
-        icon: <HomeOutlined />,
-        title: "Home",
-        link: "/admin",
-        divider: true,
-    },
-    {
         icon: <PublicOutlined />,
         title: "Countries",
         link: "/admin/countries/list",

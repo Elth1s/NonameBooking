@@ -95,7 +95,7 @@ namespace WebAPI.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         [HttpGet]
         [Route("get-all")]
         public async Task<IActionResult> GetAllFilters()

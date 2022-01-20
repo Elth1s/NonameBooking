@@ -40,7 +40,7 @@ const menuItems: Array<IMenuItem> = [
     {
         label: 'Admin',
         icon: <Person />,
-        link: '/admin'
+        link: '/admin/countries/list'
     }
 ];
 

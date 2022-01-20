@@ -16,7 +16,7 @@ export const GetCitiesWithApartments = (search: ISearch) => {
                     takeCityGroup: 18,
                     takeCityGroupWithApartment: 3,
                     priceRange: { start: search.priceStart, end: search.priceEnd },
-                    dateRange: { start: search.dateStart, end: search.dateEnd },
+                    dateRange: null,
                     typesOfApartment: search.typesOfApartment,
                     filters: search.filters,
                     beds: search.beds == '' || search.beds == null ? 0 : search.beds,
@@ -24,7 +24,7 @@ export const GetCitiesWithApartments = (search: ISearch) => {
                     bathrooms: search.bathrooms == '' || search.bathrooms == null ? 0 : search.bathrooms,
                 },
                 paramsSerializer: params => {
-                    return qs.stringify(params)
+                    return qs.stringify({ ...params }, { allowDots: true })
                 }
             })
             let сityState: CityState = { citiesWithApartment: [], citiesWithoutApartment: [] };

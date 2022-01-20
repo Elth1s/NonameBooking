@@ -23,6 +23,7 @@ import { IDateRange } from "../types"
 import emptyImage from "../../../images/empty.jpg"
 import PlaceOffersDialog from "../../comon/PlaceOffersDialog";
 import SelectDate from "../../comon/SelectDate";
+import BigCarouselDialog from "../../comon/BigCarouselDialog";
 
 function srcset(image: string, size: number, rows = 1, cols = 1) {
     if (image === "")
@@ -44,12 +45,13 @@ const Transition = forwardRef(function Transition(props: any, ref) {
 
 const ApartmentPage = () => {
     const { selectedApartment } = useTypedSelector((state) => state.userApartmentPage);
-    const { user } = useTypedSelector((state) => state.auth);
+    const { isAuth, user } = useTypedSelector((state) => state.auth);
     const { GetApartment, Reserve } = useActions();
 
     const [loadingPage, setLoadingPage] = useState<boolean>(false);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [isPlaceOffersDialogOpen, setIsPlaceOffersDialogOpen] = useState(false);
+    const [isBigCarouselDialogOpen, setIsBigCarouselDialogOpen] = useState(false);
     const [dateValue, setDateValue] = useState<any>([null, null]);
 
     const navigate = useNavigate();
@@ -85,10 +87,22 @@ const ApartmentPage = () => {
         setIsPlaceOffersDialogOpen(false);
     };
 
+    const BigCarouselDialogOpen = () => {
+        setIsBigCarouselDialogOpen(true);
+    };
+
+    const BigCarouselDialogClose = () => {
+        setIsBigCarouselDialogOpen(false);
+    };
+
     async function onClickReserve() {
         setIsSubmitting(true);
         try {
-            if (dateValue[0] === null && dateValue[1] === null) {
+            if (isAuth == false) {
+                toast.warning("Please log in to start reserve");
+                navigate("/auth/login");
+            }
+            else if (dateValue[0] === null && dateValue[1] === null) {
                 toast.error("Select free dates");
             }
             else {
@@ -99,6 +113,7 @@ const ApartmentPage = () => {
                 let length = getDatesRange(dateRange)
                 await Reserve(dateRange, length * selectedApartment.price, user.id, selectedApartment.id);
                 toast.success("Reserve success");
+                navigate("/user/orders/list");
             }
             setIsSubmitting(false);
         } catch (ex) {
@@ -145,26 +160,36 @@ const ApartmentPage = () => {
                     </Stack>
                     <Stack direction="row">
                         <Stack sx={{ width: { md: "75%" } }}>
-                            <ImageList
-                                sx={{ height: 446, borderRadius: 3 }}
-                                variant="quilted"
-                                cols={5}
-                                rowHeight={221}
-                            >
-                                {getNewImages(selectedApartment.images.slice(0, 5)).map((item) => (
-                                    <ImageListItem
-                                        key={item.img}
-                                        cols={item.cols || 1}
-                                        rows={item.rows || 1}
-                                    >
-                                        <img
-                                            {...srcset(item.img, 221, item.rows, item.cols)}
-                                            alt="ApartmentImages"
-                                            loading="lazy"
-                                        />
-                                    </ImageListItem>
-                                ))}
-                            </ImageList>
+                            <Box style={{ position: "relative" }}>
+                                <ImageList
+                                    sx={{ height: 446, borderRadius: 3 }}
+                                    variant="quilted"
+                                    cols={5}
+                                    rowHeight={221}
+                                >
+                                    {getNewImages(selectedApartment.images.slice(0, 5)).map((item) => (
+                                        <ImageListItem
+                                            key={item.img}
+                                            cols={item.cols || 1}
+                                            rows={item.rows || 1}
+                                        >
+                                            <img
+                                                {...srcset(item.img, 221, item.rows, item.cols)}
+                                                alt="ApartmentImages"
+                                                loading="lazy"
+                                            />
+                                        </ImageListItem>
+                                    ))}
+                                </ImageList>
+                                <Button
+                                    sx={{ my: 2 }}
+                                    variant="contained"
+                                    style={{ backgroundColor: "#45A29E", position: "absolute", bottom: "10px", right: "10px" }}
+                                    onClick={BigCarouselDialogOpen}
+                                >
+                                    Show all images
+                                </Button>
+                            </Box>
                             <Typography variant="h4" gutterBottom color="#55FCF1" sx={{ my: "auto" }}>
                                 {selectedApartment.typeOfApartmentName}, hosted by {selectedApartment.ownerFullName}
                             </Typography>
@@ -250,6 +275,11 @@ const ApartmentPage = () => {
                     </Stack>
                 </>
             }
+            <BigCarouselDialog
+                Transition={Transition}
+                isDialogOpen={isBigCarouselDialogOpen}
+                dialogClose={BigCarouselDialogClose}
+                images={selectedApartment.images} />
             <PlaceOffersDialog
                 Transition={Transition}
                 isDialogOpen={isPlaceOffersDialogOpen}

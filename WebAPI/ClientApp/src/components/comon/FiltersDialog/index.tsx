@@ -12,7 +12,8 @@ import {
     Divider,
     Box,
     Checkbox,
-    CircularProgress
+    CircularProgress,
+    Slider
 } from "@mui/material";
 import { Close, Visibility, VisibilityOff, FiberManualRecord, Remove, Add } from '@mui/icons-material';
 
@@ -24,6 +25,7 @@ import { useActions } from "../../../hooks/useActions";
 import { IFilterGroup } from "../../user/types";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import RoomsAndBedsCard from "./RoomsAndBedsCard";
+import { CssTextField } from "../CssTextField";
 
 
 interface IFiltersDialog {
@@ -46,6 +48,8 @@ interface IFiltersDialog {
     setBedrooms: any,
     applyFilters: any
 }
+
+const minPriceDistance = 1000;
 
 const FiltersDialog: FC<IFiltersDialog> = ({ isDialogOpen, Transition, dialogClose, selectedFilters, addOrDeleteFilter, selectedTypesOfApartments, addOrDeleteTypeOfApartment, priceValue, setPriceValue, dateValue, setDateValue, beds, setBeds, bathrooms, setBathrooms, bedrooms, setBedrooms, applyFilters }) => {
 
@@ -91,13 +95,28 @@ const FiltersDialog: FC<IFiltersDialog> = ({ isDialogOpen, Transition, dialogClo
         else
             return true
     }
-    console.log(beds)
+    const handlePriceChange = (event: any, newValue: any, activeThumb: any) => {
+        if (!Array.isArray(newValue)) {
+            return;
+        }
+
+        if (activeThumb === 0) {
+            setPriceValue({ start: Math.min(newValue[0], priceValue[1] - minPriceDistance), end: priceValue[1] });
+        } else {
+            setPriceValue({ start: priceValue[0], end: Math.max(newValue[1], priceValue[0] + minPriceDistance) });
+        }
+    };
+    const handleChangeMinPrice = (event: any) => {
+        setPriceValue({ start: (event.target.value >= 10 ? Math.min(event.target.value, priceValue[1] - minPriceDistance) : 10), end: priceValue[1] });
+    }
+    const handleChangeMaxPrice = (event: any) => {
+        setPriceValue({ start: priceValue[0], end: (event.target.value <= 10000 ? Math.max(event.target.value, priceValue[0] + minPriceDistance) : 10000) });
+    }
     return (
         <Dialog
             open={isDialogOpen}
             TransitionComponent={Transition}
             maxWidth="md"
-            keepMounted
             onClose={dialogClose}
             aria-describedby="alert-dialog-slide-description"
             PaperProps={{
@@ -133,6 +152,25 @@ const FiltersDialog: FC<IFiltersDialog> = ({ isDialogOpen, Transition, dialogClo
                             <RoomsAndBedsCard name={"Bedrooms"} value={bedrooms} setValue={setBedrooms} />
                             <RoomsAndBedsCard name={"Beds"} value={beds} setValue={setBeds} />
                             <RoomsAndBedsCard name={"Bathrooms"} value={bathrooms} setValue={setBathrooms} />
+                        </Box>
+                        <Typography variant="h5" gutterBottom color="#55FCF1" sx={{ mt: 3 }}>
+                            Price
+                        </Typography>
+                        <Box sx={{ display: "flex", flexDirection: 'column', width: "70%" }}>
+                            <Slider
+                                sx={{ color: "#55FCF1" }}
+                                getAriaLabel={() => "Minimum distance"}
+                                value={priceValue}
+                                min={10}
+                                max={10000}
+                                onChange={handlePriceChange}
+                                valueLabelDisplay="auto"
+                                disableSwap
+                            />
+                            <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
+                                <CssTextField label="Min price" type="number" InputProps={{ inputProps: { min: 10, max: priceValue[1] - 1000 } }} onChange={handleChangeMinPrice} value={priceValue[0]} />
+                                <CssTextField label="Max price" type="number" InputProps={{ inputProps: { min: priceValue[0] + 1000, max: 10000 } }} onChange={handleChangeMaxPrice} value={priceValue[1]} />
+                            </Box>
                         </Box>
                         <Typography variant="h5" gutterBottom color="#55FCF1" sx={{ mt: 3 }}>
                             Type of apartments

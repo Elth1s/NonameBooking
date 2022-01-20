@@ -15,7 +15,7 @@ export interface IFilterGroup {
     name: string,
     filters: Array<IFilter>
 }
-export interface IApartment {
+export interface IApartmentResponse {
     name: string,
     description: string,
     price: number,
@@ -33,6 +33,25 @@ export interface IApartment {
     bathrooms: number,
     images: Array<string>,
     filterGroupWithFilters: Array<IFilterGroup>,
+}
+export interface IApartment {
+    name: string,
+    description: string,
+    price: number,
+    typeOfApartmentId: number,
+    typeOfApartmentName: string,
+    countryId: number,
+    countryName: string,
+    address: string,
+    cityId: number,
+    cityName: string,
+    ownerId: string,
+    ownerFullName: string,
+    beds: number,
+    bedrooms: number,
+    bathrooms: number,
+    images: Array<string>,
+    filters: Array<IFilter>,
 }
 export interface IApartmentItem {
     id: string,

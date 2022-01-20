@@ -1619,73 +1619,74 @@ namespace WebAPI.Services
                 //Order
                 if (orderRepos.ListAsync().Result.Count == 0)
                 {
+                    var userId = manager.FindByEmailAsync(firstEmail).Result.Id;
+
                     var orders = new List<Order>()
                     {
-                        new Order() { ApartmentId = 1, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(7),Total=5000 },
-                        new Order() { ApartmentId = 1, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now.AddDays(7), End = DateTime.Now.AddDays(25),Total=7000 },
-                        new Order() { ApartmentId = 1, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 2, Start = DateTime.Now.AddDays(25), End = DateTime.Now.AddDays(40),Total=8000 },
-                        new Order() { ApartmentId = 1, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60),Total=3000 },
-
-                        new Order() { ApartmentId = 2, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(6),Total=2700},
-                        new Order() { ApartmentId = 2, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now.AddDays(6), End = DateTime.Now.AddDays(26),Total=14_000 },
-                        new Order() { ApartmentId = 2, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 2, Start = DateTime.Now.AddDays(26), End = DateTime.Now.AddDays(42),Total=3000 },
-                        new Order() { ApartmentId = 2, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60),Total=5000 },
-
-                        new Order() { ApartmentId = 3, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(5),Total=4000 },
-                        new Order() { ApartmentId = 3, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now.AddDays(5), End = DateTime.Now.AddDays(28),Total=5000 },
-                        new Order() { ApartmentId = 3, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 2, Start = DateTime.Now.AddDays(29), End = DateTime.Now.AddDays(42),Total=6500 },
-                        new Order() { ApartmentId = 3, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60),Total=7000 },
-
-
-                        new Order() { ApartmentId = 4, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(5),Total=7800 },
-                        new Order() { ApartmentId = 4, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now.AddDays(5), End = DateTime.Now.AddDays(28),Total=9500 },
-                        new Order() { ApartmentId = 4, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 2, Start = DateTime.Now.AddDays(29), End = DateTime.Now.AddDays(42),Total=3000 },
-                        new Order() { ApartmentId = 4, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60),Total=5500 },
-                                               
-                        new Order() { ApartmentId = 5, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(5),Total=6000 },
-                        new Order() { ApartmentId = 5, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now.AddDays(5), End = DateTime.Now.AddDays(28),Total=5000 },
-                        new Order() { ApartmentId = 5, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 2, Start = DateTime.Now.AddDays(29), End = DateTime.Now.AddDays(42),Total=6000 },
-                        new Order() { ApartmentId = 5, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60),Total=7000 },
+                        new Order() { ApartmentId = 1, UserId = userId, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(7),Total=5000 },
+                        new Order() { ApartmentId = 1, UserId = userId, OrderStatusId = 1, Start = DateTime.Now.AddDays(7), End = DateTime.Now.AddDays(25),Total=7000 },
+                        new Order() { ApartmentId = 1, UserId = userId, OrderStatusId = 2, Start = DateTime.Now.AddDays(25), End = DateTime.Now.AddDays(40),Total=8000 },
+                        new Order() { ApartmentId = 1, UserId = userId, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60),Total=3000 },
+                                                               
+                        new Order() { ApartmentId = 2, UserId = userId, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(6),Total=2700},
+                        new Order() { ApartmentId = 2, UserId = userId, OrderStatusId = 1, Start = DateTime.Now.AddDays(6), End = DateTime.Now.AddDays(26),Total=14_000 },
+                        new Order() { ApartmentId = 2, UserId = userId, OrderStatusId = 2, Start = DateTime.Now.AddDays(26), End = DateTime.Now.AddDays(42),Total=3000 },
+                        new Order() { ApartmentId = 2, UserId = userId, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60),Total=5000 },
+                                                                
+                        new Order() { ApartmentId = 3, UserId = userId, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(5),Total=4000 },
+                        new Order() { ApartmentId = 3, UserId = userId, OrderStatusId = 1, Start = DateTime.Now.AddDays(5), End = DateTime.Now.AddDays(28),Total=5000 },
+                        new Order() { ApartmentId = 3, UserId = userId, OrderStatusId = 2, Start = DateTime.Now.AddDays(29), End = DateTime.Now.AddDays(42),Total=6500 },
+                        new Order() { ApartmentId = 3, UserId = userId, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60),Total=7000 },
+                                                                
+                        new Order() { ApartmentId = 4, UserId = userId, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(5),Total=7800 },
+                        new Order() { ApartmentId = 4, UserId = userId, OrderStatusId = 1, Start = DateTime.Now.AddDays(5), End = DateTime.Now.AddDays(28),Total=9500 },
+                        new Order() { ApartmentId = 4, UserId = userId, OrderStatusId = 2, Start = DateTime.Now.AddDays(29), End = DateTime.Now.AddDays(42),Total=3000 },
+                        new Order() { ApartmentId = 4, UserId = userId, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60),Total=5500 },
+                                                               
+                        new Order() { ApartmentId = 5, UserId = userId, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(5),Total=6000 },
+                        new Order() { ApartmentId = 5, UserId = userId, OrderStatusId = 1, Start = DateTime.Now.AddDays(5), End = DateTime.Now.AddDays(28),Total=5000 },
+                        new Order() { ApartmentId = 5, UserId = userId, OrderStatusId = 2, Start = DateTime.Now.AddDays(29), End = DateTime.Now.AddDays(42),Total=6000 },
+                        new Order() { ApartmentId = 5, UserId = userId, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60),Total=7000 },
+                                                               
+                        new Order() { ApartmentId = 6, UserId = userId, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(5),Total=3000 },
+                        new Order() { ApartmentId = 6, UserId = userId, OrderStatusId = 1, Start = DateTime.Now.AddDays(5), End = DateTime.Now.AddDays(28),Total=5000 },
+                        new Order() { ApartmentId = 6, UserId = userId, OrderStatusId = 2, Start = DateTime.Now.AddDays(29), End = DateTime.Now.AddDays(42),Total=6000 },
+                        new Order() { ApartmentId = 6, UserId = userId, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60),Total=7600 },
+                                                                
+                        new Order() { ApartmentId = 7, UserId = userId, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(5),Total=3000 },
+                        new Order() { ApartmentId = 7, UserId = userId, OrderStatusId = 1, Start = DateTime.Now.AddDays(5), End = DateTime.Now.AddDays(28),Total=5600 },
+                        new Order() { ApartmentId = 7, UserId = userId, OrderStatusId = 2, Start = DateTime.Now.AddDays(29), End = DateTime.Now.AddDays(42),Total=7600 },
+                        new Order() { ApartmentId = 7, UserId = userId, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60),Total=8900 },
+                                                               
+                        new Order() { ApartmentId = 8, UserId = userId, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(5),Total=5000 },
+                        new Order() { ApartmentId = 8, UserId = userId, OrderStatusId = 1, Start = DateTime.Now.AddDays(5), End = DateTime.Now.AddDays(28),Total=7600 },
+                        new Order() { ApartmentId = 8, UserId = userId, OrderStatusId = 2, Start = DateTime.Now.AddDays(29), End = DateTime.Now.AddDays(42),Total=2400 },
+                        new Order() { ApartmentId = 8, UserId = userId, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60),Total=4500 },
+                                                                
+                        new Order() { ApartmentId = 9, UserId = userId, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(5),Total=6000 },
+                        new Order() { ApartmentId = 9, UserId = userId, OrderStatusId = 1, Start = DateTime.Now.AddDays(5), End = DateTime.Now.AddDays(28),Total=4700 },
+                        new Order() { ApartmentId = 9, UserId = userId, OrderStatusId = 2, Start = DateTime.Now.AddDays(29), End = DateTime.Now.AddDays(42),Total=6500 },
+                        new Order() { ApartmentId = 9, UserId = userId, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60),Total=5400 },
                                                 
-                        new Order() { ApartmentId = 6, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(5),Total=3000 },
-                        new Order() { ApartmentId = 6, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now.AddDays(5), End = DateTime.Now.AddDays(28),Total=5000 },
-                        new Order() { ApartmentId = 6, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 2, Start = DateTime.Now.AddDays(29), End = DateTime.Now.AddDays(42),Total=6000 },
-                        new Order() { ApartmentId = 6, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60),Total=7600 },
-                                                
-                        new Order() { ApartmentId = 7, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(5),Total=3000 },
-                        new Order() { ApartmentId = 7, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now.AddDays(5), End = DateTime.Now.AddDays(28),Total=5600 },
-                        new Order() { ApartmentId = 7, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 2, Start = DateTime.Now.AddDays(29), End = DateTime.Now.AddDays(42),Total=7600 },
-                        new Order() { ApartmentId = 7, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60),Total=8900 },
-
-                        new Order() { ApartmentId = 8, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(5),Total=5000 },
-                        new Order() { ApartmentId = 8, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now.AddDays(5), End = DateTime.Now.AddDays(28),Total=7600 },
-                        new Order() { ApartmentId = 8, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 2, Start = DateTime.Now.AddDays(29), End = DateTime.Now.AddDays(42),Total=2400 },
-                        new Order() { ApartmentId = 8, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60),Total=4500 },
-                                            
-                        new Order() { ApartmentId = 9, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(5),Total=6000 },
-                        new Order() { ApartmentId = 9, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now.AddDays(5), End = DateTime.Now.AddDays(28),Total=4700 },
-                        new Order() { ApartmentId = 9, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 2, Start = DateTime.Now.AddDays(29), End = DateTime.Now.AddDays(42),Total=6500 },
-                        new Order() { ApartmentId = 9, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60),Total=5400 },
-                                                
-                        new Order() { ApartmentId = 10, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(5),Total=3200 },
-                        new Order() { ApartmentId = 10, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now.AddDays(5), End = DateTime.Now.AddDays(28),Total=8600 },
-                        new Order() { ApartmentId = 10, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 2, Start = DateTime.Now.AddDays(29), End = DateTime.Now.AddDays(42),Total=9300 },
-                        new Order() { ApartmentId = 10, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60),Total=5700 },
-                                                
-                        new Order() { ApartmentId = 11, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(5),Total=7600 },
-                        new Order() { ApartmentId = 11, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now.AddDays(5), End = DateTime.Now.AddDays(28),Total=4700 },
-                        new Order() { ApartmentId = 11, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 2, Start = DateTime.Now.AddDays(29), End = DateTime.Now.AddDays(42),Total=3400 },
-                        new Order() { ApartmentId = 11, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60),Total=9600 },
-                                                
-                        new Order() { ApartmentId = 12, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(5),Total=9500 },
-                        new Order() { ApartmentId = 12, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now.AddDays(5), End = DateTime.Now.AddDays(28),Total=5400 },
-                        new Order() { ApartmentId = 12, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 2, Start = DateTime.Now.AddDays(29), End = DateTime.Now.AddDays(42),Total=7300 },
-                        new Order() { ApartmentId = 12, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60),Total=1200 },
-                                                
-                        new Order() { ApartmentId = 13, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(5),Total=3400 },
-                        new Order() { ApartmentId = 13, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 1, Start = DateTime.Now.AddDays(5), End = DateTime.Now.AddDays(28),Total=5400 },
-                        new Order() { ApartmentId = 13, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 2, Start = DateTime.Now.AddDays(29), End = DateTime.Now.AddDays(42),Total=3700 },
-                        new Order() { ApartmentId = 13, UserId = manager.FindByEmailAsync(firstEmail).Result.Id, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60),Total=4500 }
+                        new Order() { ApartmentId = 10, UserId = userId, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(5),Total=3200 },
+                        new Order() { ApartmentId = 10, UserId = userId, OrderStatusId = 1, Start = DateTime.Now.AddDays(5), End = DateTime.Now.AddDays(28),Total=8600 },
+                        new Order() { ApartmentId = 10, UserId = userId, OrderStatusId = 2, Start = DateTime.Now.AddDays(29), End = DateTime.Now.AddDays(42),Total=9300 },
+                        new Order() { ApartmentId = 10, UserId = userId, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60),Total=5700 },
+                                                                 
+                        new Order() { ApartmentId = 11, UserId = userId, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(5),Total=7600 },
+                        new Order() { ApartmentId = 11, UserId = userId, OrderStatusId = 1, Start = DateTime.Now.AddDays(5), End = DateTime.Now.AddDays(28),Total=4700 },
+                        new Order() { ApartmentId = 11, UserId = userId, OrderStatusId = 2, Start = DateTime.Now.AddDays(29), End = DateTime.Now.AddDays(42),Total=3400 },
+                        new Order() { ApartmentId = 11, UserId = userId, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60),Total=9600 },
+                                                                 
+                        new Order() { ApartmentId = 12, UserId = userId, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(5),Total=9500 },
+                        new Order() { ApartmentId = 12, UserId = userId, OrderStatusId = 1, Start = DateTime.Now.AddDays(5), End = DateTime.Now.AddDays(28),Total=5400 },
+                        new Order() { ApartmentId = 12, UserId = userId, OrderStatusId = 2, Start = DateTime.Now.AddDays(29), End = DateTime.Now.AddDays(42),Total=7300 },
+                        new Order() { ApartmentId = 12, UserId = userId, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60),Total=1200 },
+                                                                 
+                        new Order() { ApartmentId = 13, UserId = userId, OrderStatusId = 1, Start = DateTime.Now, End = DateTime.Now.AddDays(5),Total=3400 },
+                        new Order() { ApartmentId = 13, UserId = userId, OrderStatusId = 1, Start = DateTime.Now.AddDays(5), End = DateTime.Now.AddDays(28),Total=5400 },
+                        new Order() { ApartmentId = 13, UserId = userId, OrderStatusId = 2, Start = DateTime.Now.AddDays(29), End = DateTime.Now.AddDays(42),Total=3700 },
+                        new Order() { ApartmentId = 13, UserId = userId, OrderStatusId = 3, Start = DateTime.Now.AddDays(50), End = DateTime.Now.AddDays(60),Total=4500 }
                     };
                     Order order;
                     foreach (var item in orders)

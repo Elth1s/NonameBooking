@@ -9,7 +9,10 @@ export const CssTextField = styled(TextField)({
         },
         "&.Mui-error ": {
             color: "#d32f2f"
-        }
+        },
+        "&.Mui-disabled": {
+            color: "#f1f1f1"
+        },
     },
     "& .MuiOutlinedInput-root": {
         color: "#c5c6c7",

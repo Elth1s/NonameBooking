@@ -77,7 +77,7 @@ const UserMenu: React.FC<IProps> = ({ drawerWidth }) => {
                     flexShrink: 0,
                     [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box', background: "#18181b", borderColor: '#45A29E' },
                 }}> */}
-            <Box sx={{ width: drawerWidth, border: 1, borderRadius: 3, borderColor: '#45A29E' }}>
+            <Box sx={{ width: drawerWidth, height: 176, border: 1, borderRadius: 3, borderColor: '#45A29E' }}>
 
                 {Array.from(menu).map((item, key) => (<MenuItem key={key} {...item} />))}
 

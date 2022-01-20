@@ -28,7 +28,7 @@ const RoomsAndBedsCard: FC<IRoomsAndBedsCard> = ({ name, value, setValue }) => {
                     <Remove />
                 </IconButton>
                 <Typography variant="h6" gutterBottom color="#f1f1f1" sx={{ my: "auto" }}>
-                    {value == null ? 0 : value}
+                    {value == null || value == "" ? 0 : value}
                 </Typography>
                 <IconButton
                     size="large"

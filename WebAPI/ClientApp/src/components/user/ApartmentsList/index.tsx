@@ -16,13 +16,15 @@ import qs from "qs";
 import { toast } from 'react-toastify';
 import { useActions } from "../../../hooks/useActions";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
-import { IDateRange, ISearch } from "../types";
+import { IDateRange, IPriceRange, ISearch } from "../types";
 import ApartmentCard from "./ApartmentCard";
 import FiltersDialog from "../../comon/FiltersDialog";
 
 const Transition = forwardRef(function Transition(props: any, ref) {
     return <Slide direction="left" ref={ref} {...props} />;
 });
+
+const minPriceDistance = 1000;
 
 const ApartmentsList = () => {
 
@@ -37,7 +39,7 @@ const ApartmentsList = () => {
     const [cityId, setCityId] = useState<number>(0);
     const [page, setPage] = useState<number>(1);
 
-    const [priceValue, setPriceValue] = useState<any>([null, null]);
+    const [priceValue, setPriceValue] = useState<any>([10, 10000]);
     const [dateValue, setDateValue] = useState<any>([null, null]);
 
     const navigate = useNavigate();
@@ -47,10 +49,8 @@ const ApartmentsList = () => {
             countryId: searchParams.get("countryId"),
             priceStart: searchParams.get("priceStart"),
             priceEnd: searchParams.get("priceEnd"),
-            dateStart: searchParams.get("dateStart"),
-            dateEnd: searchParams.get("dateEnd"),
-            typesOfApartment: searchParams.getAll("typeOfApartment"),
-            filters: searchParams.getAll("filter"),
+            typesOfApartment: searchParams.getAll("typesOfApartment"),
+            filters: searchParams.getAll("filters"),
             beds: searchParams.get("beds"),
             bedrooms: searchParams.get("bedrooms"),
             bathrooms: searchParams.get("bathrooms"),
@@ -59,26 +59,30 @@ const ApartmentsList = () => {
     )
 
 
-    async function getApartments(page: number, search: ISearch) {
+    async function getApartments(search: ISearch) {
         setLoadingPage(true);
         try {
             const url = window.location.search;
             const params = new URLSearchParams(url);
+
             let cityIdParams = params.get("cityId");
-            let countryIdParams = params.get("countryId");
             let pageParams = params.get("page");
-            if (pageParams !== null && +pageParams !== page) {
+            if (pageParams !== null) {
                 setPage(+pageParams)
             }
-            if (cityIdParams === null || countryIdParams === null) {
+            if ((search.priceEnd != null && search.priceStart != null) && (search.priceStart != "" && search.priceEnd != "")) {
+                setPriceValue([search.priceStart, search.priceEnd])
+            }
+            if (cityIdParams == null || search.countryId == null || cityIdParams == "" || search.countryId == "") {
+                toast.error("Loading apartments failed.");
                 navigate("/");
             }
             else {
                 setCityId(+cityIdParams)
-                setSearchParams(qs.stringify({ cityId: +cityIdParams, page: page, ...search }));
                 await GetApartments(+cityIdParams, page, search);
+                setSearch(search)
+                setLoadingPage(false);
             }
-            setLoadingPage(false);
         } catch (ex) {
             toast.error("Loading apartments failed.");
             setLoadingPage(false);
@@ -86,8 +90,8 @@ const ApartmentsList = () => {
     }
     useEffect(() => {
         document.title = "Apartments";
-        getApartments(page, search)
-    }, []);
+        getApartments(search)
+    }, [page]);
 
     const filtersDialogOpen = () => {
         setIsFiltersDialogOpen(true);
@@ -98,7 +102,7 @@ const ApartmentsList = () => {
     };
 
     const addOrDeleteFilter = (id: string) => {
-        const index = search.filters.findIndex(elem => elem === id);
+        const index = search.filters.findIndex(elem => elem == id);
         const tmpList = search.filters.slice();
         if (index === -1)
             tmpList.push(id)
@@ -111,7 +115,7 @@ const ApartmentsList = () => {
         setSearch(data);
     }
     const addOrDeleteTypeOfApartment = (id: string) => {
-        const index = search.typesOfApartment.findIndex(elem => elem === id);
+        const index = search.typesOfApartment.findIndex(elem => elem == id);
         const tmpList = search.typesOfApartment.slice();
         if (index === -1)
             tmpList.push(id)
@@ -145,9 +149,20 @@ const ApartmentsList = () => {
         setSearch(data);
     }
 
+    const changeSearchPriceValue = (prices: IPriceRange) => {
+        setPriceValue([prices.start, prices.end])
+        let data: ISearch = {
+            ...search,
+            priceStart: prices.start.toString(),
+            priceEnd: prices.end.toString(),
+        };
+        setSearch(data);
+    }
+
     const applyFilters = () => {
         filtersDialogClose()
-        getApartments(1, search)
+        setSearchParams(qs.stringify({ cityId: cityId, page: 1, ...search }, { indices: false }));
+        getApartments(search)
     }
     return (
         <>
@@ -179,9 +194,9 @@ const ApartmentsList = () => {
                         <Grid container>
                             <Pagination count={Math.ceil(count / 4)} page={page} shape="rounded" size="large" showFirstButton showLastButton sx={{ marginTop: 4, marginX: "auto" }} style={{ color: "#55FCF1" }}
                                 onChange={(event: any, value) => {
-                                    setSearchParams(qs.stringify({ cityId: cityId, page: value, ...search }));
+                                    setSearchParams(qs.stringify({ cityId: cityId, page: value, ...search }, { indices: false }));
                                     setPage(value)
-                                    getApartments(value, search)
+                                    getApartments(search)
                                 }}
                                 renderItem={(item) => <PaginationItem {...item}
                                     sx={{ color: "#55FCF1" }} />} />
@@ -197,7 +212,7 @@ const ApartmentsList = () => {
                 selectedTypesOfApartments={search.typesOfApartment}
                 addOrDeleteTypeOfApartment={addOrDeleteTypeOfApartment}
                 priceValue={priceValue}
-                setPriceValue={setPriceValue}
+                setPriceValue={changeSearchPriceValue}
                 dateValue={dateValue}
                 setDateValue={setDateValue}
                 beds={search.beds}

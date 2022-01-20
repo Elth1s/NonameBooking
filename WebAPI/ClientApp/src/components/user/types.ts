@@ -32,8 +32,6 @@ export interface ISearch {
     countryId: string | null,
     priceStart: string | null,
     priceEnd: string | null,
-    dateStart: string | null,
-    dateEnd: string | null,
     typesOfApartment: Array<string>,
     filters: Array<string>,
     beds: string | null,

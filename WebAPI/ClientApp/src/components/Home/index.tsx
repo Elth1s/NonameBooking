@@ -62,7 +62,7 @@ const HomePage = () => {
         validationSchema: SearchSchema,
         onSubmit: async (values, { setFieldError }) => {
             if (values.cityId)
-                navigate(`/apartments?countryId=${values.countryId}&cityId=${values.cityId}&page=1`)
+                navigate(`/apartments?countryId=${values.countryId}&cityId=${values.cityId}`)
             else
                 navigate(`/cities?countryId=${values.countryId}`)
             getCitiesByCountryId(0);

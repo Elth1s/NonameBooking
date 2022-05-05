@@ -8,6 +8,6 @@ export const SignUpSchema = Yup.object().shape({
     phone: Yup.string().matches(phoneRegExp, 'Phone number is not valid').required('Phone number is required'),
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
     password: Yup.string().matches(passwordRegExp, 'Password is not valid').required('Password is required'),
-    confirmPassword: Yup.string()
+    confirmpassword: Yup.string()
         .oneOf([Yup.ref('password'), null], 'Passwords must match').required('Confirm password is required')
 });

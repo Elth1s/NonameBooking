@@ -1,13 +1,6 @@
 ﻿using DAL.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DAL
 {
@@ -34,11 +27,11 @@ namespace DAL
 
             builder.Entity<Apartment>()
                 .HasMany<Order>(a => a.Orders)
-                .WithOne(o=>o.Apartment)
+                .WithOne(o => o.Apartment)
                 .OnDelete(DeleteBehavior.NoAction);
 
             builder.Entity<AppUser>().Property(u => u.Photo).IsRequired(false);
-                
+
         }
     }
 }
